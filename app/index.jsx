@@ -39,7 +39,7 @@ export default function App() {
             containerStyles="w-[180px] mt-10"
           />
           <Link href="/home" className="text-lg font-IRegular text-secondary">
-              Home
+          Home
           </Link>
         </View>
       </ScrollView>
