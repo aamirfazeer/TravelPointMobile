@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text, ImageBackground } from 'react-native';
 import React from 'react';
-import { images } from '../../constants';
+import { images } from '../../../constants';
 
 const styles = StyleSheet.create({
   container: {
