@@ -1,8 +1,8 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, Button } from 'react-native'
 import React from 'react'
 import { Tabs, Redirect } from 'expo-router';
 
-import { icons } from '../../constants';
+import { icons } from '../../../constants';
 
 const TabIcon = ( { icon, color, name, focused }) => {
     return (
@@ -21,10 +21,11 @@ const TabIcon = ( { icon, color, name, focused }) => {
     )
 }
 
-const TabsLayout = () => {
+const ProfileLayout = () => {
   return (
     <>
-        <Tabs
+<Button title="manage" />
+        {/* <Tabs
             screenOptions={{
                 tabBarShowLabel: false,
                 tabBarActiveTintColor: '#002F43',
@@ -118,9 +119,9 @@ const TabsLayout = () => {
                     )
                 }}
             />
-        </Tabs>
+        </Tabs> */}
     </>
   )
 }
 
-export default {TabsLayout, TabIcon}
+export default ProfileLayout;
