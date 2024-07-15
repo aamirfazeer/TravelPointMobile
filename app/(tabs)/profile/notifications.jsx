@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 })
 
 
-const privacy = () =>
+const notfication = () =>
 {
     const [checked, setChecked] = useState('first');
     return (
@@ -58,4 +58,4 @@ const privacy = () =>
     );
 
 }
-export default privacy;
+export default notfication;
