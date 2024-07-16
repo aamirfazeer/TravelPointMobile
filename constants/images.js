@@ -10,5 +10,7 @@ import travelpoint_logo from "../assets/images/travelpoint_name.png";
 import hipster from "../assets/images/hipster.png";
 import rental from "../assets/images/rental.png";
 import equipment from "../assets/images/equipment.png";
+import profile1 from "../assets/images/profile1.png";
 
-export default { profile, thumbnail, cards, path, logo, logoSmall, empty, travelpoint_image, travelpoint_logo, hipster, rental, equipment };
+
+export default { profile, thumbnail, cards, path, logo, logoSmall, empty, travelpoint_image, travelpoint_logo, hipster, rental, equipment, profile1};
