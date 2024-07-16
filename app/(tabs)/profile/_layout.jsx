@@ -3,6 +3,8 @@ import React from 'react'
 import { Tabs, Redirect } from 'expo-router';
 
 import { icons } from '../../../constants';
+import { useState } from 'react';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const TabIcon = ( { icon, color, name, focused }) => {
     return (
@@ -21,11 +23,27 @@ const TabIcon = ( { icon, color, name, focused }) => {
     )
 }
 
+// const Drawer = createDrawerNavigator();
+
+// const MyDrawer = () => {
+//     return (
+//       <Drawer.Navigator>
+//         <Drawer.Screen name="profile" />
+//         <Drawer.Screen name="privacy" />
+//       </Drawer.Navigator>
+//     );
+// }
+
+
+
 const ProfileLayout = () => {
+    //[component, setComponent] = useState('profile');
+
   return (
     <>
-<Button title="manage" />
+    
         {/* <Tabs
+        <Button title="manage" />
             screenOptions={{
                 tabBarShowLabel: false,
                 tabBarActiveTintColor: '#002F43',
