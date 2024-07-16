@@ -35,7 +35,7 @@ export default function App() {
 
           <CustomButton 
             title="Get Started"
-            handlePress={()=>router.push('/screens/edit_profile')}
+            handlePress={()=>router.push('/delete_acc')}
             containerStyles="w-[180px] mt-10"
           />
           <Link href="/home" className="text-lg font-IRegular text-secondary">

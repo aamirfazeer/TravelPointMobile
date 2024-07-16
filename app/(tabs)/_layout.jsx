@@ -124,4 +124,4 @@ const TabsLayout = () => {
 }
 
 export default TabsLayout;
-export {TabIcon}
+export {TabIcon};
