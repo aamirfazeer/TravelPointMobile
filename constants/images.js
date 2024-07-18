@@ -37,4 +37,7 @@ export default {
   person4,
   person5,
   person6,
+  travel1, travel2, travel3,
 };
+
+
