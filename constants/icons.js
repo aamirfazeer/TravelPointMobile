@@ -15,6 +15,10 @@ import create from "../assets/icons/create.png";
 import business from "../assets/icons/business.png";
 import explore from "../assets/icons/explore.png";
 import Back from "../assets/icons/Back.png";
+import heart from "../assets/icons/heart.png";
+import star from "../assets/icons/star.png";
+import location from "../assets/icons/location.png";
+import calendar from "../assets/icons/calendar.png";
 
 export default {
   play,
@@ -34,4 +38,8 @@ export default {
   business,
   explore,
   Back,
+  heart,
+  star,
+  location,
+  calendar
 };

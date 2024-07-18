@@ -35,7 +35,7 @@ export default function App() {
 
           <CustomButton 
             title="Get Started"
-            handlePress={()=>router.push('/delete_acc')}
+            handlePress={()=>router.push('/business/guideDetails')}
             containerStyles="w-[180px] mt-10"
           />
           <Link href="/home" className="text-lg font-IRegular text-secondary">
@@ -46,12 +46,3 @@ export default function App() {
     </SafeAreaView>
   );
 }
-
-/*const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});*/
