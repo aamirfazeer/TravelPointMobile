@@ -1,8 +1,18 @@
 import { Link } from "expo-router";
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Platform,
+  Modal,
+  Image,
+} from "react-native";
 import DropdownComponent from "../../../components/Dropdown";
 import DateSelectComponent from "../../../components/DatePicker";
+import { icons } from "../../../constants";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 
 const detail = () => {
@@ -10,6 +20,12 @@ const detail = () => {
     { label: "English", value: "en" },
     { label: "Sinhala", value: "sh" },
     { label: "Tamil", value: "tm" },
+  ];
+
+  const location = [
+    { label: "location 1", value: "l1" },
+    { label: "location 2 ", value: "l2" },
+    { label: "location 3", value: "l3" },
   ];
 
   const [date, setDate] = useState(new Date());
@@ -33,28 +49,24 @@ const detail = () => {
       </Text>
       <View className="bg-gray-700 p-5 pt-20 pb-10  rounded-lg shadow-md mb-6 mt-12 w-80">
         <View className="mb-6 gap-2">
-          {/* <DropdownComponent data={languages} placeholder={"Language"} /> */}
-          {/* <TextInput
-            placeholder="Date"
-            className="bg-white p-2 rounded mt-4 mb-4"
-          /> */}
-          <View className="border rounded-full p-2 flex-row items-center bg-white">
-            <TouchableOpacity onPress={showDatepicker} className="p-2">
-              <Image
-                source={icons.calendar}
-                className="w-20 h-20 rounded-full"
-              />
-            </TouchableOpacity>
+          <DropdownComponent data={languages} placeholder={"Language"} />
+
+          <View
+            className="border flex-row items-center bg-white mb-2"
+          >
             <TextInput
               onPress={showDatepicker}
-              className="flex-1 p-2"
+              className="flex-1"
               placeholder="Date"
               editable={false}
               value={date ? date.toLocaleDateString() : "Date"}
-            />
+                         />
+            <TouchableOpacity onPress={showDatepicker} className="p-2">
+              <Image source={icons.calendar} className="w-10 h-10" />
+            </TouchableOpacity>
           </View>
 
-          {/* <DropdownComponent data={languages} placeholder={"Location"} /> */}
+          <DropdownComponent data={location} placeholder={"Location"} />
         </View>
         <View className="items-center">
           <TouchableOpacity className="rounded-full bg-red-500 p-3 text-center items-center justify-center shadow-lg mt-auto mb-auto w-40">
@@ -94,11 +106,12 @@ const detail = () => {
       {show && Platform.OS === "android" && (
         <DateTimePicker
           testID="dateTimePicker"
-          value={date || new Date()}
+          value={date}
           mode="date"
           is24Hour={true}
           display="default"
           onChange={onChange}
+          placeholder="Date"
         />
       )}
     </View>

@@ -1,23 +1,34 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 import { icons, images } from "../../../constants";
 
-const ProfilePage = () => {
+const equipmentDetails = () => {
   return (
     <ScrollView
       className="bg-white"
-      contentContainerStyle={{ alignItems: "center", justifyContent: "center" }}
+      contentContainerStyle={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
     >
       <View className="flex">
         <View className="items-center">
           <Image
-            source={images.person1}
+            source={images.car}
             className="items-center"
             style={styles.image}
           />
         </View>
         <View className="flex-row justify-between mb-4">
-          <Text className="text-2xl font-bold mb-1">Aamir Arshad</Text>
+          <Text className="text-2xl font-bold mb-1">Nightlight</Text>
           <Image source={icons.heart} className="w-8 h-8 items-center" />
         </View>
         <View className="flex-row gap-40 mb-2">
@@ -31,6 +42,8 @@ const ProfilePage = () => {
           </View>
         </View>
       </View>
+
+      <View style={styles.line} />
 
       <View className="p-5">
         <Text className="text-xl font-bold mb-4">About</Text>
@@ -49,15 +62,23 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default equipmentDetails;
 
 const styles = StyleSheet.create({
   image: {
-    height: 250,
-    width: 247,
+    height: 210,
+    width: 210,
     borderRadius: 100,
-    marginBottom: 50,
-    marginTop: 35,
+    marginBottom: 45,
     alignSelf: "center",
+  },
+  detail: {
+    textAlign: "left",
+  },
+  line: {
+    height: 1,
+    width: "88%",
+    backgroundColor: "black",
+    marginVertical: 20,
   },
 });
