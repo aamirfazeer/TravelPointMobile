@@ -22,7 +22,7 @@ const equipmentDetails = () => {
       <View className="flex">
         <View className="items-center">
           <Image
-            source={images.car}
+            source={images.equipment7}
             className="items-center"
             style={styles.image}
           />
@@ -46,7 +46,7 @@ const equipmentDetails = () => {
       <View style={styles.line} />
 
       <View className="p-5">
-        <Text className="text-xl font-bold mb-4">About</Text>
+        <Text className="text-xl mb-4 text-blue-700">About</Text>
         <Text className="mb-10" numberOfLines={7} ellipsizeMode="tail" li>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
           feugiat libero diam, ut fermentum justo commodo non. Interdum et

@@ -19,6 +19,8 @@ import heart from "../assets/icons/heart.png";
 import star from "../assets/icons/star.png";
 import location from "../assets/icons/location.png";
 import calendar from "../assets/icons/calendar.png";
+import uploadDocument from "../assets/icons/uploadDocument.png";
+import uploadImage from "../assets/icons/uploadImage.png";
 
 export default {
   play,
@@ -41,5 +43,7 @@ export default {
   heart,
   star,
   location,
-  calendar
+  calendar,
+  uploadDocument,
+  uploadImage
 };

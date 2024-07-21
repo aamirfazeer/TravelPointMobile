@@ -14,7 +14,7 @@ import DropdownComponent from "../../../components/Dropdown";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { icons } from "../../../constants";
 
-const findGuide = () => {
+const findEquipment = () => {
   const languages = [
     { label: "English", value: "en" },
     { label: "Sinhala", value: "sh" },
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     padding: 8,
-    color: 'gray'
+    color: "gray",
   },
   datePickerButton: {
     padding: 8,
@@ -212,4 +212,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default findGuide;
+export default findEquipment;
