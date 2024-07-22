@@ -35,6 +35,9 @@ import equipment6 from "../assets/images/equipment6.png";
 import equipment7 from "../assets/images/equipment7.png";
 import car from "../assets/images/car.jpg";
 import profile1 from "../assets/images/profile1.png";
+import equipment_ from "../assets/images/equipment_.png";
+import vehicle_ from "../assets/images/vehicle_.png";
+import guide_ from "../assets/images/guide_.png";
 
 
 export default {
@@ -69,6 +72,9 @@ export default {
   equipment6,
   equipment7,
   car,
+  equipment_,
+  vehicle_,
+  guide_
 };
 
 

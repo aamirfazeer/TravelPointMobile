@@ -2,6 +2,7 @@ import { Text, View, Image, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { images } from "../../../constants";
+import { router } from "expo-router";
 
 const vehicleList = () => {
   const vehicles = [
@@ -63,7 +64,7 @@ const VehicleList = ({ vehicles }) => {
       {vehicles.map((vehicle) => (
         <View
           key={vehicle.id}
-          className="flex-row items-center p-3 bg-blue-200 rounded-lg shadow-md m-4 mt-3"
+          className="flex-row items-center p-3 bg-gray-300 rounded-lg shadow-md m-4 mt-3"
         >
           <Image
             source={vehicle.profilePicture}
@@ -81,7 +82,10 @@ const VehicleList = ({ vehicles }) => {
               Rs. {vehicle.rentPrice} / day
             </Text>
           </View>
-          <TouchableOpacity className="p-2">
+          <TouchableOpacity
+            className="p-2"
+            onPress={() => router.push("/business/vehicleDetails")}
+          >
             <FontAwesome name="arrow-right" size={16} color="black" />
           </TouchableOpacity>
           <TouchableOpacity className="p-2">
