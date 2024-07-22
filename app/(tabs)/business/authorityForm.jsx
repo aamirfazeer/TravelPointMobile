@@ -96,6 +96,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#3F7C9E",
     padding: 40,
     borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    elevation: 5,
   },
   picker: {
     height: 40,
@@ -161,6 +166,11 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 30,
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    elevation: 5,
   },
   submitText: {
     color: "white",
