@@ -35,7 +35,9 @@ export default function App() {
 
           <CustomButton 
             title="Get Started"
-            handlePress={()=>router.push('/create/add_log')}
+
+            handlePress={()=>router.push('/business/findEquipment')}
+
             containerStyles="w-[180px] mt-10"
           />
           <Link href="/home" className="text-lg font-IRegular text-secondary">
