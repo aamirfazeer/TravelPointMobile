@@ -36,7 +36,7 @@ export default function App() {
           <CustomButton 
             title="Get Started"
 
-            handlePress={()=>router.push('/preference')}
+            handlePress={()=>router.push('/business/serviceProvider')}
 
             containerStyles="w-[180px] mt-10"
           />

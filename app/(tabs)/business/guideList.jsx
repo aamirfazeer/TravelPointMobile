@@ -2,6 +2,7 @@ import { Text, View, Image, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { images } from "../../../constants";
+import { router } from "expo-router";
 
 const guideList = () => {
   const users = [
@@ -63,10 +64,10 @@ const GuideList = ({ users }) => {
       {users.map((user) => (
         <View
           key={user.id}
-          className="flex-row items-center p-3 bg-blue-200 rounded-lg shadow-md m-4 mt-3"
+          className="flex-row items-center p-3 bg-gray-300 rounded-lg shadow-md m-4 mt-3"
         >
           <Image
-            source={ user.profilePicture }
+            source={user.profilePicture}
             className="w-20 h-20 rounded-full"
           />
           <View className="flex-1 ml-3">
@@ -81,7 +82,10 @@ const GuideList = ({ users }) => {
               Rs. {user.salary} / day
             </Text>
           </View>
-          <TouchableOpacity className="p-2">
+          <TouchableOpacity
+            className="p-2"
+            onPress={() => router.push("/business/guideDetails")}
+          >
             <FontAwesome name="arrow-right" size={16} color="black" />
           </TouchableOpacity>
           <TouchableOpacity className="p-2">

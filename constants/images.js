@@ -57,7 +57,9 @@ import museums from "../assets/images/museums.jpg";
 import wellness_spots from "../assets/images/wellness_spots.jpg";
 import concerts_events from "../assets/images/concerts_events.jpg";
 import chill_cafes from "../assets/images/chill_cafes.jpg";
-
+import equipment_ from "../assets/images/equipment_.png";
+import vehicle_ from "../assets/images/vehicle_.png";
+import guide_ from "../assets/images/guide_.png";
 
 
 export default {
@@ -115,6 +117,10 @@ export default {
   wellness_spots,
   concerts_events,
   chill_cafes,
+  equipment_,
+  vehicle_,
+  guide_
+
 };
 
 
