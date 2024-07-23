@@ -1,14 +1,15 @@
-import { View, Text, Image } from "react-native";
+import { StyleSheet, ScrollView, SafeAreaView, View, Text, Image } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import { icons } from "../../constants";
+import Header from "../../components/Header"
 
 const TabIcon = ({ icon, color, name, focused }) => (
   <View className="items-center justify-center gap-1">
     <Image
       source={icon}
       resizeMode="contain"
-      style={{ tintColor: color }} // Tailwind doesn't support tintColor directly
+      style={{ tintColor: color }}
       className="w-6 h-6"
     />
     <Text
@@ -20,94 +21,106 @@ const TabIcon = ({ icon, color, name, focused }) => (
   </View>
 );
 
-const TabsLayout = () => {
+const TabsLayout = ({children}) => {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarShowLabel: false,
-        tabBarActiveTintColor: "#002F43",
-        tabBarInactiveTintColor: "#CDCDE0",
-        tabBarStyle: "bg-white border-t border-gray-300 h-16",
-      }}
-    >
-      <Tabs.Screen
-        name="home"
-        options={{
-          title: "Home",
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon
-              icon={icons.home}
-              color={color}
-              name="Home"
-              focused={focused}
-            />
-          ),
+    <SafeAreaView style={styles.container}>
+      <Header />
+      <Tabs
+        screenOptions={{
+          tabBarShowLabel: false,
+          tabBarActiveTintColor: "#002F43",
+          tabBarInactiveTintColor: "#CDCDE0",
+          tabBarStyle: "bg-white border-t border-gray-300 h-16",
         }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: "Explore",
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon
-              icon={icons.explore}
-              color={color}
-              name="Explore"
-              focused={focused}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="create"
-        options={{
-          title: "Create",
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon
-              icon={icons.create}
-              color={color}
-              name="Create"
-              focused={focused}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="business"
-        options={{
-          title: "Business",
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon
-              icon={icons.business}
-              color={color}
-              name="Business"
-              focused={focused}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profile",
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon
-              icon={icons.profile}
-              color={color}
-              name="Profile"
-              focused={focused}
-            />
-          ),
-        }}
-      />
-    </Tabs>
+      >
+        <Tabs.Screen
+          name="home"
+          options={{
+            title: "Home",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.home}
+                color={color}
+                name="Home"
+                focused={focused}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="explore"
+          options={{
+            title: "Explore",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.explore}
+                color={color}
+                name="Explore"
+                focused={focused}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="create"
+          options={{
+            title: "Create",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.create}
+                color={color}
+                name="Create"
+                focused={focused}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="business"
+          options={{
+            title: "Business",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.business}
+                color={color}
+                name="Business"
+                focused={focused}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: "Profile",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.profile}
+                color={color}
+                name="Profile"
+                focused={focused}
+              />
+            ),
+          }}
+        />
+      </Tabs>
+    </SafeAreaView>
   );
 };
 
 export default TabsLayout;
 export { TabIcon };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+  },
+});

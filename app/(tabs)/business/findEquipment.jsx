@@ -1,5 +1,5 @@
-import { router, Link } from "expo-router";
 import React, { useState } from "react";
+import { router, Link } from "expo-router";
 import {
   View,
   Text,
@@ -14,11 +14,11 @@ import DropdownComponent from "../../../components/Dropdown";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { icons } from "../../../constants";
 
-const findGuide = () => {
-  const languages = [
-    { label: "English", value: "en" },
-    { label: "Sinhala", value: "sh" },
-    { label: "Tamil", value: "tm" },
+const findEquipment = () => {
+  const equipments = [
+    { label: "Equipment 1", value: "e1" },
+    { label: "Equipment 2", value: "e2" },
+    { label: "Equipment 3", value: "e3" },
   ];
 
   const location = [
@@ -43,10 +43,12 @@ const findGuide = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Find your Tour Guide!</Text>
+      <Text style={styles.title} numberOfLines={2}>
+        Find your Travel Equipment!
+      </Text>
       <View style={styles.card}>
         <View style={styles.inputContainer}>
-          <DropdownComponent data={languages} placeholder={"Language"} />
+          <DropdownComponent data={equipments} placeholder={"Equipment"} />
           <View style={styles.datePickerContainer}>
             <TextInput
               onPress={showDatepicker}
@@ -67,7 +69,7 @@ const findGuide = () => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.goButton}
-            onPress={() => router.push("/business/guideList")}
+            onPress={() => router.push("/business/equipmentList")}
           >
             <Text style={styles.goButtonText}>Go</Text>
           </TouchableOpacity>
@@ -120,6 +122,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   title: {
+    width: 300,
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
@@ -129,10 +132,10 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#3F7C9E",
     padding: 40,
-    borderRadius: 8,
+    borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
+    shadowOpacity: 1,
     shadowRadius: 2,
     elevation: 5,
     marginBottom: 24,
@@ -174,7 +177,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
+    shadowOpacity: 1,
     shadowRadius: 2,
     elevation: 5,
     marginTop: "auto",
@@ -213,4 +216,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default findGuide;
+export default findEquipment;

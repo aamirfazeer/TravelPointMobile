@@ -1,24 +1,80 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { Link, router } from "expo-router";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { images } from "../../../constants"
+import { router } from "expo-router";
 
-const BusinessPage = () => {
+const businessPage = () => {
   return (
-    <View className="flex-1 items-center justify-center">
-      <View className="flex-1 items-center justify-center bg-white p-4">
-        <Text className="text-2xl mb-6">What are you looking for?</Text>
-        <TouchableOpacity className="bg-blue-600 p-4 rounded-lg mb-4">
-          <Link href="/business/findGuide" className="text-white text-center">Tour Guides</Link>
-        </TouchableOpacity>
-        <TouchableOpacity className="bg-blue-600 p-4 rounded-lg mb-4">
-          <Text className="text-white text-center">Vehicle Rentals</Text>
-        </TouchableOpacity>
-        <TouchableOpacity className="bg-blue-600 p-4 rounded-lg mb-4">
-          <Text className="text-white text-center">Travel Equipments</Text>
-        </TouchableOpacity>
-      </View>
+    <View style={styles.container}>
+      <Text style={styles.title}>What are you looking for?</Text>
+
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() => router.push("/business/findGuide")}
+      >
+        <Image source={images.guide_} style={styles.image} />
+        <Text style={styles.cardText}>Tour Guides</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() => router.push("/business/findVehicle")}
+      >
+        <Image source={images.vehicle_} style={styles.image} />
+        <Text style={styles.cardText}>Vehicle Rentals</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() => router.push("/business/findEquipment")}
+      >
+        <Image source={images.equipment_} style={styles.image} />
+        <Text style={styles.cardText}>Travel Equipments</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-export default BusinessPage;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    padding: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 40,
+    color: "#446482",
+  },
+  card: {
+    width: "100%",
+    marginBottom: 20,
+    borderRadius: 20,
+    overflow: "hidden",
+    alignItems: "center",
+  },
+  image: {
+    width: "100%",
+    height: 150,
+    opacity: 0.75,
+  },
+  cardText: {
+    alignItems: "center",
+    textAlign: "center",
+    justifyContent: "center",
+    position: "absolute",
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 25,
+    width: "100%",
+    top: "73%",
+    left: "14%",
+    transform: [{ translateX: -50 }, { translateY: -50 }],
+  },
+});
+
+export default businessPage;
