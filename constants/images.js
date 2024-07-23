@@ -35,6 +35,29 @@ import equipment6 from "../assets/images/equipment6.png";
 import equipment7 from "../assets/images/equipment7.png";
 import car from "../assets/images/car.jpg";
 import profile1 from "../assets/images/profile1.png";
+import p1 from "../assets/images/p1.png";
+import p2 from "../assets/images/p2.png";
+import p3 from "../assets/images/p3.png";
+import p4 from "../assets/images/p4.png";
+import p5 from "../assets/images/p5.png";
+import post1 from "../assets/images/post1.png";
+import post2 from "../assets/images/post2.png";
+import rest_relaxation from "../assets/images/rest_relaxation.jpg";
+import beach_sun from "../assets/images/beach_sun.jpg";
+import cityscape from "../assets/images/cityscape.jpg";
+import mixed_destinations from "../assets/images/mixed_destinations.jpg";
+import room_service from "../assets/images/room_service.jpg";
+import gym from "../assets/images/gym.jpg";
+import cold from "../assets/images/cold.jpg";
+import new_experiences from "../assets/images/new_experiences.jpg";
+import cruisers from "../assets/images/cruisers.jpg";
+import foodies from "../assets/images/foodies.jpg";
+import hikers from "../assets/images/hikers.jpg";
+import museums from "../assets/images/museums.jpg";
+import wellness_spots from "../assets/images/wellness_spots.jpg";
+import concerts_events from "../assets/images/concerts_events.jpg";
+import chill_cafes from "../assets/images/chill_cafes.jpg";
+
 
 
 export default {
@@ -69,6 +92,29 @@ export default {
   equipment6,
   equipment7,
   car,
+  profile1,
+  p1,
+  p2,
+  p3,
+  p4,
+  p5,
+  post1,
+  post2,
+  rest_relaxation,
+  beach_sun,
+  cityscape,
+  mixed_destinations,
+  room_service,
+  gym,
+  cold,
+  new_experiences,
+  cruisers,
+  foodies,
+  hikers,
+  museums,
+  wellness_spots,
+  concerts_events,
+  chill_cafes,
 };
 
 
