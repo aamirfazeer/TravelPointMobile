@@ -15,7 +15,7 @@ const DropdownComponent = ({data, placeholder}) => {
         </Text>
       );
     }
-    return null;
+    return value;
   };
 
   return (

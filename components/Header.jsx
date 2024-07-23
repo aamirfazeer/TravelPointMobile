@@ -1,12 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import {icons} from "../constants";
+import { icons } from "../constants";
 
 const Header = () => {
   return (
     <View style={styles.headerContainer}>
       <Text style={styles.title}>TravelPoint</Text>
-      <Image source={icons.heart} style={styles.icon} />
     </View>
   );
 };
@@ -16,9 +15,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingTop: 25,
-    paddingHorizontal: 25,
+    paddingTop: 15,
+    paddingHorizontal: 30,
     backgroundColor: "#fff",
+    paddingBottom: 15,
   },
   title: {
     fontSize: 25,

@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, Image} from 'react-native'
+import { View, Text, ScrollView, Image} from 'react-native'
 import React, {useState} from 'react'
 import { Link, useRouter } from 'expo-router'
 import { images }  from '../../constants'

@@ -41,6 +41,12 @@ const findVehicle = () => {
     setMode(modeToShow);
   };
 
+  const handleSubmit = () => {
+    console.log({
+      date,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title} numberOfLines={2}>
@@ -69,7 +75,10 @@ const findVehicle = () => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.goButton}
-            onPress={() => router.push("/business/vehicleList")}
+            onPress={() => {
+              router.push("/business/vehicleList");
+              handleSubmit();
+            }}
           >
             <Text style={styles.goButtonText}>Go</Text>
           </TouchableOpacity>
