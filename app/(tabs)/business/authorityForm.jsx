@@ -24,7 +24,6 @@ const authorityForm = () => {
   };
 
   const handleSubmit = () => {
-    // Handle form submission
     console.log({
       name,
       description,

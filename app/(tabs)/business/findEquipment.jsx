@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { router, Link } from "expo-router";
+import { router } from "expo-router";
 import {
   View,
   Text,
@@ -41,6 +41,12 @@ const findEquipment = () => {
     setMode(modeToShow);
   };
 
+  const handleSubmit = () => {
+    console.log({
+      date,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title} numberOfLines={2}>
@@ -69,7 +75,10 @@ const findEquipment = () => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.goButton}
-            onPress={() => router.push("/business/equipmentList")}
+            onPress={() => {
+              router.push("/business/equipmentList");
+              handleSubmit;
+            }}
           >
             <Text style={styles.goButtonText}>Go</Text>
           </TouchableOpacity>
