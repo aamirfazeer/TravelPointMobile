@@ -16,7 +16,11 @@ import business from "../assets/icons/business.png";
 import explore from "../assets/icons/explore.png";
 import Back from "../assets/icons/Back.png";
 import heart from "../assets/icons/heart.png";
+import heart1 from "../assets/icons/heart1.png";
+import Share from "../assets/icons/Share.png";
+import vector from "../assets/icons/Vector.png";
 import star from "../assets/icons/star.png";
+import chat from "../assets/icons/chat.png";
 import location from "../assets/icons/location.png";
 import calendar from "../assets/icons/calendar.png";
 import uploadDocument from "../assets/icons/uploadDocument.png";
@@ -45,5 +49,9 @@ export default {
   location,
   calendar,
   uploadDocument,
-  uploadImage
+  uploadImage,
+  heart1,
+  Share,
+  chat,
+  vector,
 };
