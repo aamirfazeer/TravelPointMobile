@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { images } from '../../constants';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const interests = [
   { title: 'Rest & Relaxation', imgSrc: images.rest_relaxation },
@@ -20,7 +21,7 @@ const interests = [
   { title: 'Chill Cafes', imgSrc: images.chill_cafes },
 ];
 
-export default function HomePage() {
+export default function preference() {
   const [selectedInterests, setSelectedInterests] = useState([]);
 
   const toggleInterest = (index) => {
@@ -36,7 +37,8 @@ export default function HomePage() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <SafeAreaView>
+      <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.headerText}>What are you interested in?</Text>
       <Text style={styles.subHeaderText}>This will customize your new home feed</Text>
       <View style={styles.gridContainer}>
@@ -58,6 +60,7 @@ export default function HomePage() {
         <Text style={styles.buttonText}>Meet your Home Feed</Text>
       </TouchableOpacity>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 
