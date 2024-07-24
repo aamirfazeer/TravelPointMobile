@@ -1,13 +1,17 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import {icons} from "../constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Header = () => {
   return (
-    <View style={styles.headerContainer}>
-      <Text style={styles.title}>TravelPoint</Text>
-      <Image source={icons.heart} style={styles.icon} />
-    </View>
+    <SafeAreaView style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.title}>TravelPoint</Text>
+          <Image source={icons.heart} style={styles.icon} />
+      </View>
+    </SafeAreaView>
+
   );
 };
 
