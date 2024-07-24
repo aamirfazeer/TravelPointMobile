@@ -80,7 +80,7 @@ const TabsLayout = ({ children }) => {
             title: "Business",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <Icons name="work" size={30} focused={focused} color={color}/>
+              <Icons name="work" size={30} focused={focused} color={color} />
             ),
           }}
         />
