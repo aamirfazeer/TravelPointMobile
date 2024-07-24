@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { router } from 'expo-router';
 
 export default function TravelPoint() {
   return (
@@ -7,13 +8,13 @@ export default function TravelPoint() {
       <View style={styles.header}>
         <Text style={styles.headerText}>TravelPoint</Text>
         <View style={styles.tabContainer}>
-          <TouchableOpacity style={styles.tabButton}>
+          <TouchableOpacity style={styles.tabButton} onPress={()=>router.push('/create/add_story')}>
             <Text style={styles.tabText}>Story</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tabButton}>
+          <TouchableOpacity style={styles.tabButton} onPress={()=>router.push('/create')}>
             <Text style={styles.tabText}>Post</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.tabButton, styles.selectedTab]}>
+          <TouchableOpacity style={[styles.tabButton, styles.selectedTab]} onPress={()=>router.push('/create/add_log')}>
             <Text style={styles.tabText}>Log</Text>
           </TouchableOpacity>
         </View>

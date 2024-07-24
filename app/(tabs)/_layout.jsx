@@ -6,6 +6,7 @@ import { icons } from "../../constants";
 import Header from "../../components/Header";
 import BackButton from "../../components/BackButton";
 import Icons from "react-native-vector-icons/MaterialIcons";
+import Icons from "react-native-vector-icons/MaterialIcons";
 
 const TabIcon = ({ icon, color, name, focused }) => (
   <View className="items-center justify-center ">
@@ -80,7 +81,12 @@ const TabsLayout = ({ children }) => {
             title: "Business",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <Icons name="work" size={30} focused={focused} color={color} />
+              <TabIcon
+                icon={icons.business}
+                color={color}
+                name="Business"
+                focused={focused}
+              />
             ),
           }}
         />
