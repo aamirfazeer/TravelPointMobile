@@ -60,6 +60,8 @@ import chill_cafes from "../assets/images/chill_cafes.jpg";
 import equipment_ from "../assets/images/equipment_.png";
 import vehicle_ from "../assets/images/vehicle_.png";
 import guide_ from "../assets/images/guide_.png";
+import google from "../assets/images/google.png";
+import sign_in from "../assets/images/sign-in.png";
 
 
 export default {
@@ -119,8 +121,9 @@ export default {
   chill_cafes,
   equipment_,
   vehicle_,
-  guide_
-
+  guide_,
+  google,
+  sign_in,
 };
 
 
