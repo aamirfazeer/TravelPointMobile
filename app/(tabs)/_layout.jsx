@@ -40,7 +40,7 @@ const TabsLayout = ({ children }) => {
             title: "Home",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <Icons name="home" size={35} focused={focused} color={color} />
+              <Icons name="home" size={38} focused={focused} color={color} />
             ),
           }}
         />
@@ -52,7 +52,7 @@ const TabsLayout = ({ children }) => {
             tabBarIcon: ({ color, focused }) => (
               <Icons
                 name="location-pin"
-                size={35}
+                size={38}
                 focused={focused}
                 color={color}
               />
@@ -67,7 +67,7 @@ const TabsLayout = ({ children }) => {
             tabBarIcon: ({ color, focused }) => (
               <Icons
                 name="add-to-photos"
-                size={35}
+                size={38}
                 focused={focused}
                 color={color}
               />
@@ -80,11 +80,13 @@ const TabsLayout = ({ children }) => {
             title: "Business",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-<<<<<<<<< Temporary merge branch 1
-              <Icons name="work" size={30} focused={focused} color={color}/>
-=========
-              <Icons name="work" size={30} focused={focused} color={color} />
->>>>>>>>> Temporary merge branch 2
+              // <Icons
+              //   name="business-center"
+              //   size={35}
+              //   focused={focused}
+              //   color={color}
+              // />
+              <TabIcon icon={icons.business} focused={focused} color={color} />
             ),
           }}
         />
