@@ -19,19 +19,51 @@ const App = () => {
         </TouchableOpacity>
       </View>
     </View>
-
-          <CustomButton 
-            title="Get Started"
-
-            handlePress={()=>router.push('/create/add_log')}
-
-            containerStyles="w-[180px] mt-10"
-          />
-          <Link href="/home" className="text-lg font-IRegular text-secondary">
-          Home
-          </Link>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  image: {
+    width: '100%',
+    height: '75%',
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    marginTop: -50,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  brand: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  description: {
+    textAlign: 'center',
+    marginVertical: 20,
+    fontSize: 16,
+    color: '#666',
+  },
+  button: {
+    backgroundColor: '#00b300',
+    borderRadius: 25,
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});
+
+export default App;
