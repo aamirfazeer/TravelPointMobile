@@ -111,12 +111,10 @@ export default function HomePage() {
     container: {
       flexGrow: 1,
       backgroundColor: '#fff',
-      padding: 10,
+      padding: 15,
     },
     profiles: {
       flexDirection: 'row',
-      marginTop: 5, 
-      paddingVertical: 10,
     },
     profile: {
       alignItems: 'center',

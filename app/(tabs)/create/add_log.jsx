@@ -1,162 +1,101 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { router } from 'expo-router';
+import { Ionicons } from "@expo/vector-icons";
 
-export default function TravelPoint() {
+export default function addLog() {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>TravelPoint</Text>
-        <View style={styles.tabContainer}>
-          <TouchableOpacity style={styles.tabButton} onPress={()=>router.push('/create/add_story')}>
-            <Text style={styles.tabText}>Story</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tabButton} onPress={()=>router.push('/create')}>
-            <Text style={styles.tabText}>Post</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.tabButton, styles.selectedTab]} onPress={()=>router.push('/create/add_log')}>
-            <Text style={styles.tabText}>Log</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.postContainer}>
-        <View style={styles.imageRow}>
-          <TouchableOpacity style={styles.imageContainer}>
-            <Text style={styles.imageText}>Add Image +</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.imageContainer}>
-            <Text style={styles.imageText}>Add Image +</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.imageContainer}>
-            <Text style={styles.imageText}>Add Image +</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.addMoreContainer}>
-          <TouchableOpacity style={styles.addMoreButton}>
-            <Text style={styles.addMoreText}>Add more images</Text>
-          </TouchableOpacity>
-        </View>
-        <TextInput
-          style={[styles.input, styles.descriptionInput]}
-          placeholder="Description"
-          multiline={true}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Tag People"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Location"
-        />
-        <TouchableOpacity style={styles.postButton}>
-          <Text style={styles.postButtonText}>Post</Text>
+    <View style={styles.container}>
+      <View style={styles.formContainer}>
+        <TouchableOpacity style={styles.inputContainer}>
+          <Text style={styles.label}>Select initial location</Text>
+          <View style={styles.inputRow}>
+            <Text style={styles.inputText}>Add</Text>
+            <Ionicons name="chevron-forward" size={24} color="black" />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.inputContainer}>
+          <Text style={styles.label}>Add more locations</Text>
+          <View style={styles.inputRow}>
+            <Text style={styles.inputText}>Add</Text>
+            <View style={styles.iconRow}>
+              <Ionicons name="chevron-forward" size={24} color="black" />
+              <Ionicons
+                name="add-circle-outline"
+                size={24}
+                color="black"
+                style={styles.addIcon}
+              />
+            </View>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.inputContainer}>
+          <Text style={styles.label}>Select final location</Text>
+          <View style={styles.inputRow}>
+            <Text style={styles.inputText}>Add</Text>
+            <Ionicons name="chevron-forward" size={24} color="black" />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.doneButton}>
+          <Text style={styles.doneButtonText}>Done</Text>
         </TouchableOpacity>
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    backgroundColor: '#fff',
-    padding: 10,
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingHorizontal: 30,
   },
-  header: {
-    paddingTop: 40,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  tabContainer: {
-    flexDirection: 'row',
-    marginTop: 10,
-    justifyContent: 'center',
-  },
-  tabButton: {
-    marginHorizontal: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 5,
-  },
-  selectedTab: {
-    borderColor: '#ff5e57',
-  },
-  tabText: {
-    fontSize: 16,
-    color: '#000',
-  },
-  selectedTabText: {
-    color: '#fff',
-  },
-  postContainer: {
+  formContainer: {
     marginTop: 20,
-    padding: 20,
-    backgroundColor: '#2C698D',
+  },
+  inputContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingHorizontal: 15,
+    paddingVertical: 12,
     borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#ddd",
+    marginBottom: 25,
   },
-  imageRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  imageContainer: {
-    width: '30%',
-    height: 100,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  imageText: {
-    color: '#2C698D',
-  },
-  addMoreContainer: {
-    alignItems: 'flex-end',
-    marginBottom: 10,
-  },
-  addMoreButton: {
-    width: '40%',
-    height: 40,
-    backgroundColor: '#002F43',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-  addMoreText: {
-    color: '#fff',
-    fontSize: 12,
-  },
-  input: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    marginVertical: 5,
-    padding: 10,
-    color: '#000',
-  },
-  descriptionInput: {
-    height: 100,
-  },
-  postButton: {
-    marginTop: 10,
-    backgroundColor: '#ff5e57',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  postButtonText: {
-    color: '#fff',
+  label: {
     fontSize: 16,
+    color: "#000",
+  },
+  inputRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  inputText: {
+    fontSize: 16,
+    color: "#000",
+    marginRight: 5,
+  },
+  iconRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  addIcon: {
+    marginLeft: 5,
+  },
+  doneButton: {
+    width: 200,
+    backgroundColor: "#00FF00",
+    padding: 10,
+    marginTop: 30,
+    borderRadius: 50,
+    alignItems: "center",
+    alignSelf: "center",
+  },
+  doneButtonText: {
+    color: "#fff",
+    fontSize: 18,
   },
 });
