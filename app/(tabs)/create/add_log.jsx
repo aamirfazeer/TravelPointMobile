@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 
 import { router } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
 
+
 export default function addLog() {
   return (
     <View style={styles.container}>

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { images } from '../../../constants'
+import { router } from 'expo-router';
+
 
 const ProfileScreen = () => {
   const [firstName, setFirstName] = useState('Susan');
@@ -43,7 +45,7 @@ const ProfileScreen = () => {
         {renderEditableTextInput(firstName, setFirstName, 'firstName')}
         {renderEditableTextInput(lastName, setLastName, 'lastName')}
         {renderEditableTextInput(email, setEmail, 'email')}
-        <TouchableOpacity style={styles.changePasswordButton}>
+        <TouchableOpacity style={styles.changePasswordButton} onPress={() => router.push('/profile/change_pw')}>
           <Text style={styles.changePasswordText}>Change Password</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
