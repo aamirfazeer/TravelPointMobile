@@ -4,8 +4,6 @@ import React from "react";
 import { Tabs } from "expo-router";
 import { icons } from "../../constants";
 import Header from "../../components/Header";
-import BackButton from "../../components/BackButton";
-import Icons from "react-native-vector-icons/MaterialIcons";
 import Icons from "react-native-vector-icons/MaterialIcons";
 
 const TabIcon = ({ icon, color, name, focused }) => (
@@ -29,6 +27,7 @@ const TabsLayout = ({ children }) => {
           tabBarActiveTintColor: "#002F43",
           tabBarInactiveTintColor: "#919598",
           tabBarStyle: {
+            paddingHorizontal: 5,
             backgroundColor: "white",
             borderTopWidth: 0,
             height: 60,
@@ -41,7 +40,7 @@ const TabsLayout = ({ children }) => {
             title: "Home",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <Icons name="home" size={30} focused={focused} color={color} />
+              <Icons name="home" size={35} focused={focused} color={color} />
             ),
           }}
         />
@@ -53,7 +52,7 @@ const TabsLayout = ({ children }) => {
             tabBarIcon: ({ color, focused }) => (
               <Icons
                 name="location-pin"
-                size={30}
+                size={35}
                 focused={focused}
                 color={color}
               />
@@ -68,7 +67,7 @@ const TabsLayout = ({ children }) => {
             tabBarIcon: ({ color, focused }) => (
               <Icons
                 name="add-to-photos"
-                size={30}
+                size={35}
                 focused={focused}
                 color={color}
               />
@@ -81,11 +80,11 @@ const TabsLayout = ({ children }) => {
             title: "Business",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={icons.business}
-                color={color}
-                name="Business"
+              <Icons
+                name="work"
+                size={35}
                 focused={focused}
+                color={color}
               />
             ),
           }}
