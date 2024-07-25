@@ -62,6 +62,7 @@ import vehicle_ from "../assets/images/vehicle_.png";
 import guide_ from "../assets/images/guide_.png";
 import google from "../assets/images/google.png";
 import sign_in from "../assets/images/sign-in.png";
+import onboard from "../assets/images/onboard.png";
 
 
 export default {
@@ -123,6 +124,7 @@ export default {
   vehicle_,
   guide_,
   google,
+  onboard,
   sign_in,
 };
 

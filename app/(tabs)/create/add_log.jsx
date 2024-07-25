@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 
-export default function TravelPoint() {
+export default function add_log() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>

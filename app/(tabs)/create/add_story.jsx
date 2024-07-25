@@ -7,10 +7,10 @@ export default function TravelPoint() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.tabContainer}>
-          <TouchableOpacity style={[styles.tabButton, styles.selectedTab]} onPress={()=>router.push('/create')}>
+          <TouchableOpacity style={[styles.tabButton, styles.selectedTab]} onPress={()=>router.push('/create/add_story')}>
             <Text style={styles.tabText}>Story</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tabButton} onPress={()=>router.push('/create/add_post')}>
+          <TouchableOpacity style={styles.tabButton} onPress={()=>router.push('/create')}>
             <Text style={styles.tabText}>Post</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.tabButton} onPress={()=>router.push('/create/add_log')}>

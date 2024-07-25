@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-nativ
 import { Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Make sure to install react-native-vector-icons
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 
 const SignUpScreen = () => {
   const [firstName, setFirstName] = useState('');
@@ -25,6 +26,7 @@ const SignUpScreen = () => {
       confirmPassword,
       agreeTerms,
     });
+    router.push('/preference');
   };
 
   return (

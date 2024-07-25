@@ -1,17 +1,49 @@
-import { router } from "expo-router";
-import React from "react";
-import { View, Text, Button } from "react-native";
+import React from 'react';
+import { View, Text, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { router } from 'expo-router';
 
-const ProfilePage = () => {
+
+const settings= () => {
   return (
-    <View className="flex-1 items-center justify-center">
-      <Text className="text-lg">Profile Page</Text>
-      <Button
-        title="Go to Detail"
-        handlePress={() => router.push("../../screen/BusinessHome")}
-      />
+    <View style={styles.container}>
+      <Text style={styles.title}>TravelPoint</Text>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/profile/edit_profile')} >
+        <Text style={styles.buttonText}>Edit Profile</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/profile/change_pw')}>
+        <Text style={styles.buttonText}>Change Password</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/profile/privacy')}>
+        <Text style={styles.buttonText}>Settings</Text>
+      </TouchableOpacity>     
     </View>
   );
 };
 
-export default ProfilePage;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingTop: 50,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 40,
+  },
+  button: {
+    backgroundColor: '#002d42',
+    padding: 15,
+    width: '80%',
+    borderRadius: 5,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+});
+
+export default settings;
