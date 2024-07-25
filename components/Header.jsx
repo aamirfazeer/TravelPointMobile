@@ -4,16 +4,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const Header = () => {
   return (
-    <SafeAreaView style={styles.container}>
+
         <View style={styles.headerContainer}>
           <Text style={styles.title}>TravelPoint</Text>
       </View>
-    </SafeAreaView>
+
   );
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
+  headerContainer:{
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

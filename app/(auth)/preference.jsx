@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { images } from '../../constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 
 const interests = [
   { title: 'Rest & Relaxation', imgSrc: images.rest_relaxation },
@@ -56,7 +57,7 @@ export default function preference() {
           </TouchableOpacity>
         ))}
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/home')}>
         <Text style={styles.buttonText}>Meet your Home Feed</Text>
       </TouchableOpacity>
     </ScrollView>
