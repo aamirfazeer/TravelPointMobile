@@ -1,11 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { router, Link } from "expo-router";
 
 const ProvideServiceScreen = () => {
+  const [selectedTab, setSelectedTab] = useState("serviceProvider");
+
+  const handleTabPress = (tab) => {
+    setSelectedTab(tab);
+    if (tab === "index") {
+      router.push("/business");
+    } else if (tab === "serviceProvider") {
+      router.push("/business/serviceProvider");
+    }
+  };
   return (
     <View style={styles.container}>
-      <Text style={styles.subHeaderText}>Provide a Service</Text>
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          style={[
+            styles.tabButton,
+            selectedTab === "index" && styles.selectedTab,
+          ]}
+          onPress={() => handleTabPress("index")}
+        >
+          <Text style={styles.tabText}>Services</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.tabButton,
+            selectedTab === "serviceProvider" && styles.selectedTab,
+          ]}
+          onPress={() => handleTabPress("serviceProvider")}
+        >
+          <Text style={styles.tabText}>Service Provider</Text>
+        </TouchableOpacity>
+      </View>
+      <Text style={styles.title}>Provide a Service</Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() => router.push("/business/guideForm")}
@@ -36,16 +66,15 @@ const ProvideServiceScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
-    padding: 25,
+    padding: 30,
   },
-  subHeaderText: {
+  title: {
     fontSize: 18,
     color: "#3F7C9E",
-    marginBottom: 35,
+    marginBottom: 10,
     fontSize: 30,
     fontWeight: "bold",
   },
@@ -67,6 +96,29 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     fontSize: 24,
+    fontWeight: "bold",
+  },
+  tabContainer: {
+    flexDirection: "row",
+    borderRadius: 25,
+    backgroundColor: "#5a7598",
+    padding: 5,
+    marginBottom: 20,
+    marginHorizontal: 50,
+  },
+  tabButton: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  selectedTab: {
+    margin: 2,
+    backgroundColor: "#7c94b6",
+  },
+  tabText: {
+    color: "#fff",
     fontWeight: "bold",
   },
 });

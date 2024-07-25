@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 
 const App = () => {
   return (
+    
     <View style={styles.container}>
       <Image source={images.onboard} style={styles.image} resizeMode="cover" />
       <View style={styles.overlay}>
@@ -18,6 +19,7 @@ const App = () => {
         </TouchableOpacity>
       </View>
     </View>
+
   );
 }
 
