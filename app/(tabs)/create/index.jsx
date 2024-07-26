@@ -1,13 +1,45 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 
-export default function addPost() {
+export default function AddPost() {
+  const [description, setDescription] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleSelectImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setSelectedImage(result.uri);
+    }
+  };
+
+  const handleTagPeople = () => {
+    router.push("/tag-people");
+  };
+
+  const handleSelectLocation = () => {
+    router.push("/location-picker");
+  };
+
+  const handlePost = () => {
+    console.log("Post created:", { description, selectedImage });
+    router.push("/posts");
+  };
   return (
     <View style={styles.container}>
-      <View style={styles.formContainer}>
-        <TouchableOpacity style={styles.imageContainer}>
+      <ScrollView contentContainerStyle={styles.formContainer}>
+        <TouchableOpacity
+          style={styles.imageContainer}
+          onPress={handleSelectImage}
+        >
           <Ionicons name="image-outline" size={24} color="black" />
           <Text style={styles.imageText}>Add Image</Text>
           <Ionicons name="chevron-forward" size={24} color="black" />
@@ -21,25 +53,31 @@ export default function addPost() {
           </View>
           <TextInput
             style={styles.textArea}
-            // value={description}
-            // onChangeText={setDescription}
+            value={description}
+            onChangeText={setDescription}
             multiline
           />
         </View>
-        <TouchableOpacity style={styles.imageContainer}>
+        <TouchableOpacity
+          style={styles.imageContainer}
+          onPress={handleTagPeople}
+        >
           <Ionicons name="person-outline" size={24} color="black" />
           <Text style={styles.imageText}>Tag People</Text>
           <Ionicons name="chevron-forward" size={24} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.imageContainer}>
+        <TouchableOpacity
+          style={styles.imageContainer}
+          onPress={handleSelectLocation}
+        >
           <Ionicons name="location-outline" size={24} color="black" />
           <Text style={styles.imageText}>Location</Text>
           <Ionicons name="chevron-forward" size={24} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.postButton}>
+        <TouchableOpacity style={styles.postButton} onPress={handlePost}>
           <Text style={styles.postButtonText}>Post</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </View>
   );
 }

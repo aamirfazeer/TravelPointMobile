@@ -1,20 +1,52 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
 
-export default function addLog() {
+export default function AddLog() {
+  const [initialLocation, setInitialLocation] = useState(null);
+  const [moreLocations, setMoreLocations] = useState([]);
+  const [finalLocation, setFinalLocation] = useState(null);
+
+  const handleSelectInitialLocation = () => {
+    router.push("/location-picker?type=initial");
+  };
+
+  const handleAddMoreLocations = () => {
+    router.push("/location-picker?type=more");
+  };
+
+  const handleSelectFinalLocation = () => {
+    router.push("/location-picker?type=final");
+  };
+
+  const handleDone = () => {
+    console.log("Log created:", {
+      initialLocation,
+      moreLocations,
+      finalLocation,
+    });
+    router.push("/logs");
+  };
   return (
     <View style={styles.container}>
-      <View style={styles.formContainer}>
-        <TouchableOpacity style={styles.inputContainer}>
+      <ScrollView contentContainerStyle={styles.formContainer}>
+        <TouchableOpacity
+          style={styles.inputContainer}
+          onPress={handleSelectInitialLocation}
+        >
           <Text style={styles.label}>Select initial location</Text>
           <View style={styles.inputRow}>
-            <Text style={styles.inputText}>Add</Text>
+            <Text style={styles.inputText}>
+              {initialLocation ? initialLocation.name : "Add"}
+            </Text>
             <Ionicons name="chevron-forward" size={24} color="black" />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.inputContainer}>
+        <TouchableOpacity
+          style={styles.inputContainer}
+          onPress={handleAddMoreLocations}
+        >
           <Text style={styles.label}>Add more locations</Text>
           <View style={styles.inputRow}>
             <Text style={styles.inputText}>Add</Text>
@@ -29,17 +61,22 @@ export default function addLog() {
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.inputContainer}>
+        <TouchableOpacity
+          style={styles.inputContainer}
+          onPress={handleSelectFinalLocation}
+        >
           <Text style={styles.label}>Select final location</Text>
           <View style={styles.inputRow}>
-            <Text style={styles.inputText}>Add</Text>
+            <Text style={styles.inputText}>
+              {finalLocation ? finalLocation.name : "Add"}
+            </Text>
             <Ionicons name="chevron-forward" size={24} color="black" />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.doneButton}>
+        <TouchableOpacity style={styles.doneButton} onPress={handleDone}>
           <Text style={styles.doneButtonText}>Done</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </View>
   );
 }
