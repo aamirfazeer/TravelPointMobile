@@ -1,97 +1,234 @@
-import React, {useState} from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { images } from "../../../constants"
+import React, { useState } from "react";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { images } from "../../../constants";
 import { router } from "expo-router";
 
-const businessPage = ( ) => {
-  const [selectedTab, setSelectedTab] = useState("index");
+const Tab = createMaterialTopTabNavigator();
 
-  const handleTabPress = (tab) => {
-    setSelectedTab(tab);
-    if (tab === "index") {
-      router.push("/business");
-    } else if (tab === "serviceProvider") {
-      router.push("/business/serviceProvider");
-    } 
-  };
+function CustomTabBar({ state, descriptors, navigation }) {
   return (
-    <View style={styles.container}>
-      <View style={styles.tabContainer}>
-        <TouchableOpacity
-          style={[
-            styles.tabButton,
-            selectedTab === "index" && styles.selectedTab,
-          ]}
-          onPress={() => handleTabPress("index")}
-        >
-          <Text style={styles.tabText}>Services</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.tabButton,
-            selectedTab === "serviceProvider" && styles.selectedTab,
-          ]}
-          onPress={() => handleTabPress("serviceProvider")}
-        >
-          <Text style={styles.tabText}>Service Provider</Text>
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.title}>What are you looking for?</Text>
+    <View style={styles.tabContainer}>
+      {state.routes.map((route, index) => {
+        const { options } = descriptors[route.key];
+        const label =
+          options.tabBarLabel !== undefined
+            ? options.tabBarLabel
+            : options.title !== undefined
+            ? options.title
+            : route.name;
+
+        const isFocused = state.index === index;
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: "tabPress",
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
+
+        return (
+          <TouchableOpacity
+            key={index}
+            onPress={onPress}
+            style={[styles.tabButton, isFocused ? styles.selectedTab : null]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                isFocused ? styles.selectedTabText : null,
+              ]}
+            >
+              {label}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+}
+
+const BusinessPage = () => {
+  return (
+    <View style={styles.scontainer}>
+      <Text style={styles.stitle}>What are you looking for?</Text>
 
       <TouchableOpacity
-        style={styles.card}
+        style={styles.scard}
         onPress={() => router.push("/business/findGuide")}
       >
-        <Image source={images.guide_} style={styles.image} />
-        <Text style={styles.cardText}>Tour Guides</Text>
+        <Image source={images.guide_} style={styles.simage} />
+        <Text style={styles.scardText}>Tour Guides</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={styles.card}
+        style={styles.scard}
         onPress={() => router.push("/business/findVehicle")}
       >
-        <Image source={images.vehicle_} style={styles.image} />
-        <Text style={styles.cardText}>Vehicle Rentals</Text>
+        <Image source={images.vehicle_} style={styles.simage} />
+        <Text style={styles.scardText}>Vehicle Rentals</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={styles.card}
+        style={styles.scard}
         onPress={() => router.push("/business/findEquipment")}
       >
-        <Image source={images.equipment_} style={styles.image} />
-        <Text style={styles.cardText}>Travel Equipments</Text>
+        <Image source={images.equipment_} style={styles.simage} />
+        <Text style={styles.scardText}>Travel Equipments</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
+const ProvideServiceScreen = () => {
+  return (
+    <View style={styles.spcontainer}>
+      <Text style={styles.sptitle}>Provide a Service</Text>
+      <TouchableOpacity
+        style={styles.spbutton}
+        onPress={() => router.push("/business/guideForm")}
+      >
+        <Text style={styles.spbuttonText}>Be a Tour Guide</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.spbutton}
+        onPress={() => router.push("/business/vehicleForm")}
+      >
+        <Text style={styles.spbuttonText}>Rent Out Vehicles</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.spbutton}
+        onPress={() => router.push("/business/equipmentForm")}
+      >
+        <Text style={styles.spbuttonText}>Rent Out Equipment</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.spbutton}
+        onPress={() => router.push("/business/authorityForm")}
+      >
+        <Text style={styles.spbuttonText}>Other</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const BusinessTab = () => {
+  return (
+    <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
+      <Tab.Screen
+        name="Service"
+        component={BusinessPage}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Service Provider"
+        component={ProvideServiceScreen}
+        options={{ headerShown: false }}
+      />
+    </Tab.Navigator>
+  );
+};
+
+export default BusinessTab;
+
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-    padding: 30,
-    alignItems: "center",
+  tabContainer: {
+    flexDirection: "row",
     justifyContent: "center",
+    padding: 10,
+    backgroundColor: "#fff",
+    gap: 0,
   },
-  title: {
+  tabButton: {
+    width: 140,
+    marginHorizontal: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 20,
+    borderWidth: 1,
+    borderColor: "#000",
+    borderRadius: 20,
+  },
+  selectedTab: {
+    backgroundColor: "#002F43",
+    borderColor: "#00FF00",
+  },
+  tabText: {
+    textAlign: "center",
+    fontSize: 12.9,
+    color: "#000",
+  },
+  selectedTabText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+
+  spcontainer: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "white",
+    paddingHorizontal: 30,
+    paddingTop: 15,
+  },
+  sptitle: {
+    fontSize: 18,
+    color: "#3F7C9E",
+    marginBottom: 10,
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  spbutton: {
+    width: "100%",
+    backgroundColor: "#06D001",
+    padding: 16,
+    borderRadius: 20,
+    alignItems: "center",
+    paddingVertical: 35,
+    margin: 18,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  spbuttonText: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+
+  scontainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingHorizontal: 30,
+    alignItems: "center",
+    paddingTop: 15,
+  },
+  stitle: {
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 35,
     color: "#3F7C9E",
   },
-  card: {
+  scard: {
     width: "100%",
     marginBottom: 25,
     borderRadius: 20,
     overflow: "hidden",
     alignItems: "center",
   },
-  image: {
+  simage: {
     width: "100%",
     height: 150,
     opacity: 0.75,
   },
-  cardText: {
+  scardText: {
     alignItems: "center",
     textAlign: "center",
     justifyContent: "center",
@@ -104,29 +241,4 @@ const styles = StyleSheet.create({
     left: "14%",
     transform: [{ translateX: -50 }, { translateY: -50 }],
   },
-  tabContainer: {
-    flexDirection: "row",
-    borderRadius: 25,
-    backgroundColor: "#5a7598",
-    padding: 5,
-    marginBottom: 24,
-    marginHorizontal: 50,
-  },
-  tabButton: {
-    flex: 1,
-    paddingVertical: 10,
-    borderRadius: 25,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  selectedTab: {
-    margin: 2,
-    backgroundColor: "#7c94b6",
-  },
-  tabText: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
 });
-
-export default businessPage;
