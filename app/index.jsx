@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '75%', // Adjust the height as needed
+    height: '75%',
   },
   overlay: {
     flex: 1,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 20,
     alignItems: 'center',
-    marginTop: -50, // Adjust as needed to overlap with the image
+    marginTop: -50,
   },
   title: {
     fontSize: 18,
