@@ -124,17 +124,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 24,
-    color: "#446482",
+    color: "black",
   },
   card: {
-    backgroundColor: "#3F7C9E",
+    backgroundColor: "#fff",
     padding: 40,
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
+    borderRadius: 10,
+    borderWidth: 2,
     marginBottom: 24,
     marginTop: 48,
     width: 320,
@@ -149,6 +145,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginBottom: 16,
     borderRadius: 8,
+    borderWidth: 2,
+    borderColor: "gray",
   },
   textInput: {
     flex: 1,
@@ -167,7 +165,7 @@ const styles = StyleSheet.create({
   },
   goButton: {
     borderRadius: 25,
-    backgroundColor: "#EF4444",
+    backgroundColor: "#06D001",
     padding: 12,
     textAlign: "center",
     alignItems: "center",
@@ -204,7 +202,7 @@ const styles = StyleSheet.create({
   doneButton: {
     marginTop: 16,
     padding: 8,
-    backgroundColor: "#3B82F6",
+    backgroundColor: "#06D001",
     borderRadius: 8,
   },
   doneButtonText: {

@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from "react-native";
 import { icons, images } from "../../../constants";
+import Icons from "react-native-vector-icons/Ionicons";
+
 
 const ProfilePage = () => {
   return (
@@ -18,11 +20,11 @@ const ProfilePage = () => {
         </View>
         <View style={styles.infoRow}>
           <View style={styles.infoItem}>
-            <Image source={icons.star} style={styles.icon} />
+            <Icons name="star" size={20} color={"blue"} />
             <Text style={styles.infoText}>4.8 (73 reviews)</Text>
           </View>
           <View style={styles.infoItem}>
-            <Image source={icons.location} style={styles.iconLocation} />
+            <Icons name="location-sharp" size={20} color={"green"} />
             <Text style={styles.infoText}>Angoda</Text>
           </View>
         </View>
@@ -130,7 +132,7 @@ const styles = StyleSheet.create({
     marginBottom: 35,
   },
   button: {
-    backgroundColor: "#EF4444",
+    backgroundColor: "#06D001",
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 9999,
