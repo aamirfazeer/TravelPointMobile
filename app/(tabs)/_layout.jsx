@@ -1,30 +1,23 @@
-import { StyleSheet, ScrollView, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React from "react";
 import { Tabs } from "expo-router";
 import { icons } from "../../constants";
-import Header from "../../components/Header"
-import BackButton from "../../components/BackButton";
-import { router } from "expo-router";
+import Header from "../../components/Header";
+import Icons from "react-native-vector-icons/MaterialIcons";
 
 const TabIcon = ({ icon, color, name, focused }) => (
-  <View className="items-center justify-center gap-1">
+  <View className="items-center justify-center ">
     <Image
       source={icon}
       resizeMode="contain"
       style={{ tintColor: color }}
-      className="w-6 h-6"
+      className="rounded-full w-8 h-8"
     />
-    <Text
-      className={`${focused ? "font-semibold" : "font-normal"} text-xs`}
-      style={{ color }}
-    >
-      {name}
-    </Text>
   </View>
 );
 
-const TabsLayout = ({children}) => {
+const TabsLayout = ({ children }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header />
@@ -37,8 +30,13 @@ const TabsLayout = ({children}) => {
         screenOptions={{
           tabBarShowLabel: false,
           tabBarActiveTintColor: "#002F43",
-          tabBarInactiveTintColor: "#CDCDE0",
-          tabBarStyle: "bg-white border-t border-gray-300 h-16",
+          tabBarInactiveTintColor: "#919598",
+          tabBarStyle: {
+            paddingHorizontal: 5,
+            backgroundColor: "white",
+            borderTopWidth: 0,
+            height: 60,
+          },
         }}
       >
         <Tabs.Screen
@@ -47,12 +45,7 @@ const TabsLayout = ({children}) => {
             title: "Home",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={icons.home}
-                color={color}
-                name="Home"
-                focused={focused}
-              />
+              <Icons name="home" size={38} focused={focused} color={color} />
             ),
           }}
         />
@@ -62,11 +55,11 @@ const TabsLayout = ({children}) => {
             title: "Explore",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={icons.explore}
-                color={color}
-                name="Explore"
+              <Icons
+                name="location-pin"
+                size={38}
                 focused={focused}
+                color={color}
               />
             ),
           }}
@@ -77,11 +70,11 @@ const TabsLayout = ({children}) => {
             title: "Create",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={icons.create}
-                color={color}
-                name="Create"
+              <Icons
+                name="add-to-photos"
+                size={38}
                 focused={focused}
+                color={color}
               />
             ),
           }}
@@ -92,27 +85,22 @@ const TabsLayout = ({children}) => {
             title: "Business",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={icons.business}
-                color={color}
-                name="Business"
-                focused={focused}
-              />
+              // <Icons
+              //   name="business-center"
+              //   size={35}
+              //   focused={focused}
+              //   color={color}
+              // />
+              <TabIcon icon={icons.business} focused={focused} color={color} />
             ),
           }}
         />
         <Tabs.Screen
           name="profile"
           options={{
-            title: "Profile",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={icons.profile}
-                color={color}
-                name="Profile"
-                focused={focused}
-              />
+              <TabIcon icon={icons.profile1} focused={focused} />
             ),
           }}
         />

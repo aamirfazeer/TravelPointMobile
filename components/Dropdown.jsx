@@ -15,7 +15,7 @@ const DropdownComponent = ({data, placeholder}) => {
         </Text>
       );
     }
-    return null;
+    return value;
   };
 
   return (
@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 0.5,
     borderRadius: 8,
+    borderWidth: 2,
     paddingHorizontal: 8,
     marginBottom: 16,
   },
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 14,
-    color: 'grey',
+    color: "grey",
   },
   selectedTextStyle: {
     fontSize: 14,

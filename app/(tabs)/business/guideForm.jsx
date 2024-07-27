@@ -8,7 +8,7 @@ import {
   Image,
   Button,
 } from "react-native";
-import CheckBox from "@react-native-community/checkbox";
+import { CheckBox } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
@@ -82,25 +82,31 @@ const guideForm = () => {
           <Picker.Item label="Chicago" value="chicago" />
         </Picker>
         <View style={styles.preferenceContainer}>
-          {/* <Text style={styles.preferenceText}>Preference</Text> */}
+          <Text style={styles.preferenceText}>Preference</Text>
           <View style={styles.checkBoxContainer}>
-            {/* <CheckBox
-              value={preference.groups}
-              onValueChange={() =>
-                setPreference({ ...preference, groups: !preference.groups })
-              }
-            />
-            <Text style={styles.checkBoxLabel}>Groups</Text>
-            <CheckBox
-              value={preference.individual}
-              onValueChange={() =>
-                setPreference({
-                  ...preference,
-                  individual: !preference.individual,
-                })
-              }
-            /> */}
-            {/* <Text style={styles.checkBoxLabel}>Individual</Text> */}
+            <View style={styles.checkBoxContainer}>
+              <Text style={styles.checkBoxLabel}>Individual</Text>
+              <CheckBox
+                checked={preference.individual}
+                onPress={() =>
+                  setPreference({
+                    ...preference,
+                    individual: !preference.individual,
+                  })
+                }
+                containerStyle={styles.checkBox}
+              />
+            </View>
+            <View style={styles.checkBoxContainer}>
+              <Text style={styles.checkBoxLabel}>Groups</Text>
+              <CheckBox
+                checked={preference.groups}
+                onPress={() =>
+                  setPreference({ ...preference, groups: !preference.groups })
+                }
+                containerStyle={styles.checkBox}
+              />
+            </View>
           </View>
         </View>
         <TextInput
@@ -149,7 +155,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 30,
+    marginBottom: 20,
     color: "#446482",
   },
   formContainer: {
@@ -173,16 +179,21 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   preferenceText: {
+    color: "#fff",
     fontSize: 16,
     marginBottom: 8,
   },
   checkBoxContainer: {
-    flexDirection: "row",
     alignItems: "center",
+    flexDirection: "row",
   },
   checkBoxLabel: {
-    marginLeft: 8,
-    marginRight: 16,
+    color: "white"
+  },
+  checkBox: {
+    backgroundColor: "transparent",
+    borderWidth: 0,
+    padding: 0,
   },
   textArea: {
     height: 100,

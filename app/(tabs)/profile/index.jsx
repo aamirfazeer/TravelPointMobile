@@ -1,14 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  FlatList,
-  TouchableOpacity,
-  Dimensions,
-  ScrollView,
-} from "react-native";
+import {  View,  Text,  StyleSheet,  Image,  FlatList,  TouchableOpacity,  Dimensions,  ScrollView,} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import MapView, { Marker } from "react-native-maps";
 import { images } from "../../../constants";
@@ -92,12 +83,12 @@ const ProfileScreen = () => {
 
         <View style={styles.profileActions}>
           <TouchableOpacity style={styles.followButton}>
-            <Text style={styles.followButtonText}>+ Follow</Text>
+            <Text style={styles.followButtonText}>Manage</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.messageButton}>
-            {/*<FontAwesome name="envelope" size={24} color="black" />*/}
+          {/* <TouchableOpacity style={styles.messageButton}>
+            
             <Icon name="message1" size={20} color="#fff" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
 

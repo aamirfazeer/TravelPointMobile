@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { router, Link } from "expo-router";
+import { router } from "expo-router";
 import {
   View,
   Text,
@@ -41,6 +41,12 @@ const findEquipment = () => {
     setMode(modeToShow);
   };
 
+  const handleSubmit = () => {
+    console.log({
+      date,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title} numberOfLines={2}>
@@ -69,7 +75,10 @@ const findEquipment = () => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.goButton}
-            onPress={() => router.push("/business/equipmentList")}
+            onPress={() => {
+              router.push("/business/equipmentList");
+              handleSubmit;
+            }}
           >
             <Text style={styles.goButtonText}>Go</Text>
           </TouchableOpacity>
@@ -127,17 +136,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 24,
-    color: "#446482",
+    color: "black",
   },
   card: {
-    backgroundColor: "#3F7C9E",
+    backgroundColor: "#fff",
     padding: 40,
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
-    shadowRadius: 2,
-    elevation: 5,
+    borderWidth: 2,
     marginBottom: 24,
     marginTop: 48,
     width: 320,
@@ -152,6 +157,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginBottom: 16,
     borderRadius: 8,
+    borderWidth: 2,
+    borderColor: "gray",
   },
   textInput: {
     flex: 1,
@@ -170,7 +177,7 @@ const styles = StyleSheet.create({
   },
   goButton: {
     borderRadius: 25,
-    backgroundColor: "#EF4444",
+    backgroundColor: "#06D001",
     padding: 12,
     textAlign: "center",
     alignItems: "center",

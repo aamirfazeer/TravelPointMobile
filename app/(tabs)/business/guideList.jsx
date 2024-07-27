@@ -1,4 +1,11 @@
-import { Text, View, Image, TouchableOpacity, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 import React from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { images } from "../../../constants";
@@ -60,35 +67,27 @@ const guideList = () => {
 
 const GuideList = ({ users }) => {
   return (
-    <ScrollView className="bg-white pt-4">
+    <ScrollView style={styles.container}>
       {users.map((user) => (
-        <View
-          key={user.id}
-          className="flex-row items-center p-3 bg-gray-300 rounded-lg shadow-md m-4 mt-3"
-        >
-          <Image
-            source={user.profilePicture}
-            className="w-20 h-20 rounded-full"
-          />
-          <View className="flex-1 ml-3">
-            <View className="flex-row items-center">
+        <View key={user.id} style={styles.userCard}>
+          <Image source={user.profilePicture} style={styles.profilePicture} />
+          <View style={styles.userInfo}>
+            <View style={styles.ratingContainer}>
               <FontAwesome name="star" size={14} color="orange" />
-              <Text className="ml-1 text-sm text-gray-600">
+              <Text style={styles.ratingText}>
                 {user.rating} ({user.reviewCount})
               </Text>
             </View>
-            <Text className="text-lg font-semibold">{user.name}</Text>
-            <Text className="text-sm text-gray-500">
-              Rs. {user.salary} / day
-            </Text>
+            <Text style={styles.userName}>{user.name}</Text>
+            <Text style={styles.salaryText}>Rs. {user.salary} / day</Text>
           </View>
           <TouchableOpacity
-            className="p-2"
+            style={styles.iconButton}
             onPress={() => router.push("/business/guideDetails")}
           >
             <FontAwesome name="arrow-right" size={16} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity className="p-2">
+          <TouchableOpacity style={styles.iconButton}>
             <FontAwesome name="heart" size={16} color="black" />
           </TouchableOpacity>
         </View>
@@ -96,5 +95,56 @@ const GuideList = ({ users }) => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white",
+  },
+  userCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 12,
+    backgroundColor: "#fff",
+    borderWidth: 2,
+    borderColor: "#06D001",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    marginHorizontal: 25,
+    marginTop: 6,
+    marginBottom: 16,
+  },
+  profilePicture: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+  },
+  userInfo: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  ratingContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  ratingText: {
+    marginLeft: 4,
+    fontSize: 12,
+    color: "#4b5563",
+  },
+  userName: {
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  salaryText: {
+    fontSize: 14,
+    color: "#6b7280",
+  },
+  iconButton: {
+    padding: 8,
+  },
+});
 
 export default guideList;

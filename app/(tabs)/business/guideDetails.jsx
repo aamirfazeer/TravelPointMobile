@@ -1,48 +1,48 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from "react-native";
 import { icons, images } from "../../../constants";
+import Icons from "react-native-vector-icons/Ionicons";
+
 
 const ProfilePage = () => {
   return (
     <ScrollView
-      className="bg-white"
-      contentContainerStyle={{ alignItems: "center", justifyContent: "center" }}
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
     >
-      <View className="flex">
-        <View className="items-center">
-          <Image
-            source={images.person1}
-            className="items-center"
-            style={styles.image}
-          />
+      <View style={styles.profileContainer}>
+        <View style={styles.imageContainer}>
+          <Image source={images.person1} style={styles.image} />
         </View>
-        <View className="flex-row justify-between mb-4">
-          <Text className="text-2xl font-bold mb-1">Aamir Arshad</Text>
-          <Image source={icons.heart} className="w-8 h-8 items-center" />
+        <View style={styles.header}>
+          <Text style={styles.name}>Aamir Arshad</Text>
+          <Image source={icons.heart} style={styles.iconHeart} />
         </View>
-        <View className="flex-row gap-40 mb-2">
-          <View className="flex-row items-center mb-2">
-            <Image source={icons.star} className="w-6 h-6" />
-            <Text className="ml-1 text-right">4.8 (73 reviews)</Text>
+        <View style={styles.infoRow}>
+          <View style={styles.infoItem}>
+            <Icons name="star" size={20} color={"blue"} />
+            <Text style={styles.infoText}>4.8 (73 reviews)</Text>
           </View>
-          <View className="flex-row items-center mb-2">
-            <Image source={icons.location} className="w-5 h-6" />
-            <Text className="ml-1 text-right">Angoda</Text>
+          <View style={styles.infoItem}>
+            <Icons name="location-sharp" size={20} color={"green"} />
+            <Text style={styles.infoText}>Angoda</Text>
           </View>
         </View>
       </View>
 
-      <View className="p-5">
-        <Text className="text-xl font-bold mb-4">About</Text>
-        <Text className="mb-10" numberOfLines={7} ellipsizeMode="tail" li>
+      <View style={styles.line} />
+
+      <View style={styles.aboutSection}>
+        <Text style={styles.aboutTitle}>About</Text>
+        <Text style={styles.aboutText} numberOfLines={7} ellipsizeMode="tail">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
           feugiat libero diam, ut fermentum justo commodo non. Interdum et
           malesuada fames ac ante ipsum primis in faucibus. Phasellus pretium
-          elit ac nulla hendrerit, in fermentum mi cursus.Lorem Ipsum is simply
-          dummy text of the printing and typesetting industry
+          elit ac nulla hendrerit, in fermentum mi cursus. Lorem Ipsum is simply
+          dummy text of the printing and typesetting industry.
         </Text>
-        <TouchableOpacity className="bg-red-500 py-3 px-6 rounded-full self-center">
-          <Text className="text-white font-bold">Book Now</Text>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Book Now</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -52,12 +52,94 @@ const ProfilePage = () => {
 export default ProfilePage;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white",
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 15,
+  },
+  profileContainer: {
+    flex: 1,
+  },
+  imageContainer: {
+    alignItems: "center",
+  },
   image: {
     height: 250,
     width: 247,
     borderRadius: 100,
     marginBottom: 50,
-    marginTop: 35,
+    marginTop: 30,
     alignSelf: "center",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 4,
+  },
+  name: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 1,
+  },
+  iconHeart: {
+    width: 32,
+    height: 32,
+    alignItems: "center",
+  },
+  infoRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 2,
+    gap: 140,
+  },
+  infoItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 2,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+  },
+  iconLocation: {
+    width: 20,
+    height: 24,
+  },
+  infoText: {
+    marginLeft: 4,
+    textAlign: "right",
+  },
+  line: {
+    height: 1.5,
+    width: "88%",
+    backgroundColor: "black",
+    marginVertical: 10,
+  },
+  aboutSection: {
+    padding: 20,
+  },
+  aboutTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  aboutText: {
+    marginBottom: 35,
+  },
+  button: {
+    backgroundColor: "#06D001",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 9999,
+    alignSelf: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
