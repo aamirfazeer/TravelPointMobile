@@ -1,36 +1,47 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { images } from '../../../constants'
-import { router } from 'expo-router';
+import Feather from 'react-native-vector-icons/Feather'; // Import the Feather library
+import { images } from '../../../constants';
 
-
-const ProfileScreen = () => {
-  const [firstName, setFirstName] = useState('Susan');
-  const [lastName, setLastName] = useState('Sukumali');
+const EditProfile = () => {
+  const [username, setUsername] = useState('Susan');
   const [email, setEmail] = useState('susan89@gmail.com');
+  const [contactInfo, setContactInfo] = useState('+94778873878');
+  const [dateOfBirth, setDateOfBirth] = useState('2001/11/21');
   const [editableField, setEditableField] = useState(null);
   const [changesSaved, setChangesSaved] = useState(false);
 
   const handleSaveChanges = () => {
-    // Logic to save changes (e.g., API call)
     setChangesSaved(true);
     setEditableField(null);
-    setTimeout(() => setChangesSaved(false), 2000); // Hide message after 2 seconds
+    setTimeout(() => setChangesSaved(false), 2000);
+  };
+
+  const handleProfilePicChange = () => {
+    // Logic to handle profile picture change
+    alert('Change Profile Picture');
   };
 
   const renderEditableTextInput = (value, onChangeText, fieldName) => {
-    return editableField === fieldName ? (
-      <TextInput
-        style={styles.input}
-        value={value}
-        onChangeText={onChangeText}
-        onBlur={() => setEditableField(null)}
-        autoFocus
-      />
-    ) : (
-      <TouchableOpacity onPress={() => setEditableField(fieldName)} style={styles.input}>
-        <Text style={styles.inputText}>{value}</Text>
-      </TouchableOpacity>
+    return (
+      <View style={styles.inputContainer}>
+        {editableField === fieldName ? (
+          <TextInput
+            style={styles.input}
+            value={value}
+            onChangeText={onChangeText}
+            onBlur={() => setEditableField(null)}
+            autoFocus
+          />
+        ) : (
+          <Text style={styles.inputText}>{value}</Text>
+        )}
+        <TouchableOpacity onPress={() => setEditableField(fieldName)} style={styles.editButton}>
+          <Text>
+            <Feather name="edit-2" size={14} color="black" />
+          </Text>
+        </TouchableOpacity>
+      </View>
     );
   };
 
@@ -38,18 +49,25 @@ const ProfileScreen = () => {
     <View style={styles.container}>
       <Text style={styles.headerText}>TravelPoint</Text>
       <View style={styles.profileCard}>
-        <Image
-          source={images.profile1} 
-          style={styles.profileImage}
-        />
-        {renderEditableTextInput(firstName, setFirstName, 'firstName')}
-        {renderEditableTextInput(lastName, setLastName, 'lastName')}
+        <View style={styles.profileImageContainer}>
+          <Image
+            source={images.person4} 
+            style={styles.profileImage}
+          />
+          <TouchableOpacity onPress={handleProfilePicChange} style={styles.profilePicChangeButton}>
+            <Feather name="plus" size={10} color="white" />
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.label}>Username</Text>
+        {renderEditableTextInput(username, setUsername, 'username')}
+        <Text style={styles.label}>Email Address</Text>
         {renderEditableTextInput(email, setEmail, 'email')}
-        <TouchableOpacity style={styles.changePasswordButton} onPress={() => router.push('/profile/change_pw')}>
-          <Text style={styles.changePasswordText}>Change Password</Text>
-        </TouchableOpacity>
+        <Text style={styles.label}>Contact Info</Text>
+        {renderEditableTextInput(contactInfo, setContactInfo, 'contactInfo')}
+        <Text style={styles.label}>Date of Birth</Text>
+        {renderEditableTextInput(dateOfBirth, setDateOfBirth, 'dateOfBirth')}
         <TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
-          <Text style={styles.saveButtonText}>Save</Text>
+          <Text style={styles.saveButtonText}>Save Changes</Text>
         </TouchableOpacity>
         {changesSaved && <Text style={styles.savedText}>Changes Saved!</Text>}
       </View>
@@ -67,14 +85,16 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginVertical: 20,
-    textAlign: 'left',
   },
   profileCard: {
     width: '80%',
-    backgroundColor: '#336699',
+    backgroundColor: '#fff',
     borderRadius: 10,
     padding: 20,
     alignItems: 'center',
+  },
+  profileImageContainer: {
+    position: 'relative',
   },
   profileImage: {
     width: 100,
@@ -82,41 +102,58 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginBottom: 20,
   },
-  input: {
+  profilePicChangeButton: {
+    position: 'absolute',
+    bottom: 18,
+    right: 5,
+    backgroundColor: 'green',
+    borderRadius: 15,
+    padding: 5,
+  },
+  label: {
+    width: '100%',
+    textAlign: 'left',
+    marginVertical: 5,
+    fontWeight: 'bold',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     width: '100%',
     backgroundColor: '#fff',
-    borderRadius: 5,
+    borderRadius: 20,
     padding: 10,
     marginVertical: 5,
-    height: 40, // Set a fixed height for both Text and TextInput
+    borderColor: '#ccc',
+    borderWidth: 1,
+  },
+  input: {
+    flex: 1,
+    color: '#000',
   },
   inputText: {
+    flex: 1,
     color: '#000',
-    lineHeight: 20, // Align the text vertically
-    height: 20,
   },
-  changePasswordButton: {
-    borderRadius: 5,
-    padding: 10,
-    marginVertical: 10,
-  },
-  changePasswordText: {
-    color: '#ffff',
+  editButton: {
+    padding: 5,
   },
   saveButton: {
-    backgroundColor: '#EE4235',
-    borderRadius: 5,
+    backgroundColor: '#28a745',
+    borderRadius: 34,
     padding: 10,
     marginVertical: 10,
+    width: '75%',
+    alignItems: 'center',
   },
   saveButtonText: {
     color: '#fff',
-    textAlign: 'center',
+    fontWeight: 'bold',
   },
   savedText: {
-    color: '#fff',
-    marginTop: 20,
+    color: '#28a745',
+    marginTop: 10,
   },
 });
 
-export default ProfileScreen;
+export default EditProfile;

@@ -161,6 +161,7 @@ const ProfileScreen = () => {
           contentContainerStyle={styles.logsContainer}
         />
       )}
+
     </View>
   );
 };

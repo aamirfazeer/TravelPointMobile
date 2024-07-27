@@ -92,6 +92,7 @@ const TabsLayout = ({ children }) => {
               //   color={color}
               // />
               <TabIcon icon={icons.business} focused={focused} color={color} />
+
             ),
           }}
         />
