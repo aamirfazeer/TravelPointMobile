@@ -1,56 +1,83 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 
-export default function add_post() {
+export default function AddPost() {
+  const [description, setDescription] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleSelectImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setSelectedImage(result.uri);
+    }
+  };
+
+  const handleTagPeople = () => {
+    router.push("/tag-people");
+  };
+
+  const handleSelectLocation = () => {
+    router.push("/location-picker");
+  };
+
+  const handlePost = () => {
+    console.log("Post created:", { description, selectedImage });
+    router.push("/posts");
+  };
   return (
     <View style={styles.container}>
-        <View style={styles.tabContainer}>
-          <TouchableOpacity style={styles.tabButton } onPress={()=>router.push('/create/add_story')}>
-            <Text style={styles.tabText}>Story</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.tabButton, styles.selectedTab]} onPress={()=>router.push('/create')}>
-            <Text style={styles.tabText}>Post</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tabButton }onPress={()=>router.push('/create/add_log')}>
-            <Text style={styles.tabText}>Log</Text>
-          </TouchableOpacity>
+      <ScrollView contentContainerStyle={styles.formContainer}>
+        <TouchableOpacity
+          style={styles.imageContainer}
+          onPress={handleSelectImage}
+        >
+          <Ionicons name="image-outline" size={24} color="black" />
+          <Text style={styles.imageText}>Add Image</Text>
+          <Ionicons name="chevron-forward" size={24} color="black" />
+        </TouchableOpacity>
+        <View style={styles.descriptionInput}>
+          <View style={styles.descriptionContent}>
+            <Ionicons name="brush-outline" size={24} color="black" />
+            <Text style={[styles.imageText, { marginLeft: 95 }]}>
+              Description
+            </Text>
+          </View>
+          <TextInput
+            style={styles.textArea}
+            value={description}
+            onChangeText={setDescription}
+            multiline
+          />
         </View>
-      <View style={styles.postContainer}>
-        <View style={styles.imageRow}>
-          <TouchableOpacity style={styles.imageContainer}>
-            <Text style={styles.imageText}>Add Image +</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.imageContainer}>
-            <Text style={styles.imageText}>Add Image +</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.imageContainer}>
-            <Text style={styles.imageText}>Add Image +</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.addMoreContainer}>
-          <TouchableOpacity style={styles.addMoreButton}>
-            <Text style={styles.addMoreText}>Add more images</Text>
-          </TouchableOpacity>
-        </View>
-        <TextInput
-          style={[styles.input, styles.descriptionInput]}
-          placeholder="Description"
-          multiline={true}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Tag People"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Location"
-        />
-        <TouchableOpacity style={styles.postButton}>
+        <TouchableOpacity
+          style={styles.imageContainer}
+          onPress={handleTagPeople}
+        >
+          <Ionicons name="person-outline" size={24} color="black" />
+          <Text style={styles.imageText}>Tag People</Text>
+          <Ionicons name="chevron-forward" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.imageContainer}
+          onPress={handleSelectLocation}
+        >
+          <Ionicons name="location-outline" size={24} color="black" />
+          <Text style={styles.imageText}>Location</Text>
+          <Ionicons name="chevron-forward" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.postButton} onPress={handlePost}>
           <Text style={styles.postButtonText}>Post</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -58,105 +85,89 @@ export default function add_post() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignContent: 'center',
+    backgroundColor: "#fff",
+    paddingHorizontal: 30,
   },
-  header: {
-    paddingTop: 40,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  tabContainer: {
-    flexDirection: 'row',
-    marginTop: 10,
-    justifyContent: 'center',
-  },
-  tabButton: {
-    marginHorizontal: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 5,
-  },
-  selectedTab: {
-    borderColor: '#ff5e57',
-  },
-  tabText: {
-    fontSize: 16,
-    color: '#000',
-  },
-  selectedTabText: {
-    color: '#fff',
-  },
-  postContainer: {
+  formContainer: {
     marginTop: 20,
-    padding: 20,
-    backgroundColor: '#2C698D',
-    borderRadius: 10,
-  },
-  imageRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   imageContainer: {
-    width: '30%',
-    height: 100,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
     borderRadius: 10,
-    marginBottom: 10,
+    borderWidth: 2,
+    borderColor: "#ddd",
+    marginBottom: 25,
   },
   imageText: {
-    color: '#2C698D',
-  },
-  addMoreContainer: {
-    alignItems: 'flex-end',
-    marginBottom: 10,
-  },
-  addMoreButton: {
-    width: '40%',
-    height: 40,
-    backgroundColor: '#002F43',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-  addMoreText: {
-    color: '#fff',
-    fontSize: 12,
+    fontSize: 16,
+    color: "#000",
   },
   input: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    marginVertical: 5,
-    padding: 10,
-    color: '#000',
-  },
-  descriptionInput: {
-    height: 100,
-  },
-  postButton: {
-    marginTop: 10,
-    backgroundColor: '#ff5e57',
+    flex: 1,
+    backgroundColor: "#fff",
     padding: 15,
     borderRadius: 10,
-    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: "#ddd",
+    marginBottom: 25,
+    fontSize: 16,
+    height: 300,
+  },
+  descriptionInput: {
+    height: 220,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#ddd",
+    backgroundColor: "#fff",
+    backgroundColor: "white",
+    textAlignVertical: "top",
+    marginBottom: 25,
+  },
+  descriptionContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+  },
+  textArea: {
+    height: 150,
+    padding: 15,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#ddd",
+    backgroundColor: "#fff",
+    backgroundColor: "white",
+    textAlignVertical: "top",
+    marginBottom: 25,
+    marginHorizontal: 17
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    padding: 15,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    marginBottom: 25,
+  },
+  postButton: {
+    width: 200,
+    backgroundColor: "#00FF00",
+    padding: 10,
+    marginTop: 30,
+    borderRadius: 50,
+    alignItems: "center",
+    alignSelf: "center",
   },
   postButtonText: {
-    color: '#fff',
-    fontSize: 16,
+    color: "#fff",
+    fontSize: 18,
   },
 });

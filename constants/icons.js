@@ -25,6 +25,7 @@ import location from "../assets/icons/location.png";
 import calendar from "../assets/icons/calendar.png";
 import uploadDocument from "../assets/icons/uploadDocument.png";
 import uploadImage from "../assets/icons/uploadImage.png";
+import profile1 from "../assets/icons/profile1.png";
 
 export default {
   play,
@@ -54,4 +55,5 @@ export default {
   Share,
   chat,
   vector,
+  profile1,
 };

@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import { icons } from "../../../constants";
