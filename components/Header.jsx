@@ -1,13 +1,15 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
-import {icons} from "../constants";
+import { View, Text, StyleSheet, Image, SafeAreaView } from "react-native";
+import { icons } from "../constants";
 
 const Header = () => {
   return (
-    <View style={styles.headerContainer}>
-      <Text style={styles.title}>TravelPoint</Text>
-      <Image source={icons.heart} style={styles.icon} />
-    </View>
+    <SafeAreaView>
+      <View style={styles.headerContainer}>
+        <Text style={styles.title}>TravelPoint</Text>
+        <Image source={icons.heart} style={styles.icon} />
+      </View>
+    </SafeAreaView>
   );
 };
 

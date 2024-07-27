@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, StyleSheet, Text, View, Image } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Image, } from 'react-native';
 import {Redirect, router, Link} from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../constants'
@@ -36,7 +36,7 @@ export default function App() {
           <CustomButton 
             title="Get Started"
 
-            handlePress={()=>router.push('/business/serviceProvider')}
+            handlePress={()=>router.push('/profile/')}
 
             containerStyles="w-[180px] mt-10"
           />

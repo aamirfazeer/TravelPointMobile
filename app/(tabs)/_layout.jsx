@@ -1,8 +1,11 @@
-import { StyleSheet, ScrollView, SafeAreaView, View, Text, Image } from "react-native";
+import { StyleSheet, ScrollView, View, Text, Image } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import React from "react";
 import { Tabs } from "expo-router";
 import { icons } from "../../constants";
 import Header from "../../components/Header"
+import BackButton from "../../components/BackButton";
+import { router } from "expo-router";
 
 const TabIcon = ({ icon, color, name, focused }) => (
   <View className="items-center justify-center gap-1">
@@ -25,6 +28,11 @@ const TabsLayout = ({children}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header />
+      
+      {/*<BackButton
+        handlePress={()=>router.push('../')}
+        />*/}
+      
       <Tabs
         screenOptions={{
           tabBarShowLabel: false,
