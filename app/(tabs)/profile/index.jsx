@@ -6,14 +6,14 @@ import { router } from 'expo-router';
 const settings= () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>TravelPoint</Text>
-      <TouchableOpacity style={styles.button} onPress={() => router.push('/profile/edit_profile')} >
+
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/profile/settings')} >
         <Text style={styles.buttonText}>Edit Profile</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => router.push('/profile/change_pw')}>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/profile/edit_profile')}>
         <Text style={styles.buttonText}>Change Password</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => router.push('/profile/privacy')}>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/profile/enter_code')}>
         <Text style={styles.buttonText}>Settings</Text>
       </TouchableOpacity>     
     </View>
