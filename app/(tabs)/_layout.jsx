@@ -21,6 +21,11 @@ const TabsLayout = ({ children }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header />
+      
+      {/*<BackButton
+        handlePress={()=>router.push('../')}
+        />*/}
+      
       <Tabs
         screenOptions={{
           tabBarShowLabel: false,
@@ -87,6 +92,7 @@ const TabsLayout = ({ children }) => {
               //   color={color}
               // />
               <TabIcon icon={icons.business} focused={focused} color={color} />
+
             ),
           }}
         />

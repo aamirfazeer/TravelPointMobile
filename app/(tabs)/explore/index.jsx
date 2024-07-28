@@ -1,17 +1,12 @@
-import React from "react";
-import { View, Text, Button } from "react-native";
-import { router } from "expo-router";
+import { View, Text } from 'react-native'
+import React from 'react'
 
-const ExplorePage = () => {
+const index = () => {
   return (
-    <View className="flex-1 items-center justify-center">
-      <Text className="text-lg">Explore Page</Text>
-      <Button
-        title="Go to Detail"
-        handlePress={() => router.push("../explore/detail")}
-      />
+    <View>
+      <Text>index</Text>
     </View>
-  );
-};
+  )
+}
 
-export default ExplorePage;
+export default index

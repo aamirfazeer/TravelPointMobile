@@ -14,7 +14,7 @@ const App = () => {
         <Text style={styles.description}>
           Make your travel planning seamless and share experiences with your travel companions
         </Text>
-        <TouchableOpacity style={styles.button} onPress={() => router.push('/business')}>
+        <TouchableOpacity style={styles.button} onPress={() => router.push('/sign-in')}>
           <Text style={styles.buttonText}>Let's Travel</Text>
         </TouchableOpacity>
       </View>
