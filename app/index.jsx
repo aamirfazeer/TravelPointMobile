@@ -5,16 +5,19 @@ import { router } from 'expo-router';
 
 const App = () => {
   return (
-    
     <View style={styles.container}>
       <Image source={images.onboard} style={styles.image} resizeMode="cover" />
       <View style={styles.overlay}>
         <Text style={styles.title}>Welcome to</Text>
         <Text style={styles.brand}>TravelPoint</Text>
         <Text style={styles.description}>
-          Make your travel planning seamless and share experiences with your travel companions
+          Make your travel planning seamless and share experiences with your
+          travel companions
         </Text>
-        <TouchableOpacity style={styles.button} onPress={() => router.push('/sign-in')}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => router.push("/sign-in")}
+        >
           <Text style={styles.buttonText}>Let's Travel</Text>
         </TouchableOpacity>
       </View>
