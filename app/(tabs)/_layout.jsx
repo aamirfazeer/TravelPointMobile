@@ -4,7 +4,7 @@ import React from "react";
 import { Tabs } from "expo-router";
 import { icons } from "../../constants";
 import Header from "../../components/Header";
-import Icons from "react-native-vector-icons/MaterialIcons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const TabIcon = ({ icon, color, name, focused }) => (
   <View className="items-center justify-center ">
@@ -17,15 +17,23 @@ const TabIcon = ({ icon, color, name, focused }) => (
   </View>
 );
 
+const TabIcons = ({ name, focused, color, size }) => (
+  <Ionicons
+    name={focused ? name : `${name}-outline`}
+    size={size}
+    color={color}
+  />
+);
+
 const TabsLayout = ({ children }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-      
+
       {/*<BackButton
         handlePress={()=>router.push('../')}
         />*/}
-      
+
       <Tabs
         screenOptions={{
           tabBarShowLabel: false,
@@ -45,7 +53,7 @@ const TabsLayout = ({ children }) => {
             title: "Home",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <Icons name="home" size={38} focused={focused} color={color} />
+              <TabIcons name="home" focused={focused} color={color} size={35} />
             ),
           }}
         />
@@ -55,11 +63,11 @@ const TabsLayout = ({ children }) => {
             title: "Explore",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <Icons
-                name="location-pin"
-                size={38}
+              <TabIcons
+                name="location"
                 focused={focused}
                 color={color}
+                size={35}
               />
             ),
           }}
@@ -70,11 +78,11 @@ const TabsLayout = ({ children }) => {
             title: "Create",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <Icons
-                name="add-to-photos"
-                size={38}
+              <TabIcons
+                name="duplicate"
                 focused={focused}
                 color={color}
+                size={35}
               />
             ),
           }}
@@ -91,8 +99,12 @@ const TabsLayout = ({ children }) => {
               //   focused={focused}
               //   color={color}
               // />
-              <TabIcon icon={icons.business} focused={focused} color={color} />
-
+              <TabIcons
+                name="briefcase"
+                focused={focused}
+                color={color}
+                size={35}
+              />
             ),
           }}
         />
