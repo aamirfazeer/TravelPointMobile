@@ -6,10 +6,11 @@ import {
   ScrollView,
   StyleSheet,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { images } from "../../../constants";
 import { router } from "expo-router";
+import Icon from "react-native-vector-icons/Ionicons"; 
 
 const equipmentList = () => {
   const equipments = [
@@ -66,9 +67,20 @@ const equipmentList = () => {
 };
 
 const EquipmentList = ({ equipments }) => {
+
+  const [liked, setLiked] = useState([]);
+
+  const handleLike = (index) => {
+    setLiked((prev) => {
+      const newLiked = [...prev];
+      newLiked[index] = !newLiked[index];
+      return newLiked;
+    });
+  };
+
   return (
     <ScrollView style={styles.container}>
-      {equipments.map((equipment) => (
+      {equipments.map((equipment, index) => (
         <View key={equipment.id} style={styles.equipmentCard}>
           <Image
             source={equipment.profilePicture}
@@ -92,8 +104,12 @@ const EquipmentList = ({ equipments }) => {
           >
             <FontAwesome name="arrow-right" size={16} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <FontAwesome name="heart" size={16} color="black" />
+          <TouchableOpacity onPress={() => handleLike(index)}>
+            <Icon
+              name={liked[index] ? "heart" : "heart-outline"}
+              size={24}
+              color={liked[index] ? "red" : "black"}
+            />
           </TouchableOpacity>
         </View>
       ))}
