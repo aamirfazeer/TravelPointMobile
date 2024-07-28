@@ -6,13 +6,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Button,
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
-import { icons} from '../../../constants'
+import { icons } from "../../../constants";
 
 const guideForm = () => {
   const [language, setLanguage] = useState("");
@@ -61,26 +60,30 @@ const guideForm = () => {
     <View style={styles.container}>
       <Text style={styles.headerText}>Be a Tour Guide</Text>
       <View style={styles.formContainer}>
-        <Picker
-          selectedValue={language}
-          onValueChange={(itemValue) => setLanguage(itemValue)}
-          style={styles.picker}
-        >
-          <Picker.Item label="Language" value="" />
-          <Picker.Item label="English" value="english" />
-          <Picker.Item label="Spanish" value="spanish" />
-          <Picker.Item label="French" value="french" />
-        </Picker>
-        <Picker
-          selectedValue={location}
-          onValueChange={(itemValue) => setLocation(itemValue)}
-          style={styles.picker}
-        >
-          <Picker.Item label="Location" value="" />
-          <Picker.Item label="New York" value="new_york" />
-          <Picker.Item label="Los Angeles" value="los_angeles" />
-          <Picker.Item label="Chicago" value="chicago" />
-        </Picker>
+        <View style={styles.pickerBox}>
+          <Picker
+            selectedValue={language}
+            onValueChange={(itemValue) => setLanguage(itemValue)}
+            style={styles.picker}
+          >
+            <Picker.Item label="Language" value= "" />
+            <Picker.Item label="English" value="english" />
+            <Picker.Item label="Spanish" value="spanish" />
+            <Picker.Item label="French" value="french" />
+          </Picker>
+        </View>
+        <View style={styles.pickerBox}>
+          <Picker
+            selectedValue={location}
+            onValueChange={(itemValue) => setLocation(itemValue)}
+            style={styles.picker}
+          >
+            <Picker.Item label="Location" value="" />
+            <Picker.Item label="New York" value="new_york" />
+            <Picker.Item label="Los Angeles" value="los_angeles" />
+            <Picker.Item label="Chicago" value="chicago" />
+          </Picker>
+        </View>
         <View style={styles.preferenceContainer}>
           <Text style={styles.preferenceText}>Preference</Text>
           <View style={styles.checkBoxContainer}>
@@ -156,30 +159,30 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#446482",
+    color: "black",
   },
   formContainer: {
     width: "100%",
-    backgroundColor: "#3F7C9E",
-    padding: 40,
+    backgroundColor: "#fff",
+    padding: 15,
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
-    shadowRadius: 2,
-    elevation: 5,
   },
-  picker: {
-    height: 50,
+  pickerBox: {
     marginBottom: 20,
     backgroundColor: "white",
-    borderRadius: 20,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: "gray",
+    alignContent: "center",
+  },
+  picker: {
+    color: "gray",
   },
   preferenceContainer: {
     marginBottom: 16,
   },
   preferenceText: {
-    color: "#fff",
+    color: "black",
     fontSize: 16,
     marginBottom: 8,
   },
@@ -188,7 +191,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   checkBoxLabel: {
-    color: "white"
+    color: "black",
   },
   checkBox: {
     backgroundColor: "transparent",
@@ -202,6 +205,8 @@ const styles = StyleSheet.create({
     padding: 8,
     textAlignVertical: "top",
     marginBottom: 16,
+    borderWidth: 2,
+    borderColor: "gray",
   },
   uploadContainer: {
     flexDirection: "row",
@@ -227,15 +232,10 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     width: 100,
-    backgroundColor: "#EF4444",
+    backgroundColor: "#06D001",
     padding: 16,
     borderRadius: 30,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
-    shadowRadius: 2,
-    elevation: 5,
   },
   submitText: {
     color: "white",
