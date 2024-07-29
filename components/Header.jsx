@@ -1,13 +1,35 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Icon from 'react-native-vector-icons/Ionicons'; 
+import { useRouter } from 'expo-router';
+
 
 const Header = () => {
+  const router = useRouter();
   return (
 
         <View style={styles.headerContainer}>
           <Text style={styles.title}>TravelPoint</Text>
+          <View style={styles.notificationContainer}>         
+          <Icon
+            style={styles.icon}
+            name='notifications-outline'
+            size={26}
+            color="#06D001"
+            />
+          
+          <TouchableOpacity onPress={() => router.push('/home/messages')}>
+          <Icon
+            style={styles.icon}
+            name='chatbubble-outline'
+            size={26}
+            color="#06D001"
+          />
+          </TouchableOpacity>
+        </View>
       </View>
+      
 
   );
 };
@@ -19,17 +41,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 15,
     paddingHorizontal: 30,
-    backgroundColor: "#fff",
+    backgroundColor: "#fffff",
     paddingBottom: 15,
+  
+
   },
   title: {
     fontSize: 25,
     fontWeight: "bold",
     color: "#002F43",
+    
+    
+  },
+  notificationContainer: {
+    position: 'absolute',
+    right: 10,
+    zIndex: 1,
+    flexDirection: 'row',
   },
   icon: {
-    width: 24,
-    height: 24,
+    marginRight: 25
   },
 });
 
