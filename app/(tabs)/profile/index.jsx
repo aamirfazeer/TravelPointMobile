@@ -4,6 +4,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import MapView, { Marker } from "react-native-maps";
 import { images } from "../../../constants";
 import Icon from "react-native-vector-icons/AntDesign";
+import { router } from 'expo-router';
 
 const posts = [images.travel1, images.travel2, images.travel3];
 
@@ -82,7 +83,7 @@ const ProfileScreen = () => {
         </View>
 
         <View style={styles.profileActions}>
-          <TouchableOpacity style={styles.followButton}>
+          <TouchableOpacity style={styles.followButton} onPress={() => router.push('/profile/settings')}>
             <Text style={styles.followButtonText}>Manage</Text>
           </TouchableOpacity>
           {/* <TouchableOpacity style={styles.messageButton}>

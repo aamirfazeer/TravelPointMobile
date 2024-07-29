@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingHorizontal: 15,
     paddingVertical: 12,
-    borderRadius: 10,
+    borderRadius: 20,
     borderWidth: 2,
     borderColor: "#ddd",
     marginBottom: 25,
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   },
   doneButton: {
     width: 200,
-    backgroundColor: "#00FF00",
+    backgroundColor: "#00cc44",
     padding: 10,
     marginTop: 30,
     borderRadius: 50,
