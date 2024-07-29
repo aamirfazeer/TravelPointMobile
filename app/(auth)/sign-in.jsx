@@ -134,7 +134,7 @@ const LoginScreen = () => {
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.forgotPasswordContainer}>
+        <TouchableOpacity style={styles.forgotPasswordContainer} onPress={()=>router.push('/forgetPassword')}>
           <Text style={styles.forgotPassword}>forgot password?</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.loginButton} onPress={()=>router.push('/home')}>
