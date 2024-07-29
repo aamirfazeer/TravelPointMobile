@@ -9,7 +9,7 @@
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/travelpoint_image.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "ios": {

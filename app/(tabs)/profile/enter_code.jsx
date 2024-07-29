@@ -1,11 +1,16 @@
+
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 
-const ForgotPassword = () => {
-  const [code, setCode] = useState('');
+const ForgotPasswordScreen = () => {
+  const [code, setCode] = useState(['', '', '', '']);
+  const router = useRouter();
 
-  const handleCodeChange = (text) => {
-    setCode(text);
+  const handleCodeChange = (text, index) => {
+    const newCode = [...code];
+    newCode[index] = text;
+    setCode(newCode);
   };
 
   const handleResendCode = () => {
@@ -15,52 +20,34 @@ const ForgotPassword = () => {
 
   const handleSubmit = () => {
     // Implement logic to submit code and verify
-    console.log('Submitting code:', code);
+    console.log('Submitting code:', code.join(''));
+    router.push('/profile/enter_code');
   };
 
   return (
     <View style={styles.container}>
-        <Text style={styles.header}>TravelPoint</Text>
-        <View style={styles.formContainer}>
-        <Text style={styles.title}>Forgot Password?</Text>
-            <Text style={styles.subtitle}>Enter Recovery Code</Text>
-            <View style={styles.codeInput}>
-                <TextInput
-                style={styles.codeBox}
-                maxLength={1}
-                keyboardType="numeric"
-                onChangeText={handleCodeChange}
-                value={code.substring(0, 1)}
-                />
-                <TextInput
-                style={styles.codeBox}
-                maxLength={1}
-                keyboardType="numeric"
-                onChangeText={handleCodeChange}
-                value={code.substring(1, 2)}
-                />
-                <TextInput
-                style={styles.codeBox}
-                maxLength={1}
-                keyboardType="numeric"
-                onChangeText={handleCodeChange}
-                value={code.substring(2, 3)}
-                />
-                <TextInput
-                style={styles.codeBox}
-                maxLength={1}
-                keyboardType="numeric"
-                onChangeText={handleCodeChange}
-                value={code.substring(3, 4)}
-                />
-            </View>
-            <Text style={styles.resendCode} onPress={handleResendCode}>
-                resend code
-            </Text>
-            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                <Text style={styles.buttonText}>Next</Text>
-            </TouchableOpacity>
+      <View style={styles.formContainer}>
+        <Text style={styles.title}>Password Reset</Text>
+        <Text style={styles.description}>
+        Please Enter Recovery Code to reset your password.
+        </Text>
+        <View style={styles.codeInput}>
+          {code.map((digit, index) => (
+            <TextInput
+              key={index}
+              style={styles.codeBox}
+              maxLength={1}
+              keyboardType="numeric"
+              onChangeText={(text) => handleCodeChange(text, index)}
+              value={digit}
+            />
+          ))}
         </View>
+        <Text style={styles.resendPrompt}>Didn't receive code? <Text style={styles.resendCode} onPress={handleResendCode}>Resend</Text></Text>
+        <TouchableOpacity style={styles.button} onPress={() => { router.push('/profile/reset_pw'); }}>
+          <Text style={styles.buttonText}>Continue</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -69,40 +56,34 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
     padding: 20,
-  },
-  header: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#083759',
-    position: 'absolute', // Position the header absolutely
-    top: 20, // Distance from the top
-    left: 20, // Distance from the left
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   formContainer: {
     width: '100%',
     maxWidth: 400,
     padding: 30,
     borderRadius: 15,
-    backgroundColor: '#083759',
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 8, 
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#000',
     marginBottom: 10,
   },
-  subtitle: {
+  description: {
     fontSize: 16,
-    color: '#fff',
+    color: '#000',
+    textAlign: 'center',
     marginBottom: 20,
   },
   codeInput: {
@@ -113,28 +94,34 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: '#28a745',
     borderRadius: 5,
     textAlign: 'center',
     fontSize: 24,
-    color: '#fff',
+    color: '#000',
     marginHorizontal: 5,
   },
-  resendCode: {
-    color: '#fff',
+  resendPrompt: {
+    color: '#000',
     marginBottom: 20,
+    textAlign: 'center',
+  },
+  resendCode: {
+    color: '#28a745',
+    textDecorationLine: 'underline',
   },
   button: {
-    backgroundColor: '#f05050',
+    width: '60%',
+    backgroundColor: '#28a745',
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 20,
+    alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
-    textAlign: 'center',
   },
 });
 
-export default ForgotPassword;
+export default ForgotPasswordScreen;
