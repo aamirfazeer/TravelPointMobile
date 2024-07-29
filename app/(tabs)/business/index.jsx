@@ -145,8 +145,8 @@ const styles = StyleSheet.create({
     gap: 0,
   },
   tabButton: {
-    width: 140,
-    marginHorizontal: 10,
+    width: 150,
+    marginHorizontal: 5,
     paddingVertical: 5,
     paddingHorizontal: 20,
     borderWidth: 1,
@@ -154,12 +154,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   selectedTab: {
-    backgroundColor: "#00cc44",
-    borderColor: "#00FF00",
+    backgroundColor: "#002F43",
+    borderColor: "#002F43",
   },
   tabText: {
     textAlign: "center",
-    fontSize: 12.9,
+    fontSize: 14.4,
     color: "#000",
   },
   selectedTabText: {
@@ -222,6 +222,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: "hidden",
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 2,
 
   },
   simage: {

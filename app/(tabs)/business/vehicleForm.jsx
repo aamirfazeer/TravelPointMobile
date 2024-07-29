@@ -125,14 +125,9 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: "100%",
-    backgroundColor: "#3F7C9E",
-    padding: 40,
+    backgroundColor: "#fff",
+    padding: 15,
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
-    shadowRadius: 2,
-    elevation: 5,
   },
   picker: {
     height: 40,
@@ -150,6 +145,7 @@ const styles = StyleSheet.create({
   checkBoxContainer: {
     flexDirection: "row",
     alignItems: "center",
+    boderWidth: 2,
   },
   checkBoxLabel: {
     marginLeft: 8,
@@ -161,6 +157,8 @@ const styles = StyleSheet.create({
     padding: 8,
     textAlignVertical: "top",
     marginBottom: 16,
+    borderWidth: 2,
+    borderColor: "gray",
   },
   uploadContainer: {
     flexDirection: "row",
@@ -186,15 +184,10 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     width: 100,
-    backgroundColor: "#EF4444",
+    backgroundColor: "#06D001",
     padding: 16,
     borderRadius: 30,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
-    shadowRadius: 2,
-    elevation: 5,
   },
   submitText: {
     color: "white",
