@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   selectedTab: {
-    backgroundColor: "#002F43",
+    backgroundColor: "#00cc44",
     borderColor: "#00FF00",
   },
   tabText: {
@@ -172,22 +172,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
     paddingHorizontal: 30,
-    paddingTop: 15,
+    paddingTop: 35,
   },
   sptitle: {
     fontSize: 18,
-    color: "#3F7C9E",
+    color: "#006400",
     marginBottom: 10,
     fontSize: 30,
     fontWeight: "bold",
   },
   spbutton: {
     width: "100%",
-    backgroundColor: "#06D001",
+    backgroundColor: "#00cc44",
     padding: 16,
     borderRadius: 20,
     alignItems: "center",
-    paddingVertical: 35,
+    paddingVertical: 15, // Adjusted height
     margin: 18,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 35,
-    color: "#3F7C9E",
+    color: "#006400",
   },
   scard: {
     width: "100%",
@@ -222,10 +222,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: "hidden",
     alignItems: "center",
+
   },
   simage: {
     width: "100%",
-    height: 150,
+    height: 150, 
     opacity: 0.75,
   },
   scardText: {
@@ -235,10 +236,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 25,
+    fontSize: 24, // Adjusted font size
     width: "100%",
-    top: "73%",
-    left: "14%",
-    transform: [{ translateX: -50 }, { translateY: -50 }],
+    top: "40%", // Adjusted position
   },
 });
