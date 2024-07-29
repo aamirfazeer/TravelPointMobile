@@ -2,29 +2,42 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 
-const ForgotPasswordScreen = () => {
-  const [email, setEmail] = useState('ro***********@gmail.com');
+const ForgotPassword = () => {
+  const [email, setEmail] = useState('');
   const router = useRouter();
+
+  const handleEmailChange = (text) => {
+    setEmail(text);
+  };
+
+  const handleNext = () => {
+    // Implement logic to send verification code to email
+    console.log('Sending verification code to:', email);
+    router.push('/profile/enter_code');
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>
         <Text style={styles.title}>Forgot Password?</Text>
         <Text style={styles.description}>
-          We have sent a verification code to {'\n'} your email address associated with your account. Please use the code to reset your password.
+          Please enter your email address associated with your account. We will send a verification code to your email.
         </Text>
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Email Address</Text>
           <TextInput
             style={styles.input}
+            placeholder="Enter your email"
             value={email}
-            onChangeText={setEmail}
-            editable={false} // Make the input non-editable
+            onChangeText={handleEmailChange}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            placeholderTextColor="#B0B0B0" // Light grey for placeholder
           />
         </View>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => { router.push('/profile/enter_code'); }}
+          onPress={handleNext}
         >
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
@@ -100,4 +113,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgotPasswordScreen;
+export default ForgotPassword;
