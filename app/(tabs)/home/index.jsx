@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Share, Alert } from 'react-native';
 import { icons, images } from '../../../constants'; 
 import Icon from 'react-native-vector-icons/Ionicons'; 
+import { router } from 'expo-router';
 
 const profiles = [
   { name: 'Lewis', img: images.p1 },
@@ -54,7 +55,7 @@ export default function HomePage() {
     };
   
     const handleComment = () => {
-      Alert.alert('Comment', 'Opening comment section...');
+      router.push('/home/comments')
       // Implement navigation to the comment section here
     };
   

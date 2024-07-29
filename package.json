@@ -17,6 +17,7 @@
     "@react-navigation/material-top-tabs": "^6.6.14",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/stack": "^6.4.1",
+    "axios": "^1.7.2",
     "caniuse-lite": "^1.0.30001642",
     "expo": "~51.0.17",
     "expo-camera": "~15.0.14",
