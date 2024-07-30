@@ -16,6 +16,11 @@ const Stacklayout = () => {
       <Stack.Screen name="guideForm" options={{ headerShown: false }} />
       <Stack.Screen name="equipmentForm" options={{ headerShown: false }} />
       <Stack.Screen name="vehicleForm" options={{ headerShown: false }} />
+      <Stack.Screen name="bookedVehicle" options={{ headerShown: false }} />
+      <Stack.Screen name="bookedGuid" options={{ headerShown: false }} />
+      <Stack.Screen name="addVehicle" options={{ headerShown: false }} />
+      <Stack.Screen name="manageVehicle" options={{ headerShown: false }} />
+      <Stack.Screen name="editVehicle" options={{ headerShown: false }} />
     </Stack>
   );
 };
