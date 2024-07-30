@@ -91,7 +91,7 @@ const ProvideServiceScreen = () => {
       <Text style={styles.sptitle}>Provide a Service</Text>
       <TouchableOpacity
         style={styles.spbutton}
-        onPress={() => router.push("/business/bookedVehicle")}
+        onPress={() => router.push("/business/guideForm")}
       >
         <Text style={styles.spbuttonText}>Be a Tour Guide</Text>
       </TouchableOpacity>

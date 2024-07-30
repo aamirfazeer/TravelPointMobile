@@ -134,7 +134,7 @@ const guideForm = () => {
         </View>
         <View className="items-center">
           <TouchableOpacity style={styles.submitButton}           
-            onPress={() => router.push("/business/equipmentHome")}>
+            onPress={() => router.push("/business/bookedGuid")}>
             <Text style={styles.submitText}>Submit</Text>
           </TouchableOpacity>
         </View>

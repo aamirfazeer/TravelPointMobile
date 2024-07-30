@@ -10,6 +10,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { icons } from "../../../constants";
 import DropdownComponent from "../../../components/Dropdown";
+import { router } from "expo-router";
 
 const equipmentForm = () => {
   const [type, setType] = useState("");
@@ -66,7 +67,7 @@ const equipmentForm = () => {
           </TouchableOpacity>
         </View>
         <View className="items-center">
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+          <TouchableOpacity style={styles.submitButton} onPress={() => router.push("/business/equipmentHome")}>
             <Text style={styles.submitText}>Submit</Text>
           </TouchableOpacity>
         </View>

@@ -26,14 +26,6 @@ const BookingItem = ({ item }) => (
 
 const BookedEquipment = () => (
   <View style={styles.container}>
-    <View style={styles.headerButtons}>
-      <TouchableOpacity style={styles.headerButton}>
-        <Text style={styles.headerButtonText}>Add a Equipment</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.headerButton}>
-        <Text style={styles.headerButtonText}>Manage Equipment</Text>
-      </TouchableOpacity>
-    </View>
     <Text style={styles.title}>Booking Requests</Text>
     <View style={styles.listContainer}>
       <FlatList
