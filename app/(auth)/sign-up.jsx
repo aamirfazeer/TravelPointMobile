@@ -9,6 +9,7 @@ const SignUpScreen = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [nicPassport, setNicPassport] = useState('');
+  const [email, setEmail] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [location, setLocation] = useState('');
   const [password, setPassword] = useState('');
@@ -20,6 +21,7 @@ const SignUpScreen = () => {
       firstName,
       lastName,
       nicPassport,
+      email,
       contactNumber,
       location,
       password,
@@ -60,6 +62,15 @@ const SignUpScreen = () => {
             placeholder="NIC / Passport Number"
             value={nicPassport}
             onChangeText={setNicPassport}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Icon name="email" size={20} color="#444" style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            onChangeText={setEmail}
+            value={email}
           />
         </View>
         <View style={styles.inputContainer}>
