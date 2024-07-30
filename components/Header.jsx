@@ -18,7 +18,7 @@ const Header = () => {
             style={styles.icon}
             name='adduser'
             size={26}
-            color="#06D001"
+            color="#002F43"
           />
           </TouchableOpacity>        
           <Icon
