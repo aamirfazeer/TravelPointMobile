@@ -154,8 +154,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   selectedTab: {
-    backgroundColor: "#002F43",
-    borderColor: "#002F43",
+    backgroundColor: "#00cc44",
+    borderColor: "#00cc44",
   },
   tabText: {
     textAlign: "center",
@@ -183,20 +183,21 @@ const styles = StyleSheet.create({
   },
   spbutton: {
     width: "100%",
-    backgroundColor: "#00cc44",
+    backgroundColor: "#fff",
     padding: 16,
     borderRadius: 20,
     alignItems: "center",
     paddingVertical: 15, // Adjusted height
     margin: 18,
-    shadowColor: "#000",
+    borderColor: "#000",
+    shadowColor: "#00cc44",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 1,
     shadowRadius: 2,
     elevation: 5,
   },
   spbuttonText: {
-    color: "white",
+    color: "#00cc44",
     textAlign: "center",
     fontSize: 24,
     fontWeight: "bold",
