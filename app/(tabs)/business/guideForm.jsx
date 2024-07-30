@@ -1,17 +1,12 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-} from "react-native";
+import {View,Text,TextInput,TouchableOpacity,StyleSheet,Image,} from "react-native";
 import { CheckBox } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import { icons } from "../../../constants";
+import { router } from 'expo-router';
+
 
 const guideForm = () => {
   const [language, setLanguage] = useState("");
@@ -138,7 +133,8 @@ const guideForm = () => {
           </TouchableOpacity>
         </View>
         <View className="items-center">
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+          <TouchableOpacity style={styles.submitButton}           
+            onPress={() => router.push("/business/equipmentHome")}>
             <Text style={styles.submitText}>Submit</Text>
           </TouchableOpacity>
         </View>
