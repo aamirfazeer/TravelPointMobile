@@ -16,7 +16,7 @@ const Header = () => {
             style={styles.icon}
             name='notifications-outline'
             size={26}
-            color="#06D001"
+            color="#002F43"
             />
           
           <TouchableOpacity onPress={() => router.push('/home/messages')}>
@@ -24,13 +24,11 @@ const Header = () => {
             style={styles.icon}
             name='chatbubble-outline'
             size={26}
-            color="#06D001"
+            color="#002F43"
           />
           </TouchableOpacity>
         </View>
       </View>
-      
-
   );
 };
 
@@ -41,17 +39,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 15,
     paddingHorizontal: 30,
-    backgroundColor: "#fffff",
+    backgroundColor: "#fff",
     paddingBottom: 15,
-  
-
   },
   title: {
     fontSize: 25,
     fontWeight: "bold",
     color: "#002F43",
-    
-    
   },
   notificationContainer: {
     position: 'absolute',
