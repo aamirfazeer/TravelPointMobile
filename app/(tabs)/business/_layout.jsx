@@ -21,6 +21,8 @@ const Stacklayout = () => {
       <Stack.Screen name="addVehicle" options={{ headerShown: false }} />
       <Stack.Screen name="manageVehicle" options={{ headerShown: false }} />
       <Stack.Screen name="editVehicle" options={{ headerShown: false }} />
+      <Stack.Screen name="equipmentHome" options={{ headerShown: false }} />
+      <Stack.Screen name="ownEquipment" options={{ headerShown: false }} />
     </Stack>
   );
 };
