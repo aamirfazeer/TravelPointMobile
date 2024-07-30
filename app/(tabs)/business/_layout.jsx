@@ -16,6 +16,8 @@ const Stacklayout = () => {
       <Stack.Screen name="guideForm" options={{ headerShown: false }} />
       <Stack.Screen name="equipmentForm" options={{ headerShown: false }} />
       <Stack.Screen name="vehicleForm" options={{ headerShown: false }} />
+      <Stack.Screen name="equipmentHome" options={{ headerShown: false }} />
+      <Stack.Screen name="ownEquipment" options={{ headerShown: false }} />
     </Stack>
   );
 };

@@ -7,12 +7,15 @@ import {
   StyleSheet,
   Image,
   FlatList,
-  Dimensions
+  Dimensions,
+  ScrollView,
+  SafeAreaView
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { images } from "../../../constants";
 import MapView, { Marker, UrlTile } from 'react-native-maps';
 import * as Location from 'expo-location';
+
 
 
 const data = [
@@ -124,7 +127,7 @@ const AutoCompleteSearchBar = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.input}
@@ -201,7 +204,7 @@ const AutoCompleteSearchBar = () => {
           />
         ))}
       </MapView>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -259,9 +262,9 @@ const styles = StyleSheet.create({
     color: "#888",
   },
   map: {
-    //width: Dimensions.get('window').width,
-    //height: Dimensions.get('window').height ,
-    flex: 1
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height ,
+    //flex: 1
   },
 });
 
