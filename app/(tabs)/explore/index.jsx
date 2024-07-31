@@ -23,10 +23,10 @@ const data = {
   ],
 };
 const services = [
-    { id: 1, type: 'hotel', latitude: 6.9022, longitude: 79.8640, name: 'Star Hotel' },
-    { id: 2, type: 'restaurant', latitude: 6.9022, longitude: 79.8655, name: 'the upward' },
-    { id: 3, type: 'vehicle_rental', latitude: 6.9022, longitude: 79.8665, name: 'rentit' },
-    { id: 4, type: 'equipment_rental', latitude: 6.9022, longitude: 79.8630, name: 'equpify' },
+    { id: 1, type: 'hotel', latitude: 6.9021, longitude: 79.8640, name: 'Star Hotel' },
+    { id: 2, type: 'restaurant', latitude: 6.9024, longitude: 79.8655, name: 'the upward' },
+    { id: 3, type: 'vehicle_rental', latitude: 6.9026, longitude: 79.8665, name: 'rentit' },
+    { id: 4, type: 'equipment_rental', latitude: 6.9029, longitude: 79.8630, name: 'equpify' },
   ];
 
 const SearchScreen = () => {
