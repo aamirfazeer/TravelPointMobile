@@ -1,104 +1,83 @@
-// import { View, Text, SafeAreaView, ScrollView, Image} from 'react-native'
-// import React, {useState} from 'react'
-// import { Link, useRouter } from 'expo-router'
-// import { images }  from '../../constants'
-// import FormField from '../../components/FormField'
-// import  CustomButton  from '../../components/CustomButton'
-// import BackButton from '../../components/BackButton'
-
-// const SignIn = () => {
-
-//   const router = useRouter();
-
-//   const [form, setForm] = useState({
-//     email: '',
-//     password: ''
-//   })
-
-//   const [isSubmitting, setisSubmitting] = useState(false)
-
-//   const submit = () =>{
-
-//   }
-
-//   return (
-//     <SafeAreaView className="bg-primary h-full">
-//       <ScrollView>
-//         <View>
-//         <BackButton
-//         handlePress={()=>router.push('../')}
-//         />
-//         </View>
-        
-//         <View className="w-full items-center mt-4 min-h-[0vh]">
-//           <Image source={images.travelpoint_image}
-//           resizeMode='contain'
-//           className="w-[360px] h-[120px]"/>
-//         </View>
-
-//         <View className="w-full items-center mt-1">
-//           <Text className="text-2xl text-black mt-10 font-Ibold">
-//             Log in to TravelPoint
-//           </Text>
-//         </View>
-//         <View className="w-full mt-1 px-20">
-//         <FormField 
-//             title="Email"
-//             value={form.email}
-//             placeholder='E-mail'
-//             handleChangeText={(e)=> setForm({ ...form, email: e})}
-//             otherStyles="mt-7"
-//             keyboardType="email-address"
-//           />
-//           <FormField 
-//             title="Password"
-//             value={form.password}
-//             placeholder='password'
-//             handleChangeText={(e)=> setForm({ ...form, password: e})}
-//             otherStyles="mt-7"
-            
-//           />
-
-//           <CustomButton 
-//             title="Log in"
-//             handlePress={submit}
-//             containerStyles=" mt-10 "
-//             isLoading={isSubmitting}
-//           />
-
-//           <View className="justify-center pt-5 flex-row gap-2">
-//             <Text className="text-lg text-black font-IRegular">
-//               Don't have an account?
-              
-//             </Text>
-//             <Link href="/sign-up" className="text-lg font-IRegular text-secondary">
-//               Sign-up
-//             </Link>
-//           </View>
-//         </View>
-//       </ScrollView>
-//     </SafeAreaView>
-//   )
-// }
-
-// export default SignIn
-
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  Alert,
+} from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { router } from 'expo-router'
-import { images } from '../../constants'; // Make sure the correct path to the images is used
+import { images } from '../../constants';
+import axios from "axios";
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(false); // State to manage password visibility
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const handleLogin = () => {
-    console.log('Login details:', {
-      email,
-      password,
-    });
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const handleLogin = async () => {
+    if (!email) {
+      Alert.alert("Error", "Email is required");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      Alert.alert("Error", "Please enter a valid email address");
+      return;
+    }
+
+    if (!password) {
+      Alert.alert("Error", "Password is required");
+      return;
+    }
+
+    const userDetails = {
+      email: email,
+      password: password,
+    };
+
+    console.log("User details:", JSON.stringify(userDetails, null, 2));
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      const response = await axios.get(
+        "http://10.0.2.2:8000/auth/login",
+        userDetails,
+        config
+      );
+      if (response.data.success) {
+        // Assuming the response contains a field 'success' to indicate the status
+        // And possibly a token and user data
+        const { token, user } = response.data;
+
+        // Store the token in a secure storage (optional)
+        // SecureStore.setItemAsync('userToken', token);
+
+        // Redirect to home screen
+        router.push("/home");
+
+        // Optionally, store user data in global state or context
+        // e.g., dispatch({ type: 'SET_USER', payload: user });
+      } else {
+        Alert.alert("Error", "Invalid email or password");
+      }
+    } catch (error) {
+      Alert.alert("Error", "Invalid email or password");
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -124,30 +103,39 @@ const LoginScreen = () => {
             placeholder="Password"
             value={password}
             onChangeText={setPassword}
-            secureTextEntry={!passwordVisible} // Toggle secureTextEntry based on passwordVisible state
+            secureTextEntry={!passwordVisible}
           />
-          <TouchableOpacity style={styles.iconContainer} onPress={togglePasswordVisibility}>
+          <TouchableOpacity
+            style={styles.iconContainer}
+            onPress={togglePasswordVisibility}
+          >
             <Icon
-              name={passwordVisible ? "visibility" : "visibility-off"} // Change icon based on password visibility
+              name={passwordVisible ? "visibility" : "visibility-off"}
               size={20}
               color="#444"
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.forgotPasswordContainer} onPress={()=>router.push('/forgetPassword')}>
-          <Text style={styles.forgotPassword}>forgot password?</Text>
+        <TouchableOpacity
+          style={styles.forgotPasswordContainer}
+          onPress={() => router.push("/forgetPassword")}
+        >
+          <Text style={styles.forgotPassword}>Forgot password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginButton} onPress={()=>router.push('/home')}>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
         <Text style={styles.orText}>or</Text>
-        <TouchableOpacity style={styles.googleButton} onPress={()=>router.push('/home')}>
+        <TouchableOpacity
+          style={styles.googleButton}
+          onPress={() => router.push("/home")}
+        >
           <Image source={images.google} style={styles.googleImage} />
           <Text style={styles.googleButtonText}>Sign up with Google</Text>
         </TouchableOpacity>
         <View style={styles.signUpContainer}>
           <Text style={styles.signUpText}>Don't have an account? </Text>
-          <TouchableOpacity onPress={()=>router.push('/sign-up')}>
+          <TouchableOpacity onPress={() => router.push("/sign-up")}>
             <Text style={styles.signUpLink}>Sign up</Text>
           </TouchableOpacity>
         </View>
@@ -166,7 +154,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: 'center',
-    alignItems: 'center', // Center the content horizontally
+    alignItems: 'center',
   },
   headerImage: {
     width: '100%',
@@ -188,7 +176,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     paddingVertical: 5,
     paddingHorizontal: 10,
-    width: '100%', // Full width input container
+    width: '100%',
   },
   input: {
     flex: 1,

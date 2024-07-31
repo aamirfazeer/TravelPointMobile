@@ -1,8 +1,16 @@
-import React, {useState} from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { router } from 'expo-router';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
+import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import axios from "axios";
 
 export default function AddPost() {
   const [description, setDescription] = useState("");
@@ -17,7 +25,7 @@ export default function AddPost() {
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.uri);
+      setSelectedImage(result.assets[0].uri);
     }
   };
 
@@ -29,10 +37,36 @@ export default function AddPost() {
     router.push("/location-picker");
   };
 
-  const handlePost = () => {
-    console.log("Post created:", { description, selectedImage });
-    router.push("/posts");
+  const handlePost = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("description", description);
+
+      if (selectedImage) {
+        formData.append("image", {
+          uri: selectedImage,
+          type: "image/jpeg",
+          name: "photo.jpg",
+        });
+      }
+
+      const response = await axios.post(
+        "http://10.0.2.2:8000/user_management/post",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Post created:", response.data);
+      router.push("/posts");
+    } catch (error) {
+      console.error("Error creating post:", error);
+    }
   };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.formContainer}>
@@ -107,17 +141,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#000",
   },
-  input: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 15,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    marginBottom: 25,
-    fontSize: 16,
-    height: 300,
-  },
   descriptionInput: {
     height: 220,
     borderRadius: 15,
@@ -145,17 +168,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     textAlignVertical: "top",
     marginBottom: 25,
-    marginHorizontal: 17
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    padding: 15,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    marginBottom: 25,
+    marginHorizontal: 17,
   },
   postButton: {
     width: 200,
