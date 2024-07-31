@@ -30,10 +30,6 @@ const TabsLayout = ({ children }) => {
     <SafeAreaView style={styles.container}>
       <Header />
 
-      {/*<BackButton
-        handlePress={()=>router.push('../')}
-        />*/}
-
       <Tabs
         screenOptions={{
           tabBarShowLabel: false,
@@ -93,12 +89,6 @@ const TabsLayout = ({ children }) => {
             title: "Business",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              // <Icons
-              //   name="business-center"
-              //   size={35}
-              //   focused={focused}
-              //   color={color}
-              // />
               <TabIcons
                 name="briefcase"
                 focused={focused}

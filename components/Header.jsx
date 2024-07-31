@@ -9,35 +9,26 @@ import { useRouter } from 'expo-router';
 const Header = () => {
   const router = useRouter();
   return (
-        <View style={styles.headerContainer}>
+    <View style={styles.headerContainer}>
+      <Text style={styles.title}>TravelPoint</Text>
+      <View style={styles.notificationContainer}>
+        <Icon
+          style={styles.icon}
+          name="notifications-outline"
+          size={30}
+          color="#002F43"
+        />
 
-          <Text style={styles.title}>TravelPoint</Text>
-          <View style={styles.notificationContainer}> 
-          <TouchableOpacity onPress={() => router.push('/search/')}>
-          <Icon1
-            style={styles.icon}
-            name='adduser'
-            size={26}
-            color="#002F43"
-          />
-          </TouchableOpacity>        
+        <TouchableOpacity onPress={() => router.push("/home/messages")}>
           <Icon
             style={styles.icon}
-            name='notifications-outline'
-            size={26}
-            color="#002F43"
-            />
-          
-          <TouchableOpacity onPress={() => router.push('/home/messages')}>
-          <Icon
-            style={styles.icon}
-            name='chatbubble-outline'
-            size={26}
+            name="chatbubble-ellipses-outline"
+            size={30}
             color="#002F43"
           />
-          </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
       </View>
+    </View>
   );
 };
 
