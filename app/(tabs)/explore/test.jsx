@@ -1,33 +1,18 @@
 // screens/SearchScreen.js
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet, FlatList, Image, Text, Dimensions } from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, FlatList, Image, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { images } from "../../../constants";
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
+import { images } from "../../../constants";
 
-
-const data = {
-  hotels: [
-    { name: 'Hotel A', profilePic: images.travel1 },
-    { name: 'Hotel B', profilePic: images.travel2 },
-  ],
-  vehicles: [
-    { name: 'Car A', profilePic: images.vehicle2 },
-    { name: 'Car B', profilePic: images.vehicle1},
-  ],
-  travelEquipment: [
-    { name: 'Backpack', profilePic: images.equipment1 },
-    { name: 'Tent', profilePic: images.equipment2 },
-  ],
-};
 const services = [
-    { id: 1, type: 'hotel', latitude: 6.9022, longitude: 79.8640, name: 'Star Hotel' },
-    { id: 2, type: 'restaurant', latitude: 6.9022, longitude: 79.8655, name: 'the upward' },
-    { id: 3, type: 'vehicle_rental', latitude: 6.9022, longitude: 79.8665, name: 'rentit' },
-    { id: 4, type: 'equipment_rental', latitude: 6.9022, longitude: 79.8630, name: 'equpify' },
-  ];
+  { id: 1, type: 'hotel', latitude: 6.9022, longitude: 79.8640, name: 'Hotel Example' },
+  { id: 2, type: 'restaurant', latitude: 37.78925, longitude: -122.4334, name: 'Restaurant Example' },
+  { id: 3, type: 'vehicle_rental', latitude: 37.78725, longitude: -122.4344, name: 'Vehicle Rental Example' },
+  { id: 4, type: 'equipment_rental', latitude: 37.78625, longitude: -122.4354, name: 'Equipment Rental Example' },
+];
 
 const SearchScreen = () => {
   const [query, setQuery] = useState('');
@@ -53,8 +38,8 @@ const SearchScreen = () => {
   const handleInputChange = (text) => {
     setQuery(text);
     if (text) {
-      const filtered = data[selectedTab].filter((item) =>
-        item.name.toLowerCase().includes(text.toLowerCase())
+      const filtered = services.filter((item) =>
+        item.name.toLowerCase().includes(text.toLowerCase()) && item.type === selectedTab
       );
       setFilteredData(filtered);
     } else {
@@ -100,6 +85,12 @@ const SearchScreen = () => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.tabContainer}>
+        {renderTab('hotel', 'Hotels')}
+        {renderTab('restaurant', 'Restaurants')}
+        {renderTab('vehicle_rental', 'Vehicles')}
+        {renderTab('equipment_rental', 'Travel Equipment')}
+      </View>
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.input}
@@ -114,17 +105,12 @@ const SearchScreen = () => {
           </TouchableOpacity>
         )}
       </View>
-      <View style={styles.tabContainer}>
-        {renderTab('hotels', 'Hotels')}
-        {renderTab('vehicles', 'Vehicles')}
-        {renderTab('travelEquipment', 'Travel Equipment')}
-      </View>
       <FlatList
         data={filteredData}
-        keyExtractor={(item) => item.name}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.itemContainer} onPress={() => handleSelect(item.name)}>
-            <Image source={item.profilePic} style={styles.profilePic} />
+            <Image source={images[item.type]} style={styles.profilePic} />
             <View style={styles.textContainer}>
               <Text style={styles.nameText}>{item.name}</Text>
             </View>
@@ -170,28 +156,28 @@ const SearchScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   tabContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#ffffff',
-    paddingVertical: 0,
+    backgroundColor: '#f0f0f0',
+    paddingVertical: 10,
   },
   tab: {
     padding: 10,
+    borderRadius: 5,
   },
   selectedTab: {
-    backgroundColor: '#e0ffe0',
+    backgroundColor: '#e0ffe0', // Light green background for selected tab
     borderBottomWidth: 2,
-    borderBottomColor: '#00cc00',
+    borderBottomColor: '#00cc00', // Green bottom border for selected tab
   },
   tabText: {
     fontSize: 16,
     color: '#888',
   },
   selectedTabText: {
-    color: '#00cc00',
+    color: '#00cc00', // Green text for selected tab
   },
   searchContainer: {
     flexDirection: 'row',
@@ -232,17 +218,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   map: {
-    //flex: 1,
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height ,
-    //width: "100%",
-    //height:"60%"
-    //position: "absolute",
-    //top: 0,
-    //left: 0,
-    //right: 0,
-    //bottom: 0,
-    
+    flex: 1,
   },
 });
 

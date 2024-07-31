@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from 'react-native-vector-icons/Ionicons'; 
+import Icon1 from 'react-native-vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
 
 
@@ -40,15 +41,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     backgroundColor: "#fff",
     paddingBottom: 15,
-  
-
   },
   title: {
     fontSize: 25,
     fontWeight: "bold",
     color: "#002F43",
-    
-    
   },
   notificationContainer: {
     position: 'absolute',

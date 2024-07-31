@@ -11,6 +11,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import { icons } from "../../../constants";
 import DropdownComponent from "../../../components/Dropdown";
+import { router } from "expo-router";
 
 const vehicleForm = () => {
   const [type, setType] = useState("");
@@ -100,7 +101,7 @@ const vehicleForm = () => {
           </TouchableOpacity>
         </View>
         <View className="items-center">
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+          <TouchableOpacity style={styles.submitButton} onPress={() => router.push("/business/bookedVehicle")}>
             <Text style={styles.submitText}>Submit</Text>
           </TouchableOpacity>
         </View>
