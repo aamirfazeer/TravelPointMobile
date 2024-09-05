@@ -54,8 +54,8 @@ const LoginScreen = () => {
     };
 
     try {
-      const response = await axios.get(
-        `http://10.0.2.2:8000/auth/login/${email}/${password}`,
+      const response = await axios.post(
+        `http://10.0.2.2:8000/login`,
         userDetails,
         config
       );
