@@ -55,26 +55,11 @@ const LoginScreen = () => {
 
     try {
       const response = await axios.get(
-        "http://10.0.2.2:8000/auth/login",
+        `http://10.0.2.2:8000/auth/login/${email}/${password}`,
         userDetails,
         config
       );
-      if (response.data.success) {
-        // Assuming the response contains a field 'success' to indicate the status
-        // And possibly a token and user data
-        const { token, user } = response.data;
-
-        // Store the token in a secure storage (optional)
-        // SecureStore.setItemAsync('userToken', token);
-
-        // Redirect to home screen
-        router.push("/home");
-
-        // Optionally, store user data in global state or context
-        // e.g., dispatch({ type: 'SET_USER', payload: user });
-      } else {
-        Alert.alert("Error", "Invalid email or password");
-      }
+      router.push("/home");
     } catch (error) {
       Alert.alert("Error", "Invalid email or password");
     }

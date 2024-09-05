@@ -33,7 +33,7 @@ export default function HomePage() {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(
-          "https://your-backend-api.com/api/posts"
+          "http://10.0.2.2:8000/posts/get_all"
         );
         setPosts(response.data);
         setLiked(new Array(response.data.length).fill(false));
