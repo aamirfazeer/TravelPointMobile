@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -14,17 +14,38 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import axios from "axios";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function AddPost() {
   const [caption, setCaption] = useState("");
-  const [images, setImages] = useState([]); // Array to hold multiple images
+  const [images, setImages] = useState([]);
+  const [posterId, setPosterId] = useState("");
+
+  const getUserId = async () => {
+    try {
+      const id = await AsyncStorage.getItem("userId");
+      return id !== null ? parseInt(id) : null;
+    } catch (error) {
+      console.error("Error fetching user ID:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const fetchPosterId = async () => {
+      const id = await getUserId();
+      if (id) {
+        setPosterId(id);
+      }
+    };
+    fetchPosterId();
+  }, []);
 
   const handleSelectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsMultipleSelection: true, // Keep this for multiple selection
-      quality: 1, // Enable multiple selection
+      allowsMultipleSelection: true,
+      quality: 1,
     });
 
     if (!result.canceled) {
@@ -41,23 +62,26 @@ export default function AddPost() {
   };
 
   const handlePost = async () => {
+    if (!posterId) {
+      Alert.alert("Error", "User ID not found. Please sign in again.");
+      return;
+    }
+
     try {
-      // Create a new FormData instance
       const formData = new FormData();
-
-      // Append the caption and other data
-      formData.append("poster_id", 6);
+      formData.append("poster_id", posterId);
       formData.append("caption", caption || "");
-      formData.append("video_url", "");
-      formData.append("location", "");
+      formData.append("video_url", ""); // Can be updated to allow video uploading
+      formData.append("location", ""); // This can be updated when the location is set
 
-      // Append each image as a file
-      images.forEach((image, index) => {
-        formData.append("images", {
-          uri: image,
-          type: "image/jpeg", // Change this if your images have a different type
-          name: `image${index}.jpg`, // Name each image uniquely
-        });
+      images.forEach((imageUri, index) => {
+        const fileName = `image${index}.jpg`;
+        const imageObj = {
+          uri: imageUri,
+          type: "image/jpeg",
+          name: fileName,
+        };
+        formData.append("images", imageObj);
       });
 
       const response = await axios.post(
@@ -70,20 +94,17 @@ export default function AddPost() {
         }
       );
 
-      console.log("Posts created:", response.data);
-      Alert.alert("Success", "Your posts were created successfully!");
+      Alert.alert("Success", "Your post was created successfully!");
       router.push("/posts");
     } catch (error) {
       console.error(
-        "Error creating posts:",
-        error.response ? error.response.data : error.message
+        "Error creating post:",
+        error.response?.data || error.message
       );
       Alert.alert(
         "Error",
-        error.response
-          ? error.response.data.message ||
-              "There was an issue creating your posts."
-          : "There was an issue creating your posts."
+        error.response?.data?.message ||
+          "There was an issue creating your post."
       );
     }
   };
@@ -175,7 +196,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 2,
     borderColor: "#ddd",
-    marginBottom: 30,
+    marginBottom: 20,
   },
   imageText: {
     fontSize: 16,
@@ -229,7 +250,7 @@ const styles = StyleSheet.create({
     width: 200,
     backgroundColor: "#00cc44",
     padding: 10,
-    marginTop: 30,
+    marginTop: 5,
     borderRadius: 50,
     alignItems: "center",
     alignSelf: "center",

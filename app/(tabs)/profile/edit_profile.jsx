@@ -9,11 +9,14 @@ import {
   Button,
   Alert,
   Platform,
+  ScrollView,
 } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import * as ImagePicker from 'expo-image-picker';
 import axios from "axios";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const placeholderImage = require('../../../assets/images/placeholder.png');
 
@@ -21,49 +24,74 @@ const EditProfile = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [contactInfo, setContactInfo] = useState("");
+  const [bio, setBio] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [profilePic, setProfilePic] = useState(null);
   const [editableField, setEditableField] = useState(null);
   const [changesSaved, setChangesSaved] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const userId = 8; // Replace with the actual user ID
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`http://10.0.2.2:8000/profile/${userId}`)
-      .then((response) => {
-        const { username, email, contactInfo, dateOfBirth, profilePic } =
-          response.data;
-
-        setUsername(username);
-        setEmail(email);
-        setContactInfo(contactInfo);
-
-        if (dateOfBirth) {
-          // Assuming the date is in the format "YYYY-MM-DD"
-          setDateOfBirth(new Date(dateOfBirth));
-        } else {
-          setDateOfBirth(new Date()); // Fallback to current date if it's null or undefined
+    // Retrieve user ID from AsyncStorage
+    const fetchUserId = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem("userId");
+        if (storedUserId) {
+          setUserId(parseInt(storedUserId, 10));
         }
+      } catch (error) {
+        console.error("Error retrieving user ID:", error);
+      }
+    };
 
-        if (profilePic) {
-          setProfilePic({ uri: `data:image/jpeg;base64,${profilePic}` });
-        } else {
-          setProfilePic(null);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching profile details:", error);
-      });
+    fetchUserId();
   }, []);
 
+  useEffect(() => {
+    if (userId !== null) {
+      axios
+        .get(`http://10.0.2.2:8000/profile/${userId}`)
+        .then((response) => {
+          const { username, email, contactInfo, dateOfBirth, profilePic, bio } =
+            response.data;
+
+          setUsername(username);
+          setEmail(email);
+          setContactInfo(contactInfo);
+          setBio(bio);
+
+          if (dateOfBirth) {
+            setDateOfBirth(new Date(dateOfBirth));
+          } else {
+            setDateOfBirth(new Date()); // Fallback to current date if it's null or undefined
+          }
+
+          if (profilePic) {
+            setProfilePic({ uri: `data:image/jpeg;base64,${profilePic}` });
+          } else {
+            setProfilePic(null);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching profile details:", error);
+        });
+    }
+  }, [userId]);
+
   const handleSaveChanges = () => {
+    if (userId === null) {
+      Alert.alert("Error", "User ID is not available");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("id", userId.toString());
     formData.append("username", username);
     formData.append("email", email);
     formData.append("contactInfo", contactInfo);
-    formData.append("dateOfBirth", dateOfBirth.toISOString().split('T')[0]); // Save as YYYY-MM-DD
+    formData.append("dateOfBirth", dateOfBirth.toISOString().split('T')[0]);
+    formData.append("bio", bio);
     if (profilePic) {
       formData.append("profilePic", {
         uri: profilePic.uri,
@@ -92,7 +120,7 @@ const EditProfile = () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [4, 4],
       quality: 1,
     });
 
@@ -139,51 +167,91 @@ const EditProfile = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.headerText}>Profile</Text>
-      <View style={styles.profileCard}>
-        <View style={styles.profileImageContainer}>
-          <Image source={profilePic ? profilePic : placeholderImage} style={styles.profileImage} />
+    <SafeAreaView style={styles.safecontainer}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.headerText}>Profile</Text>
+        <View style={styles.profileCard}>
           <TouchableOpacity
             onPress={handleProfilePicChange}
-            style={styles.profilePicChangeButton}
+            style={styles.profileImageContainer}
           >
-            <Feather name="plus" size={10} color="white" />
+            <Image
+              source={profilePic ? profilePic : placeholderImage}
+              style={styles.profileImage}
+            />
+            <TouchableOpacity
+              onPress={handleProfilePicChange}
+              style={styles.profilePicChangeButton}
+            >
+              <Feather name="plus" size={10} color="white" />
+            </TouchableOpacity>
           </TouchableOpacity>
+          <Text style={styles.label}>Username</Text>
+          {renderEditableTextInput(username, setUsername, "username")}
+          <Text style={styles.label}>Email Address</Text>
+          {renderEditableTextInput(email, setEmail, "email")}
+          <Text style={styles.label}>Contact Info</Text>
+          {renderEditableTextInput(contactInfo, setContactInfo, "contactInfo")}
+          <Text style={styles.label}>Bio</Text>
+          <TouchableOpacity
+            style={styles.inputContainer}
+            onPress={() => setEditableField(bio)}
+          >
+            {editableField === bio ? (
+              <TextInput
+                style={styles.input}
+                value={bio}
+                onChangeText={setBio}
+                onBlur={() => setEditableField(null)}
+                autoFocus
+              />
+            ) : (
+              <Text style={styles.inputText}>{bio}</Text>
+            )}
+            <TouchableOpacity
+              onPress={() => setEditableField(bio)}
+              style={styles.editButton}
+            >
+              <Text>
+                <Feather name="edit-2" size={14} color="black" />
+              </Text>
+            </TouchableOpacity>
+          </TouchableOpacity>
+          <Text style={styles.label}>Date of Birth</Text>
+          <TouchableOpacity
+            style={styles.dateInput}
+            onPress={() => setShowDatePicker(true)}
+          >
+            <Text>{dateOfBirth.toLocaleDateString()}</Text>
+          </TouchableOpacity>
+          {showDatePicker && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={dateOfBirth}
+              mode="date"
+              is24Hour={true}
+              display="default"
+              onChange={handleDateChange}
+            />
+          )}
+          <TouchableOpacity
+            style={styles.saveButton}
+            onPress={handleSaveChanges}
+          >
+            <Text style={styles.saveButtonText}>Save Changes</Text>
+          </TouchableOpacity>
+          {changesSaved && <Text style={styles.savedText}>Changes Saved!</Text>}
         </View>
-        <Text style={styles.label}>Username</Text>
-        {renderEditableTextInput(username, setUsername, "username")}
-        <Text style={styles.label}>Email Address</Text>
-        {renderEditableTextInput(email, setEmail, "email")}
-        <Text style={styles.label}>Contact Info</Text>
-        {renderEditableTextInput(contactInfo, setContactInfo, "contactInfo")}
-        <Text style={styles.label}>Date of Birth</Text>
-        <TouchableOpacity
-          style={styles.dateInput}
-          onPress={() => setShowDatePicker(true)}
-        >
-          <Text>{dateOfBirth.toLocaleDateString()}</Text>
-        </TouchableOpacity>
-        {showDatePicker && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={dateOfBirth}
-            mode="date"
-            is24Hour={true}
-            display="default"
-            onChange={handleDateChange}
-          />
-        )}
-        <TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
-          <Text style={styles.saveButtonText}>Save Changes</Text>
-        </TouchableOpacity>
-        {changesSaved && <Text style={styles.savedText}>Changes Saved!</Text>}
-      </View>
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safecontainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -192,13 +260,13 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 24,
     fontWeight: "bold",
-    marginVertical: 20,
+    marginVertical: 5,
   },
   profileCard: {
     width: "80%",
     backgroundColor: "#fff",
     borderRadius: 10,
-    padding: 20,
+    padding: 15,
     alignItems: "center",
   },
   profileImageContainer: {

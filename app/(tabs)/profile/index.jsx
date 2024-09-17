@@ -1,10 +1,21 @@
-import React, { useState } from "react";
-import {  View,  Text,  StyleSheet,  Image,  FlatList,  TouchableOpacity,  Dimensions,  ScrollView,} from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import MapView, { Marker } from "react-native-maps";
 import { images } from "../../../constants";
-import Icon from "react-native-vector-icons/AntDesign";
-import { router } from 'expo-router';
+import { router } from "expo-router";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const placeholderImage = require("../../../assets/images/placeholder.png");
 
 const posts = [images.travel1, images.travel2, images.travel3];
 
@@ -33,6 +44,63 @@ const travels = [
 
 const ProfileScreen = () => {
   const [activeTab, setActiveTab] = useState("Gallery");
+  const [profilePic, setProfilePic] = useState(null);
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
+
+  const getUserId = async () => {
+    try {
+      const id = await AsyncStorage.getItem("userId");
+      return id !== null ? parseInt(id) : null;
+    } catch (error) {
+      console.error("Error fetching user ID:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    // Function to fetch profile data
+    const fetchProfileData = async () => {
+      const userId = await getUserId(); // Retrieve user ID first
+
+      if (userId) {
+        axios
+          .get(`http://10.0.2.2:8000/profile/${userId}`)
+          .then((response) => {
+            const { firstname, lastname, username, profilePic, bio } =
+              response.data;
+
+            setFirstname(firstname);
+            setLastname(lastname);
+            setUsername(username);
+            setBio(bio);
+
+            if (profilePic) {
+              // Assuming the profilePic is a base64 string
+              setProfilePic({ uri: `data:image/jpeg;base64,${profilePic}` });
+            } else {
+              setProfilePic(null);
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching profile details:", error);
+          });
+      } else {
+        Alert.alert("Error", "User ID not found");
+      }
+    };
+
+    // Initial fetch
+    fetchProfileData();
+
+    // Set interval to fetch profilePic every 30 seconds
+    const intervalId = setInterval(fetchProfileData, 30000); // Fetch every 30 seconds
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
 
   const renderPostItem = ({ item }) => (
     <Image source={item} style={styles.postImage} />
@@ -76,25 +144,31 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>
-        <Image source={images.person1} style={styles.profileImage} />
-        <View style={styles.textContainer}>
-          <Text style={styles.profileName}>Dia Kumaran</Text>
-          <Text style={styles.profileHandle}>@dia_kumar</Text>
+        <View style={styles.profileContainer1}>
+          <Image
+            source={profilePic ? profilePic : placeholderImage}
+            style={styles.profileImage}
+          />
+          <View style={styles.textContainer}>
+            <Text style={styles.profileName}>
+              {firstname} {lastname}
+            </Text>
+            <Text style={styles.profileHandle}>@{username}</Text>
+          </View>
         </View>
 
         <View style={styles.profileActions}>
-          <TouchableOpacity style={styles.followButton} onPress={() => router.push('/profile/settings')}>
+          <TouchableOpacity
+            style={styles.followButton}
+            onPress={() => router.push("/profile/settings")}
+          >
             <Text style={styles.followButtonText}>Manage</Text>
           </TouchableOpacity>
-          {/* <TouchableOpacity style={styles.messageButton}>
-            
-            <Icon name="message1" size={20} color="#fff" />
-          </TouchableOpacity> */}
         </View>
       </View>
 
       <View>
-        <Text style={styles.profileBio}>Traveling is my therapy</Text>
+        <Text style={styles.profileBio}>{bio}</Text>
       </View>
 
       <View style={styles.profileStats}>
@@ -111,6 +185,7 @@ const ProfileScreen = () => {
           <Text style={styles.statLabel}>Followers</Text>
         </View>
       </View>
+
       <View style={styles.tabsContainer}>
         <TouchableOpacity
           onPress={() => setActiveTab("Gallery")}
@@ -145,6 +220,7 @@ const ProfileScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
+
       {activeTab === "Gallery" && (
         <FlatList
           data={posts}
@@ -154,6 +230,7 @@ const ProfileScreen = () => {
           contentContainerStyle={styles.galleryContainer}
         />
       )}
+
       {activeTab === "Logs" && (
         <FlatList
           data={travels}
@@ -162,7 +239,6 @@ const ProfileScreen = () => {
           contentContainerStyle={styles.logsContainer}
         />
       )}
-
     </View>
   );
 };
@@ -178,7 +254,12 @@ const styles = StyleSheet.create({
     padding: 16,
     flexDirection: "row",
     marginTop: 10,
-    justifyContent:"space-around"
+    gap: 30,
+    justifyContent: "space-around",
+  },
+  profileContainer1: {
+    alignItems: "center",
+    flexDirection: "row",
   },
   profileImage: {
     width: 80,
@@ -194,25 +275,18 @@ const styles = StyleSheet.create({
     color: "gray",
   },
   profileBio: {
-    //marginVertical: 8,
-    //textAlign: "center",
     fontSize: 14,
     marginTop: 12,
-    //alignItems:'flex-start',
-    //padding: 16
-    marginLeft: 16,
-    marginRight: 16
+    marginLeft: 26,
+    marginRight: 16,
   },
   profileStats: {
     flexDirection: "row",
-    //justifyContent: "space-around",
-    // width: "100%",
-    //marginVertical: 16,
     justifyContent: "space-around",
     marginTop: 16,
-    //padding: 16
-    marginLeft: 16,
-    marginRight: 16
+    marginLeft: 14,
+    marginRight: 14,
+    gap: 70,
   },
   textContainer: {
     marginLeft: 16,
@@ -235,8 +309,6 @@ const styles = StyleSheet.create({
     //alignItems:'flex-start',
     flexDirection: "row",
     marginRight: 2,
-    
-    
   },
   followButton: {
     //backgroundColor: "green",
