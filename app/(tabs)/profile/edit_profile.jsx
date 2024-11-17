@@ -167,7 +167,7 @@ const EditProfile = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safecontainer}>
+    <View style={styles.safecontainer}>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.headerText}>Profile</Text>
         <View style={styles.profileCard}>
@@ -199,7 +199,7 @@ const EditProfile = () => {
           >
             {editableField === bio ? (
               <TextInput
-                style={styles.input}
+                style={styles.textArea}
                 value={bio}
                 onChangeText={setBio}
                 onBlur={() => setEditableField(null)}
@@ -243,7 +243,7 @@ const EditProfile = () => {
           {changesSaved && <Text style={styles.savedText}>Changes Saved!</Text>}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -253,7 +253,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
   },
@@ -302,6 +301,17 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderColor: "#ccc",
     borderWidth: 1,
+  },
+  textArea: {
+    height: 150,
+    padding: 15,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#ddd",
+    backgroundColor: "#fff",
+    textAlignVertical: "top",
+    marginBottom: 25,
+    marginHorizontal: 17,
   },
   input: {
     flex: 1,
