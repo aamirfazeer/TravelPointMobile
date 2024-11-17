@@ -17,6 +17,7 @@ import axios from "axios";
 const SignUpScreen = () => {
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
+  const [username, setUserName] = useState("");
   const [nic_passport, setNicPassport] = useState("");
   const [email, setEmail] = useState("");
   const [phone_number, setPhoneNumber] = useState("");
@@ -39,6 +40,7 @@ const SignUpScreen = () => {
     if (
       !first_name ||
       !last_name ||
+      !username ||
       !nic_passport ||
       !email ||
       !phone_number ||
@@ -74,6 +76,7 @@ const SignUpScreen = () => {
       email: email,
       first_name: first_name,
       last_name: last_name,
+      username: username,
       phone_number: phone_number,
       nic_passport: nic_passport,
       location: location,
@@ -129,6 +132,15 @@ const SignUpScreen = () => {
               placeholder="Last Name"
               value={last_name}
               onChangeText={setLastName}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Icon name="person" size={20} color="#444" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="User Name"
+              value={username}
+              onChangeText={setUserName}
             />
           </View>
           <View style={styles.inputContainer}>
