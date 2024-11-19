@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,9 +9,11 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
+import axios from "axios";
 import { icons } from "../../../constants";
 import DropdownComponent from "../../../components/Dropdown";
 import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const vehicleForm = () => {
   const [type, setType] = useState("");
@@ -20,6 +22,27 @@ const vehicleForm = () => {
   const [price, setPrice] = useState("");
   const [document, setDocument] = useState(null);
   const [photo, setPhoto] = useState(null);
+  const [ownerId, setOwnerId] = useState("");
+
+  const getUserId = async () => {
+    try {
+      const id = await AsyncStorage.getItem("userId");
+      return id !== null ? parseInt(id) : null;
+    } catch (error) {
+      console.error("Error fetching user ID:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const fetchOwnerId = async () => {
+      const id = await getUserId();
+      if (id) {
+        setOwnerId(id);
+      }
+    };
+    fetchOwnerId();
+  }, []);
 
   const handleDocumentPick = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
@@ -47,23 +70,57 @@ const vehicleForm = () => {
     { label: "Type 3", value: "t3" },
   ];
 
-  const handleSubmit = () => {
-    // Handle form submission
-    console.log({
-      type,
-      capacity,
-      milage,
-      price,
-      document,
-      photo,
-    });
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("owner_id", ownerId);
+    formData.append("type", type);
+    formData.append("capacity", capacity);
+    formData.append("milage", milage);
+    formData.append("price", price);
+
+    if (document) {
+      formData.append("document", {
+        uri: document.uri,
+        name: document.name,
+        type: document.mimeType || "application/pdf",
+      });
+    }
+
+    if (photo) {
+      formData.append("photo", {
+        uri: photo,
+        name: "photo.jpg",
+        type: "image/jpeg",
+      });
+    }
+
+    try {
+      const response = await axios.post(
+        "http://10.0.2.2:8000/vehicle/create",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("Form submitted successfully:", response.data);
+    } catch (error) {
+      console.error("Error submitting form:", error.response || error.message);
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>Rent out vehicles</Text>
       <View style={styles.formContainer}>
-        <DropdownComponent data={types} placeholder={"Vehicle Type"} />
+        <DropdownComponent
+          data={types}
+          placeholder={"Vehicle Type"}
+          value={type}
+          onValueChange={setType}
+        />
         <TextInput
           style={styles.textArea}
           placeholder="Milage Per Litre"
@@ -101,7 +158,7 @@ const vehicleForm = () => {
           </TouchableOpacity>
         </View>
         <View className="items-center">
-          <TouchableOpacity style={styles.submitButton} onPress={() => router.push("/business/bookedVehicle")}>
+          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
             <Text style={styles.submitText}>Submit</Text>
           </TouchableOpacity>
         </View>
@@ -129,28 +186,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 15,
     borderRadius: 10,
-  },
-  picker: {
-    height: 40,
-    marginBottom: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-  },
-  preferenceContainer: {
-    marginBottom: 16,
-  },
-  preferenceText: {
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  checkBoxContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    boderWidth: 2,
-  },
-  checkBoxLabel: {
-    marginLeft: 8,
-    marginRight: 16,
   },
   textArea: {
     backgroundColor: "white",

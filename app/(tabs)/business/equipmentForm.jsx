@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,48 +8,98 @@ import {
   Image,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import axios from "axios";
 import { icons } from "../../../constants";
-import DropdownComponent from "../../../components/Dropdown";
+import { Picker } from "@react-native-picker/picker";
 import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const equipmentForm = () => {
   const [type, setType] = useState("");
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState(null);
+  const [ownerId, setOwnerId] = useState("");
+
+  const getUserId = async () => {
+    try {
+      const id = await AsyncStorage.getItem("userId");
+      return id !== null ? parseInt(id) : null;
+    } catch (error) {
+      console.error("Error fetching user ID:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const fetchOwnerId = async () => {
+      const id = await getUserId();
+      if (id) {
+        setOwnerId(id);
+      }
+    };
+    fetchOwnerId();
+  }, []);
 
   const handlePhotoPick = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      setPhoto(result.uri);
+    if (!result.canceled) {
+      setPhoto(result.assets[0]);
     }
   };
 
-  const types = [
-    { label: "Type 1", value: "t1" },
-    { label: "Type 2", value: "t2" },
-    { label: "Type 3", value: "t3" },
-  ];
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("owner_id", ownerId);
+    formData.append("type", type);
+    formData.append("description", description);
 
-  const handleSubmit = () => {
-    // Handle form submission
-    console.log({
-      type,
-      description,
-      photo,
-    });
+    if (photo) {
+      formData.append("photo", {
+        uri: photo.uri,
+        type: "image/jpeg",
+        name: `photo_${Date.now()}.jpg`,
+      });
+    }
+
+    console.log("Form data:", formData);
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      const response = await axios.post(
+        "http://10.0.2.2:8000/equipment/create", formData, config
+      );
+
+      console.log("Form submitted successfully:", response.data);
+    } catch (error) {
+      console.error("Error submitting form:", error.response || error.message);
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>Rent Out Equipment</Text>
       <View style={styles.formContainer}>
-        <DropdownComponent data={types} placeholder={"Equipment Type"} />
+        <View style={styles.pickerBox}>
+          <Picker
+            selectedValue={type}
+            onValueChange={(itemValue) => setType(itemValue)}
+            style={styles.picker}
+          >
+            <Picker.Item label="Type" value="" />
+            <Picker.Item label="Type_1" value="t1" />
+            <Picker.Item label="Type_2" value="t2" />
+            <Picker.Item label="Type_3" value="t3" />
+          </Picker>
+        </View>
         <TextInput
           style={styles.textArea}
           placeholder="Description"
@@ -67,7 +117,7 @@ const equipmentForm = () => {
           </TouchableOpacity>
         </View>
         <View className="items-center">
-          <TouchableOpacity style={styles.submitButton} onPress={() => router.push("/business/equipmentHome")}>
+          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
             <Text style={styles.submitText}>Submit</Text>
           </TouchableOpacity>
         </View>
@@ -101,21 +151,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: "white",
     borderRadius: 20,
-  },
-  preferenceContainer: {
-    marginBottom: 16,
-  },
-  preferenceText: {
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  checkBoxContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  checkBoxLabel: {
-    marginLeft: 8,
-    marginRight: 16,
   },
   textArea: {
     height: 100,
@@ -159,6 +194,17 @@ const styles = StyleSheet.create({
   submitText: {
     color: "white",
     fontWeight: "bold",
+  },
+  pickerBox: {
+    marginBottom: 20,
+    backgroundColor: "white",
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: "gray",
+    alignContent: "center",
+  },
+  picker: {
+    color: "gray",
   },
 });
 
