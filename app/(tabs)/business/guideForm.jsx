@@ -1,12 +1,21 @@
-import React, { useState } from "react";
-import {View,Text,TextInput,TouchableOpacity,StyleSheet,Image,} from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+} from "react-native";
 import { CheckBox } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
+import axios from "axios";
 import { icons } from "../../../constants";
-import { router } from 'expo-router';
-
+import { router } from "expo-router";
+import Feather from "react-native-vector-icons/Feather";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const guideForm = () => {
   const [language, setLanguage] = useState("");
@@ -15,9 +24,32 @@ const guideForm = () => {
     groups: false,
     individual: false,
   });
+  const [editableField, setEditableField] = useState(null);
+  const [changesSaved, setChangesSaved] = useState(false);
   const [description, setDescription] = useState("");
   const [document, setDocument] = useState(null);
   const [photo, setPhoto] = useState(null);
+  const [userId, setUserId] = useState("");
+
+   const getUserId = async () => {
+     try {
+       const id = await AsyncStorage.getItem("userId");
+       return id !== null ? parseInt(id) : null;
+     } catch (error) {
+       console.error("Error fetching user ID:", error);
+       return null;
+     }
+   };
+
+   useEffect(() => {
+     const fetchUserId = async () => {
+       const id = await getUserId();
+       if (id) {
+         setUserId(id);
+       }
+     };
+     fetchUserId();
+   }, []);
 
   const handleDocumentPick = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
@@ -29,27 +61,63 @@ const guideForm = () => {
   const handlePhotoPick = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
       quality: 1,
     });
 
     if (!result.cancelled) {
-      setPhoto(result.uri);
+      setPhoto(result.assets[0]);
     }
   };
 
-  const handleSubmit = () => {
-    // Handle form submission
-    console.log({
-      language,
-      location,
-      preference,
-      description,
-      document,
-      photo,
-    });
-  };
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("user_id", userId);
+    formData.append("language", language);
+    formData.append("location", location);
+    formData.append(
+      "preference",
+      Object.keys(preference)
+        .filter((key) => preference[key])
+        .join(",")
+    );
+    formData.append("description", description);
+
+    if (document) {
+      formData.append("document", {
+        uri: document.uri,
+        name: document.name,
+        type: document.mimeType || "application/pdf",
+      });
+    }
+
+    if (photo) {
+      formData.append("photo", {
+        uri: photo.uri,
+        name: `photo_${Date.now()}.jpg`,
+        type: "image/jpeg",
+      });
+    }
+
+    console.log([...formData]);
+
+    axios
+      .post("http://10.0.2.2:8000/guide/create", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        setChangesSaved(true);
+        setEditableField(null);
+        setTimeout(() => setChangesSaved(false), 2000);
+      })
+      .catch((error) => {
+        console.error(
+          "Error submitting form:",
+          error.response || error.message
+        );
+      });
+    };
 
   return (
     <View style={styles.container}>
@@ -61,7 +129,7 @@ const guideForm = () => {
             onValueChange={(itemValue) => setLanguage(itemValue)}
             style={styles.picker}
           >
-            <Picker.Item label="Language" value= "" />
+            <Picker.Item label="Language" value="" />
             <Picker.Item label="English" value="english" />
             <Picker.Item label="Spanish" value="spanish" />
             <Picker.Item label="French" value="french" />
@@ -120,6 +188,11 @@ const guideForm = () => {
             onPress={handleDocumentPick}
           >
             <Image source={icons.uploadDocument} style={styles.uploadImage} />
+            <TouchableOpacity
+              style={styles.profilePicChangeButton}
+            >
+              <Feather name="plus" size={10} color="white" />
+            </TouchableOpacity>
             <Text style={styles.uploadText} numberOfLines={1}>
               Upload Document
             </Text>
@@ -129,12 +202,16 @@ const guideForm = () => {
             onPress={handlePhotoPick}
           >
             <Image source={icons.uploadImage} style={styles.uploadImage} />
+            <TouchableOpacity
+              style={styles.profilePicChangeButton}
+            >
+              <Feather name="plus" size={10} color="white" />
+            </TouchableOpacity>
             <Text style={styles.uploadText}>Upload Photo</Text>
           </TouchableOpacity>
         </View>
         <View className="items-center">
-          <TouchableOpacity style={styles.submitButton}           
-            onPress={() => router.push("/business/bookedGuid")}>
+          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
             <Text style={styles.submitText}>Submit</Text>
           </TouchableOpacity>
         </View>
@@ -236,6 +313,14 @@ const styles = StyleSheet.create({
   submitText: {
     color: "white",
     fontWeight: "bold",
+  },
+  profilePicChangeButton: {
+    position: "absolute",
+    bottom: 18,
+    right: 35,
+    backgroundColor: "green",
+    borderRadius: 15,
+    padding: 5,
   },
 });
 

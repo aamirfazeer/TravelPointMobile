@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,13 +8,36 @@ import {
   Image,
 } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
+import axios from "axios";
 import { icons } from "../../../constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const authorityForm = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [document, setDocument] = useState(null);
+  const [userId, setUserId] = useState("");
+
+  const getUserId = async () => {
+    try {
+      const id = await AsyncStorage.getItem("userId");
+      return id !== null ? parseInt(id) : null;
+    } catch (error) {
+      console.error("Error fetching user ID:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      const id = await getUserId();
+      if (id) {
+        setUserId(id);
+      }
+    };
+    fetchUserId();
+  }, []);
 
   const handleDocumentPick = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
@@ -23,13 +46,37 @@ const authorityForm = () => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log({
-      name,
-      description,
-      location,
-      document,
-    });
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("user_id", userId);
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("location", location);
+
+    if (document) {
+      formData.append("document", {
+        uri: document.uri,
+        name: document.name,
+        type: document.mimeType || "application/pdf",
+      });
+    }
+
+    try {
+      const response = await axios.post(
+        "http://10.0.2.2:8000/authority/create",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("Form submitted successfully:", response.data);
+      // Add any further actions here, like navigation or clearing the form
+    } catch (error) {
+      console.error("Error submitting form:", error.response || error.message);
+    }
   };
 
   return (
@@ -95,27 +142,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 15,
     borderRadius: 10,
-  },
-  picker: {
-    height: 40,
-    marginBottom: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-  },
-  preferenceContainer: {
-    marginBottom: 16,
-  },
-  preferenceText: {
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  checkBoxContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  checkBoxLabel: {
-    marginLeft: 8,
-    marginRight: 16,
   },
   textArea: {
     backgroundColor: "white",

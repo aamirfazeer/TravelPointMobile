@@ -99,7 +99,7 @@ const EditProfile = () => {
         name: 'profile_pic.jpg',
       });
     }
-
+    console.log("Form data:", formData);
     axios
       .post("http://10.0.2.2:8000/profile/update", formData, {
         headers: {
