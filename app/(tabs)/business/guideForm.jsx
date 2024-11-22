@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ScrollView,
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
@@ -24,36 +25,36 @@ const guideForm = () => {
     groups: false,
     individual: false,
   });
-  const [editableField, setEditableField] = useState(null);
-  const [changesSaved, setChangesSaved] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [description, setDescription] = useState("");
   const [document, setDocument] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [userId, setUserId] = useState("");
 
-   const getUserId = async () => {
-     try {
-       const id = await AsyncStorage.getItem("userId");
-       return id !== null ? parseInt(id) : null;
-     } catch (error) {
-       console.error("Error fetching user ID:", error);
-       return null;
-     }
-   };
+  const getUserId = async () => {
+    try {
+      const id = await AsyncStorage.getItem("userId");
+      return id !== null ? parseInt(id) : null;
+    } catch (error) {
+      console.error("Error fetching user ID:", error);
+      return null;
+    }
+  };
 
-   useEffect(() => {
-     const fetchUserId = async () => {
-       const id = await getUserId();
-       if (id) {
-         setUserId(id);
-       }
-     };
-     fetchUserId();
-   }, []);
+  useEffect(() => {
+    const fetchUserId = async () => {
+      const id = await getUserId();
+      if (id) {
+        setUserId(id);
+      }
+    };
+    fetchUserId();
+  }, []);
 
   const handleDocumentPick = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
-    if (result.type === "success") {
+
+    if (result.assets[0].name) {
       setDocument(result);
     }
   };
@@ -69,7 +70,7 @@ const guideForm = () => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     const formData = new FormData();
     formData.append("user_id", userId);
     formData.append("language", language);
@@ -83,22 +84,23 @@ const guideForm = () => {
     formData.append("description", description);
 
     if (document) {
+      console.log(document);
       formData.append("document", {
-        uri: document.uri,
-        name: document.name,
-        type: document.mimeType || "application/pdf",
+        uri: document.assets[0].uri,
+        name: document.assets[0].name,
+        type: document.assets[0].mimeType || "application/pdf",
       });
     }
 
     if (photo) {
       formData.append("photo", {
         uri: photo.uri,
-        name: `photo_${Date.now()}.jpg`,
         type: "image/jpeg",
+        name: `photo_${Date.now()}.jpg`,
       });
     }
 
-    console.log([...formData]);
+    console.log(formData);
 
     axios
       .post("http://10.0.2.2:8000/guide/create", formData, {
@@ -108,7 +110,6 @@ const guideForm = () => {
       })
       .then((response) => {
         setChangesSaved(true);
-        setEditableField(null);
         setTimeout(() => setChangesSaved(false), 2000);
       })
       .catch((error) => {
@@ -117,115 +118,126 @@ const guideForm = () => {
           error.response || error.message
         );
       });
-    };
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.headerText}>Be a Tour Guide</Text>
-      <View style={styles.formContainer}>
-        <View style={styles.pickerBox}>
-          <Picker
-            selectedValue={language}
-            onValueChange={(itemValue) => setLanguage(itemValue)}
-            style={styles.picker}
-          >
-            <Picker.Item label="Language" value="" />
-            <Picker.Item label="English" value="english" />
-            <Picker.Item label="Spanish" value="spanish" />
-            <Picker.Item label="French" value="french" />
-          </Picker>
-        </View>
-        <View style={styles.pickerBox}>
-          <Picker
-            selectedValue={location}
-            onValueChange={(itemValue) => setLocation(itemValue)}
-            style={styles.picker}
-          >
-            <Picker.Item label="Location" value="" />
-            <Picker.Item label="New York" value="new_york" />
-            <Picker.Item label="Los Angeles" value="los_angeles" />
-            <Picker.Item label="Chicago" value="chicago" />
-          </Picker>
-        </View>
-        <View style={styles.preferenceContainer}>
-          <Text style={styles.preferenceText}>Preference</Text>
-          <View style={styles.checkBoxContainer}>
+    <View style={styles.safecontainer}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.headerText}>Be a Tour Guide</Text>
+        <View style={styles.formContainer}>
+          <Text style={styles.label}>Language</Text>
+          <View style={styles.pickerBox}>
+            <Picker
+              selectedValue={language}
+              onValueChange={(itemValue) => setLanguage(itemValue)}
+              style={styles.picker}
+            >
+              <Picker.Item label="Language" value="" />
+              <Picker.Item label="English" value="english" />
+              <Picker.Item label="Spanish" value="spanish" />
+              <Picker.Item label="French" value="french" />
+            </Picker>
+          </View>
+          <Text style={styles.label}>Location</Text>
+          <View style={styles.pickerBox}>
+            <Picker
+              selectedValue={location}
+              onValueChange={(itemValue) => setLocation(itemValue)}
+              style={styles.picker}
+            >
+              <Picker.Item label="Location" value="" />
+              <Picker.Item label="New York" value="new_york" />
+              <Picker.Item label="Los Angeles" value="los_angeles" />
+              <Picker.Item label="Chicago" value="chicago" />
+            </Picker>
+          </View>
+          <Text style={styles.label}>Preference</Text>
+          <View style={styles.preferenceContainer}>
+            <Text style={styles.preferenceText}>Preference</Text>
             <View style={styles.checkBoxContainer}>
-              <Text style={styles.checkBoxLabel}>Individual</Text>
-              <CheckBox
-                checked={preference.individual}
-                onPress={() =>
-                  setPreference({
-                    ...preference,
-                    individual: !preference.individual,
-                  })
-                }
-                containerStyle={styles.checkBox}
-              />
-            </View>
-            <View style={styles.checkBoxContainer}>
-              <Text style={styles.checkBoxLabel}>Groups</Text>
-              <CheckBox
-                checked={preference.groups}
-                onPress={() =>
-                  setPreference({ ...preference, groups: !preference.groups })
-                }
-                containerStyle={styles.checkBox}
-              />
+              <View style={styles.checkBoxContainer}>
+                <Text style={styles.checkBoxLabel}>Individual</Text>
+                <CheckBox
+                  checked={preference.individual}
+                  onPress={() =>
+                    setPreference({
+                      ...preference,
+                      individual: !preference.individual,
+                    })
+                  }
+                  containerStyle={styles.checkBox}
+                />
+              </View>
+              <View style={styles.checkBoxContainer}>
+                <Text style={styles.checkBoxLabel}>Groups</Text>
+                <CheckBox
+                  checked={preference.groups}
+                  onPress={() =>
+                    setPreference({ ...preference, groups: !preference.groups })
+                  }
+                  containerStyle={styles.checkBox}
+                />
+              </View>
             </View>
           </View>
-        </View>
-        <TextInput
-          style={styles.textArea}
-          placeholder="Description"
-          value={description}
-          onChangeText={setDescription}
-          multiline
-        />
-        <View style={styles.uploadContainer}>
-          <TouchableOpacity
-            style={styles.uploadButton}
-            onPress={handleDocumentPick}
-          >
-            <Image source={icons.uploadDocument} style={styles.uploadImage} />
+          <Text style={styles.label}>Description</Text>
+          <TextInput
+            style={styles.textArea}
+            placeholder="Description"
+            value={description}
+            onChangeText={setDescription}
+            multiline
+          />
+
+          <View style={styles.uploadContainer}>
             <TouchableOpacity
-              style={styles.profilePicChangeButton}
+              style={styles.uploadButton}
+              onPress={handleDocumentPick}
             >
-              <Feather name="plus" size={10} color="white" />
+              <Image source={icons.uploadDocument} style={styles.uploadImage} />
+              <TouchableOpacity style={styles.changeButton}>
+                <Feather name="plus" size={10} color="white" />
+              </TouchableOpacity>
+              <Text style={styles.uploadText} numberOfLines={1}>
+                Upload Document
+              </Text>
             </TouchableOpacity>
-            <Text style={styles.uploadText} numberOfLines={1}>
-              Upload Document
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.uploadButton}
-            onPress={handlePhotoPick}
-          >
-            <Image source={icons.uploadImage} style={styles.uploadImage} />
             <TouchableOpacity
-              style={styles.profilePicChangeButton}
+              style={styles.uploadButton}
+              onPress={handlePhotoPick}
             >
-              <Feather name="plus" size={10} color="white" />
+              <Image source={icons.uploadImage} style={styles.uploadImage} />
+              <TouchableOpacity style={styles.changeButton}>
+                <Feather name="plus" size={10} color="white" />
+              </TouchableOpacity>
+              <Text style={styles.uploadText}>Upload Photo</Text>
             </TouchableOpacity>
-            <Text style={styles.uploadText}>Upload Photo</Text>
-          </TouchableOpacity>
+          </View>
+          <View className="items-center">
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.submitText}>Submit</Text>
+            </TouchableOpacity>
+            {saved && (
+              <Text style={styles.savedText}>Changes Saved!</Text>
+            )}
+          </View>
         </View>
-        <View className="items-center">
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitText}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safecontainer: {
     flex: 1,
+    backgroundColor: "white",
+  },
+  container: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "white",
     padding: 40,
   },
   headerText: {
@@ -301,7 +313,8 @@ const styles = StyleSheet.create({
   uploadText: {
     width: 115,
     textAlign: "center",
-    color: "#fff",
+    fontWeight: "bold",
+    marginTop: 10,
   },
   submitButton: {
     width: 100,
@@ -314,13 +327,23 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
   },
-  profilePicChangeButton: {
+  changeButton: {
     position: "absolute",
-    bottom: 18,
+    bottom: 35,
     right: 35,
     backgroundColor: "green",
     borderRadius: 15,
     padding: 5,
+  },
+  label: {
+    width: "100%",
+    textAlign: "left",
+    marginVertical: 5,
+    fontWeight: "bold",
+  },
+  savedText: {
+    color: "#28a745",
+    marginTop: 10,
   },
 });
 
