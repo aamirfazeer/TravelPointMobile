@@ -19,6 +19,7 @@ const equipmentForm = () => {
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState(null);
   const [ownerId, setOwnerId] = useState("");
+  const [saved, setSaved] = useState(false);
 
   const getUserId = async () => {
     try {
@@ -73,15 +74,22 @@ const equipmentForm = () => {
       },
     };
 
-    try {
-      const response = await axios.post(
-        "http://10.0.2.2:8000/equipment/create", formData, config
-      );
-
-      console.log("Form submitted successfully:", response.data);
-    } catch (error) {
-      console.error("Error submitting form:", error.response || error.message);
-    }
+    axios
+      .post("http://10.0.2.2:8000/equipment/create", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        setSaved(true);
+        setTimeout(() => setSaved(false), 2000);
+      })
+      .catch((error) => {
+        console.error(
+          "Error submitting form:",
+          error.response || error.message
+        );
+      });
   };
 
   return (
@@ -120,6 +128,7 @@ const equipmentForm = () => {
           <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
             <Text style={styles.submitText}>Submit</Text>
           </TouchableOpacity>
+          {saved && <Text style={styles.savedText}>Changes Saved!</Text>}
         </View>
       </View>
     </View>
@@ -205,6 +214,10 @@ const styles = StyleSheet.create({
   },
   picker: {
     color: "gray",
+  },
+  savedText: {
+    color: "#28a745",
+    marginTop: 10,
   },
 });
 

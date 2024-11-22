@@ -6,13 +6,14 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ScrollView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import axios from "axios";
 import { icons } from "../../../constants";
-import DropdownComponent from "../../../components/Dropdown";
 import { router } from "expo-router";
+import { Picker } from "@react-native-picker/picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const vehicleForm = () => {
@@ -20,9 +21,11 @@ const vehicleForm = () => {
   const [capacity, setCapacity] = useState("");
   const [milage, setMilage] = useState("");
   const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
   const [document, setDocument] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [ownerId, setOwnerId] = useState("");
+  const [saved, setSaved] = useState(false);
 
   const getUserId = async () => {
     try {
@@ -46,7 +49,8 @@ const vehicleForm = () => {
 
   const handleDocumentPick = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
-    if (result.type === "success") {
+
+    if (result.assets[0].name) {
       setDocument(result);
     }
   };
@@ -54,21 +58,14 @@ const vehicleForm = () => {
   const handlePhotoPick = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
       quality: 1,
     });
 
     if (!result.cancelled) {
-      setPhoto(result.uri);
+      setPhoto(result.assets[0]);
     }
   };
-
-  const types = [
-    { label: "Type 1", value: "t1" },
-    { label: "Type 2", value: "t2" },
-    { label: "Type 3", value: "t3" },
-  ];
+  7;
 
   const handleSubmit = async () => {
     const formData = new FormData();
@@ -77,22 +74,26 @@ const vehicleForm = () => {
     formData.append("capacity", capacity);
     formData.append("milage", milage);
     formData.append("price", price);
+    formData.append("description", description);
 
     if (document) {
+      console.log(document);
       formData.append("document", {
-        uri: document.uri,
-        name: document.name,
-        type: document.mimeType || "application/pdf",
+        uri: document.assets[0].uri,
+        name: document.assets[0].name,
+        type: document.assets[0].mimeType || "application/pdf",
       });
     }
 
     if (photo) {
       formData.append("photo", {
-        uri: photo,
-        name: "photo.jpg",
+        uri: photo.uri,
         type: "image/jpeg",
+        name: `photo_${Date.now()}.jpg`,
       });
     }
+
+    console.log(formData);
 
     try {
       const response = await axios.post(
@@ -113,56 +114,82 @@ const vehicleForm = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>Rent out vehicles</Text>
-      <View style={styles.formContainer}>
-        <DropdownComponent
-          data={types}
-          placeholder={"Vehicle Type"}
-          value={type}
-          onValueChange={setType}
-        />
-        <TextInput
-          style={styles.textArea}
-          placeholder="Milage Per Litre"
-          value={milage}
-          onChangeText={setMilage}
-        />
-        <TextInput
-          style={styles.textArea}
-          placeholder="Capacity"
-          value={capacity}
-          onChangeText={setCapacity}
-        />
-        <TextInput
-          style={styles.textArea}
-          placeholder="Price"
-          value={price}
-          onChangeText={setPrice}
-        />
-        <View style={styles.uploadContainer}>
-          <TouchableOpacity
-            style={styles.uploadButton}
-            onPress={handleDocumentPick}
-          >
-            <Image source={icons.uploadDocument} style={styles.uploadImage} />
-            <Text style={styles.uploadText} numberOfLines={1}>
-              Upload Document
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.uploadButton}
-            onPress={handlePhotoPick}
-          >
-            <Image source={icons.uploadImage} style={styles.uploadImage} />
-            <Text style={styles.uploadText}>Upload Photo</Text>
-          </TouchableOpacity>
+      <ScrollView contentContainerStyle={styles.container1}>
+        <Text style={styles.headerText}>Rent out vehicles</Text>
+        <View style={styles.formContainer}>
+          <Text style={styles.label}>Type</Text>
+          <View style={styles.pickerBox}>
+            <Picker
+              selectedValue={type}
+              onValueChange={(itemValue) => setType(itemValue)}
+              style={styles.picker}
+            >
+              <Picker.Item label="Type" value="" />
+              <Picker.Item label="Type_1" value="t1" />
+              <Picker.Item label="Type_2" value="t2" />
+              <Picker.Item label="Type_3" value="t3" />
+            </Picker>
+          </View>
+          <Text style={styles.label}>Milage</Text>
+          <TextInput
+            style={styles.textArea}
+            placeholder="Milage Per Litre"
+            value={milage}
+            onChangeText={setMilage}
+          />
+          <Text style={styles.label}>Capacity</Text>
+          <TextInput
+            style={styles.textArea}
+            placeholder="Capacity"
+            value={capacity}
+            onChangeText={setCapacity}
+          />
+          <Text style={styles.label}>Price</Text>
+          <TextInput
+            style={styles.textArea}
+            placeholder="Price"
+            value={price}
+            onChangeText={setPrice}
+          />
+          <Text style={styles.label}>Description</Text>
+          <TextInput
+            style={styles.textArea1}
+            value={description}
+            placeholder="description"
+            onChangeText={setDescription}
+            multiline
+          />
+          <View style={styles.uploadContainer}>
+            <TouchableOpacity
+              style={styles.uploadButton}
+              onPress={handleDocumentPick}
+            >
+              <Image source={icons.uploadDocument} style={styles.uploadImage} />
+              <Text style={styles.uploadText} numberOfLines={1}>
+                Upload Document
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.uploadButton}
+              onPress={handlePhotoPick}
+            >
+              <Image source={icons.uploadImage} style={styles.uploadImage} />
+              <Text style={styles.uploadText}>Upload Photo</Text>
+            </TouchableOpacity>
+          </View>
+          <View className="items-center">
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.submitText}>Submit</Text>
+            </TouchableOpacity>
+            {saved && (
+              <Text style={styles.savedText}>Changes Saved!</Text>
+            )}
+          </View>
         </View>
-        <View className="items-center">
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitText}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -170,9 +197,12 @@ const vehicleForm = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
+  },
+  container1: {
+    backgroundColor: "#fff",
+    alignItems: "center",
     padding: 40,
   },
   headerText: {
@@ -216,7 +246,7 @@ const styles = StyleSheet.create({
   uploadText: {
     width: 115,
     textAlign: "center",
-    color: "#fff",
+    fontWeight: "bold",
   },
   submitButton: {
     width: 100,
@@ -228,6 +258,36 @@ const styles = StyleSheet.create({
   submitText: {
     color: "white",
     fontWeight: "bold",
+  },
+  pickerBox: {
+    marginBottom: 20,
+    backgroundColor: "white",
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: "gray",
+  },
+  picker: {
+    color: "gray",
+  },
+  label: {
+    width: "100%",
+    textAlign: "left",
+    marginVertical: 5,
+    fontWeight: "bold",
+  },
+  textArea1: {
+    height: 150,
+    backgroundColor: "white",
+    borderRadius: 8,
+    padding: 8,
+    textAlignVertical: "top",
+    marginBottom: 16,
+    borderWidth: 2,
+    borderColor: "gray",
+  },
+  savedText: {
+    color: "#28a745",
+    marginTop: 10,
   },
 });
 
