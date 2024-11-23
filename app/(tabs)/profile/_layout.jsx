@@ -13,6 +13,8 @@ const Stacklayout = () => {
         <Stack.Screen name="enter_code" options={{ headerShown: false }} />
         <Stack.Screen name="reset_pw" options={{ headerShown: false }} />
         <Stack.Screen name="delete_acc" options={{ headerShown: false }} />
+        <Stack.Screen name="profile_posts" options={{ headerShown: false }} />
+        <Stack.Screen name="user_profile" options={{ headerShown: false }} />
     </Stack>
   )
 }
