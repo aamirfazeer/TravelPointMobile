@@ -49,6 +49,8 @@ const ProfileScreen = () => {
   const [lastname, setLastname] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
+  const [posts, setPosts] = useState([]); // State for posts
+  const [loadingPosts, setLoadingPosts] = useState(false);
 
   const getUserId = async () => {
     try {
@@ -92,19 +94,50 @@ const ProfileScreen = () => {
       }
     };
 
+    const fetchUserPosts = async () => {
+      const userId = await getUserId();
+
+      if (userId) {
+        setLoadingPosts(true);
+        axios
+          .get(`http://10.0.2.2:8000/profile/posts/${userId}`)
+          .then((response) => {
+            setPosts(response.data); // Set posts data
+          })
+          .catch((error) => {
+            console.error("Error fetching user posts:", error);
+          })
+          .finally(() => setLoadingPosts(false));
+      }
+    };
+
     // Initial fetch
     fetchProfileData();
+    fetchUserPosts();
 
     // Set interval to fetch profilePic every 30 seconds
     const intervalId = setInterval(fetchProfileData, 30000); // Fetch every 30 seconds
+    const postIntervalId = setInterval(fetchUserPosts, 30000); // Fetch every 30 seconds
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
+    return () => clearInterval(postIntervalId);
   }, []);
 
-  const renderPostItem = ({ item }) => (
-    <Image source={item} style={styles.postImage} />
-  );
+  const renderPostItem = ({ item }) => {
+    // Check if images exist and format the first image for base64
+    const imageUri =
+      item.images && item.images.length > 0
+        ? `data:image/jpeg;base64,${item.images[0]}`
+        : null;
+
+    return (
+      <Image
+        source={imageUri ? { uri: imageUri } : placeholderImage}
+        style={styles.postImage}
+      />
+    );
+  };
 
   const renderTravelItem = ({ item }) => (
     <View style={styles.card}>
@@ -225,9 +258,16 @@ const ProfileScreen = () => {
         <FlatList
           data={posts}
           renderItem={renderPostItem}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item) => item.id.toString()}
           numColumns={2}
           contentContainerStyle={styles.galleryContainer}
+          ListEmptyComponent={() =>
+            !loadingPosts && (
+              <Text style={{ textAlign: "center", marginTop: 20 }}>
+                No posts available.
+              </Text>
+            )
+          }
         />
       )}
 
