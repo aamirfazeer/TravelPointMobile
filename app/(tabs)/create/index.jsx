@@ -84,15 +84,18 @@ export default function AddPost() {
         formData.append("images", imageObj);
       });
 
-      const response = await axios.post(
-        "http://10.0.2.2:8000/posts/create",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      console.log("Posting data:", formData);
+
+      axios.
+        post(
+          "http://10.0.2.2:8000/posts/create",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
 
       Alert.alert("Success", "Your post was created successfully!");
       router.push("/posts");
