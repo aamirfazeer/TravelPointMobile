@@ -7,18 +7,15 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
-  Pressable
+  Pressable,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import MapView, { Marker } from "react-native-maps";
 import { images } from "../../../constants";
 import { router } from "expo-router";
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const placeholderImage = require("../../../assets/images/placeholder.png");
-
-const posts = [images.travel1, images.travel2, images.travel3];
 
 const travels = [
   {
@@ -53,24 +50,16 @@ const ProfileScreen = () => {
   const [posts, setPosts] = useState([]); // State for posts
   const [loadingPosts, setLoadingPosts] = useState(false);
 
-  const getUserId = async () => {
-    try {
-      const id = await AsyncStorage.getItem("userId");
-      return id !== null ? parseInt(id) : null;
-    } catch (error) {
-      console.error("Error fetching user ID:", error);
-      return null;
-    }
-  };
+  const poster_id = router.query; // Use router.query for params
 
   useEffect(() => {
     // Function to fetch profile data
     const fetchProfileData = async () => {
       const userId = await getUserId(); // Retrieve user ID first
 
-      if (userId) {
+      if (poster_id) {
         axios
-          .get(`http://10.0.2.2:8000/profile/${userId}`)
+          .get(`http://10.0.2.2:8000/profile/${poster_id}`)
           .then((response) => {
             const { firstname, lastname, username, profilePic, bio } =
               response.data;
@@ -96,12 +85,11 @@ const ProfileScreen = () => {
     };
 
     const fetchUserPosts = async () => {
-      const userId = await getUserId();
 
-      if (userId) {
+      if (poster_id) {
         setLoadingPosts(true);
         axios
-          .get(`http://10.0.2.2:8000/profile/posts/${userId}`)
+          .get(`http://10.0.2.2:8000/profile/posts/${poster_id}`)
           .then((response) => {
             setPosts(response.data); // Set posts data
           })
@@ -147,7 +135,6 @@ const ProfileScreen = () => {
       </TouchableOpacity>
     );
   };
-
 
   const renderTravelItem = ({ item }) => (
     <View style={styles.card}>
