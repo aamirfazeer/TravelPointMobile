@@ -12,7 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { router } from 'expo-router'
 import { images } from '../../constants';
-import axios from "axios";
+import { login } from '../services/auth'
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -56,12 +56,10 @@ const LoginScreen = () => {
     };
 
     try {
-      const response = await axios.get(
-        `http://10.0.2.2:8000/auth/login/${userDetails.email}/${userDetails.password}`,
-        userDetails,
-        config
-      );
-        router.push("/home");
+
+      const response = await login(userDetails); // Calls login function
+      Alert.alert("Success", "Logged in successfully");
+      router.push("/home");
     } catch (error) {
       Alert.alert("Error", "Invalid email or password");
     }

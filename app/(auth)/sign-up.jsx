@@ -17,6 +17,7 @@ import axios from "axios";
 const SignUpScreen = () => {
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
+  const [username, setUserName] = useState("");
   const [nic_passport, setNicPassport] = useState("");
   const [email, setEmail] = useState("");
   const [phone_number, setPhoneNumber] = useState("");
@@ -39,6 +40,7 @@ const SignUpScreen = () => {
     if (
       !first_name ||
       !last_name ||
+      !username ||
       !nic_passport ||
       !email ||
       !phone_number ||
@@ -74,6 +76,7 @@ const SignUpScreen = () => {
       email: email,
       first_name: first_name,
       last_name: last_name,
+      username: username,
       phone_number: phone_number,
       nic_passport: nic_passport,
       location: location,
@@ -88,9 +91,11 @@ const SignUpScreen = () => {
       },
     };
 
+    
+
       try {
         const response = await axios.post(
-          "http://10.0.2.2:8000/user_management/register", userDetails, config
+          "http://10.0.2.2:8000/register", userDetails, config
         );
 
         if (response.status === 200) {
@@ -104,48 +109,6 @@ const SignUpScreen = () => {
         Alert.alert("Error", "Failed to create account");
       }
   };
-
-  // using js
-
-  // const myHeaders = new Headers();
-  // myHeaders.append("Content-Type", "application/json");
-
-  // const raw = JSON.stringify({
-  //   email: email,
-  //   first_name: first_name,
-  //   last_name: last_name,
-  //   phone_number: phone_number,
-  //   nic_passport: nic_passport,
-  //   location: location,
-  //   password: password,
-  // });
-
-  // const requestOptions = {
-  //   method: "POST",
-  //   headers: myHeaders,
-  //   body: raw,
-  //   redirect: "follow",
-  // };
-
-  // fetch("http://10.0.2.2:8000/user_management/register", requestOptions)
-  //   .then((response) => response.text())
-  //   .then((result) => console.log(result))
-  //   .catch((error) => console.error(error));
-
-  // axios
-  //   .post("http://10.0.2.2:8000/user_management/register", userDetails, config)
-  //   .then((response) => {
-  //     if (response.status === 201) {
-  //       Alert.alert("Success", "Account created successfully");
-  //       router.push("/preference");
-  //     } else {
-  //       Alert.alert("Error", response.data.message || "Something went wrong");
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //     Alert.alert("Error", "Failed to create account");
-  //   });
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -171,6 +134,15 @@ const SignUpScreen = () => {
               placeholder="Last Name"
               value={last_name}
               onChangeText={setLastName}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Icon name="person" size={20} color="#444" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="User Name"
+              value={username}
+              onChangeText={setUserName}
             />
           </View>
           <View style={styles.inputContainer}>

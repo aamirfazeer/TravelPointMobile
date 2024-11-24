@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,26 +6,50 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Image,
+  Alert,
 } from "react-native";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function AddPost() {
-  const [description, setDescription] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [caption, setCaption] = useState("");
+  const [images, setImages] = useState([]);
+  const [posterId, setPosterId] = useState("");
+
+  const getUserId = async () => {
+    try {
+      const id = await AsyncStorage.getItem("userId");
+      return id !== null ? parseInt(id) : null;
+    } catch (error) {
+      console.error("Error fetching user ID:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const fetchPosterId = async () => {
+      const id = await getUserId();
+      if (id) {
+        setPosterId(id);
+      }
+    };
+    fetchPosterId();
+  }, []);
 
   const handleSelectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
+      allowsMultipleSelection: true,
       quality: 1,
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
+      setImages(result.assets.map((asset) => asset.uri));
     }
   };
 
@@ -38,33 +62,58 @@ export default function AddPost() {
   };
 
   const handlePost = async () => {
+    if (!posterId) {
+      Alert.alert("Error", "User ID not found. Please sign in again.");
+      return;
+    }
+
     try {
       const formData = new FormData();
-      formData.append("description", description);
+      formData.append("poster_id", posterId);
+      formData.append("caption", caption || "");
+      formData.append("video_url", ""); // Can be updated to allow video uploading
+      formData.append("location", ""); // This can be updated when the location is set
 
-      if (selectedImage) {
-        formData.append("image", {
-          uri: selectedImage,
+      images.forEach((imageUri, index) => {
+        const fileName = `image${index}.jpg`;
+        const imageObj = {
+          uri: imageUri,
           type: "image/jpeg",
-          name: "photo.jpg",
-        });
-      }
+          name: fileName,
+        };
+        formData.append("images", imageObj);
+      });
 
-      const response = await axios.post(
-        "http://10.0.2.2:8000/user_management/post",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      console.log("Posting data:", formData);
 
-      console.log("Post created:", response.data);
+      axios.
+        post(
+          "http://10.0.2.2:8000/posts/create",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+      Alert.alert("Success", "Your post was created successfully!");
       router.push("/posts");
     } catch (error) {
-      console.error("Error creating post:", error);
+      console.error(
+        "Error creating post:",
+        error.response?.data || error.message
+      );
+      Alert.alert(
+        "Error",
+        error.response?.data?.message ||
+          "There was an issue creating your post."
+      );
     }
+  };
+
+  const removeImage = (imageUri) => {
+    setImages(images.filter((image) => image !== imageUri));
   };
 
   return (
@@ -78,17 +127,32 @@ export default function AddPost() {
           <Text style={styles.imageText}>Add Image</Text>
           <Ionicons name="chevron-forward" size={24} color="black" />
         </TouchableOpacity>
+        {images.length > 0 && (
+          <View style={styles.imageContainer}>
+            <ScrollView horizontal>
+              {images.map((image, index) => (
+                <View key={index} style={styles.imageWrapper}>
+                  <Image source={{ uri: image }} style={styles.selectedImage} />
+                  <TouchableOpacity
+                    style={styles.removeImageButton}
+                    onPress={() => removeImage(image)}
+                  >
+                    <Ionicons name="close-circle" size={24} color="red" />
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        )}
         <View style={styles.descriptionInput}>
           <View style={styles.descriptionContent}>
             <Ionicons name="brush-outline" size={24} color="black" />
-            <Text style={[styles.imageText, { marginLeft: 95 }]}>
-              Description
-            </Text>
+            <Text style={[styles.imageText, { marginLeft: 95 }]}>Caption</Text>
           </View>
           <TextInput
             style={styles.textArea}
-            value={description}
-            onChangeText={setDescription}
+            value={caption}
+            onChangeText={setCaption}
             multiline
           />
         </View>
@@ -135,11 +199,28 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 2,
     borderColor: "#ddd",
-    marginBottom: 30,
+    marginBottom: 20,
   },
   imageText: {
     fontSize: 16,
     color: "#000",
+  },
+  selectedImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 15,
+    marginRight: 10,
+  },
+  imageWrapper: {
+    position: "relative",
+  },
+  removeImageButton: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    borderRadius: 15,
+    padding: 5,
   },
   descriptionInput: {
     height: 220,
@@ -147,7 +228,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#ddd",
     backgroundColor: "#fff",
-    backgroundColor: "white",
     textAlignVertical: "top",
     marginBottom: 25,
   },
@@ -165,7 +245,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#ddd",
     backgroundColor: "#fff",
-    backgroundColor: "white",
     textAlignVertical: "top",
     marginBottom: 25,
     marginHorizontal: 17,
@@ -174,7 +253,7 @@ const styles = StyleSheet.create({
     width: 200,
     backgroundColor: "#00cc44",
     padding: 10,
-    marginTop: 30,
+    marginTop: 5,
     borderRadius: 50,
     alignItems: "center",
     alignSelf: "center",
