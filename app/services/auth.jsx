@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-// Function to login the user and store userId and token in AsyncStorage
 export const login = async (userDetails) => {
   const config = {
     headers: {

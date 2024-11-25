@@ -24,6 +24,8 @@ export default function ProfilePosts() {
   const params = router.query; // Use router.query for params
   const index = params;
 
+  console.log("Index:", index);
+
   const getUserId = async () => {
     try {
       const id = await AsyncStorage.getItem("userId");
