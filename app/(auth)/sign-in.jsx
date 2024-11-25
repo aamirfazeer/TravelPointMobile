@@ -45,7 +45,9 @@ const LoginScreen = () => {
       password: password,
     };
 
-    console.log("User details:", JSON.stringify(userDetails, null, 2));
+    // console.log("User details:", JSON.stringify(userDetails, null, 2));
+    console.log(`http://10.0.2.2:8000/auth/login/${userDetails.email}/${userDetails.password}`)
+
 
     const config = {
       headers: {
@@ -54,6 +56,7 @@ const LoginScreen = () => {
     };
 
     try {
+
       const response = await login(userDetails); // Calls login function
       Alert.alert("Success", "Logged in successfully");
       router.push("/home");
