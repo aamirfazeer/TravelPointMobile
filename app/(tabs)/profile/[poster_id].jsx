@@ -11,8 +11,10 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import MapView, { Marker } from "react-native-maps";
-import { useRouter } from "expo-router";
+import { images } from "../../../constants";
+import { useRouter, useSearchParams } from "expo-router";
 import axios from "axios";
+import { useLocalSearchParams, useGlobalSearchParams, Link } from "expo-router";
 
 const placeholderImage = require("../../../assets/images/placeholder.png");
 
@@ -46,15 +48,15 @@ const ProfileScreen = () => {
   const [lastname, setLastname] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
-  const [posts, setPosts] = useState([]); // State for posts
+  const [posts, setPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(false);
 
-  const router = useRouter(); // Access dynamic route parameters
+  const router = useRouter();
 
-
+  const local = useLocalSearchParams();
+  const poster_id = local.poster_id;
+  
   useEffect(() => {
-
-    console.log("Poster ID:", poster_id);
 
     const fetchProfileData = async () => {
       if (poster_id) {

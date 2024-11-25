@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { images } from '../constants';
 import { router } from 'expo-router';
+import "expo-router/entry";
+
 
 const App = () => {
   return (
