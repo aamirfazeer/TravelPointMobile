@@ -64,3 +64,5 @@ export const getToken = async () => {
     return null;
   }
 };
+
+export default { login, logout, isLoggedIn, getToken };
