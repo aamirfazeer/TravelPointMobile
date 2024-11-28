@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -21,8 +21,8 @@ export default function ProfilePosts() {
   const [liked, setLiked] = useState([]);
   const [selectedPostIndex, setSelectedPostIndex] = useState(null);
 
-  const params = router.query; // Use router.query for params
-  const index = params;
+  const local = useLocalSearchParams();
+  const index = local.index;
 
   console.log("Index:", index);
 
