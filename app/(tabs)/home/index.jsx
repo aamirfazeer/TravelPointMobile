@@ -13,6 +13,7 @@ import {
 import { icons, images } from "../../../constants";
 import Icon from "react-native-vector-icons/Ionicons";
 import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const profiles = [
