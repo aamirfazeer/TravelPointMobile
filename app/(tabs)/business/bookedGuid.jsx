@@ -40,14 +40,6 @@ const BookedEquipment = () => (
 export default function Equipment() {
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity>
-          <FontAwesome name="bars" style={styles.icon} />
-        </TouchableOpacity>
-        {/* <TouchableOpacity>
-          <FontAwesome name="bell" style={styles.icon} />
-        </TouchableOpacity> */}
-      </View>
       <BookedEquipment />
     </View>
   );

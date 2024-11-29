@@ -23,6 +23,10 @@ const Stacklayout = () => {
       <Stack.Screen name="editVehicle" options={{ headerShown: false }} />
       <Stack.Screen name="equipmentHome" options={{ headerShown: false }} />
       <Stack.Screen name="ownEquipment" options={{ headerShown: false }} />
+      <Stack.Screen name="addEquipment" options={{ headerShown: false }} />
+      <Stack.Screen name="payment" options={{ headerShown: false }} />
+      <Stack.Screen name="reqProgressing" options={{ headerShown: false }} />
+      <Stack.Screen name="vehicleServiceProvider" options={{ headerShown: false }} />
     </Stack>
   );
 };
