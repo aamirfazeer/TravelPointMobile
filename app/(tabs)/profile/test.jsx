@@ -1,104 +1,133 @@
-// screens/ProfileScreen.js
-import React, { useState}  from "react";
-import {  View,  Text,  StyleSheet,  Image,FlatList,  TouchableOpacity,} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { images } from "../../../constants";
-//import { LuMessageCircle } from "react-icons/lu";
-import Icon from 'react-native-vector-icons/AntDesign';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import axios from "axios";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
-
+const placeholderImage = require("../../../assets/images/placeholder.png");
 
 const ProfileScreen = () => {
-  const [activeTab, setActiveTab] = useState('Gallery');
-  const posts = [images.travel1, images.travel2, images.travel3];
+  const [profilePic, setProfilePic] = useState(null);
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const router = useRouter();
+  const local = useLocalSearchParams();
+  const poster_id = local.poster_id;
 
-  const ProfileHeader = () => {
-    return (
-      <SafeAreaView>
-        <View style={styles.headerContainer}>
-          <View style={styles.profileInfo}>
-            <Image source={images.profile1} style={styles.profileImage} />
-            <View style={styles.textContainer}>
-              <Text style={styles.name}>Dia Kumaran</Text>
-              <Text style={styles.username}>@dia_kumaran</Text>
-            </View>
-            <TouchableOpacity style={styles.followButton}>
-              <Text style={styles.buttonText}>+ Follow</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.messageButton}>
-            <Icon name="message1" size={20} color="#fff" />
-            </TouchableOpacity>
-          </View>
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await axios.get(
+          `http://10.0.2.2:8000/profile/${poster_id}`
+        );
+        const { firstname, lastname, username, profilePic, bio } =
+          response.data;
+        setFirstname(firstname);
+        setLastname(lastname);
+        setUsername(username);
+        setBio(bio);
+        if (profilePic) {
+          setProfilePic({ uri: `data:image/jpeg;base64,${profilePic}` });
+        } else {
+          setProfilePic(null);
+        }
+      } catch (error) {
+        console.error("Error fetching profile details:", error);
+      }
+    };
 
-          <View>
-            <Text style={styles.bio}>Traveling is my therapy</Text>
-          </View>
+    const fetchFollowData = async () => {
+      try {
+        const [followersRes, followingRes] = await Promise.all([
+          axios.get(`http://10.0.2.2:8000/followers/${poster_id}`),
+          axios.get(`http://10.0.2.2:8000/following/${poster_id}`),
+        ]);
+        setFollowersCount(followersRes.data.users.length);
+        setFollowingCount(followingRes.data.users.length);
 
-          <View style={styles.statsContainer}>
-            <View style={styles.stat}>
-              <Text style={styles.statNumber}>232</Text>
-              <Text style={styles.statLabel}>Posts</Text>
-            </View>
-            <View style={styles.stat}>
-              <Text style={styles.statNumber}>112.5k</Text>
-              <Text style={styles.statLabel}>Followers</Text>
-            </View>
-            <View style={styles.stat}>
-              <Text style={styles.statNumber}>112.5k</Text>
-              <Text style={styles.statLabel}>Following</Text>
-            </View>
-          </View>
-        </View>
-      </SafeAreaView>
-    );
+        const currentUserId = 1; // Replace with the logged-in user's ID.
+        setIsFollowing(followersRes.data.users.includes(currentUserId));
+      } catch (error) {
+        console.error("Error fetching follow data:", error);
+      }
+    };
+
+    fetchProfileData();
+    fetchFollowData();
+  }, [poster_id]);
+
+  const handleFollowToggle = async () => {
+    try {
+      if (isFollowing) {
+        await axios.post("http://10.0.2.2:8000/unfollow", {
+          user_id: poster_id,
+          follower_id: 1, // Replace with the logged-in user's ID.
+        });
+        setFollowersCount((prev) => prev - 1);
+      } else {
+        await axios.post("http://10.0.2.2:8000/follow", {
+          user_id: poster_id,
+          follower_id: 1, // Replace with the logged-in user's ID.
+        });
+        setFollowersCount((prev) => prev + 1);
+      }
+      setIsFollowing(!isFollowing);
+    } catch (error) {
+      console.error("Error toggling follow status:", error);
+      Alert.alert("Error", "Unable to update follow status.");
+    }
   };
-
-  const TabBar = () => {
-    return (
-      <View style={styles.tabContainer}>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'Gallery' && styles.activeTab]}
-          onPress={() => setActiveTab('Gallery')}
-        >
-          <Text style={[styles.tabText, activeTab === 'Gallery' && styles.activeTabText]}>Gallery</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'Logs' && styles.activeTab]}
-          onPress={() => setActiveTab('Logs')}
-        >
-          <Text style={[styles.tabText, activeTab === 'Logs' && styles.activeTabText]}>Logs</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
-  const PostGrid = ({ posts }) => {
-    const renderItem = ({ item }) =>
-      item ? <Image source={item} style={styles.image} /> : null;
-
-    return (
-      <FlatList
-        data={posts}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-        numColumns={2}
-        style={styles.grid}
-      />
-    );
-  };
-
 
   return (
     <View style={styles.container}>
-      <ProfileHeader />
-      <TabBar />
-      {activeTab === 'Gallery' ? (
-        <PostGrid posts={posts} />
-      ) : (
-        <View style={styles.logsContainer}>
-          <Text style={styles.logsText}>Logs content goes here</Text>
+      <View style={styles.profileContainer}>
+        <Image
+          source={profilePic ? profilePic : placeholderImage}
+          style={styles.profileImage}
+        />
+        <View style={styles.textContainer}>
+          <Text style={styles.profileName}>
+            {firstname} {lastname}
+          </Text>
+          <Text style={styles.profileHandle}>@{username}</Text>
         </View>
-      )}
+      </View>
+
+      <Text style={styles.profileBio}>{bio}</Text>
+
+      <View style={styles.profileStats}>
+        <View style={styles.stat}>
+          <Text style={styles.statValue}>{followersCount}</Text>
+          <Text style={styles.statLabel}>Followers</Text>
+        </View>
+        <View style={styles.stat}>
+          <Text style={styles.statValue}>{followingCount}</Text>
+          <Text style={styles.statLabel}>Following</Text>
+        </View>
+      </View>
+
+      <TouchableOpacity
+        style={[
+          styles.followButton,
+          isFollowing ? styles.followingButton : null,
+        ]}
+        onPress={handleFollowToggle}
+      >
+        <Text style={styles.followButtonText}>
+          {isFollowing ? "Following" : "Follow"}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -108,115 +137,61 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  headerContainer: {
-    padding: 16,
-  },
-  profileInfo: {
-    flexDirection: "row",
+  profileContainer: {
     alignItems: "center",
+    marginTop: 20,
   },
   profileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
   },
   textContainer: {
-    marginLeft: 16,
+    marginTop: 10,
+    alignItems: "center",
   },
-  name: {
-    fontSize: 18,
+  profileName: {
+    fontSize: 20,
     fontWeight: "bold",
   },
-  username: {
+  profileHandle: {
+    color: "gray",
+  },
+  profileBio: {
+    textAlign: "center",
+    margin: 20,
     fontSize: 14,
     color: "gray",
   },
-  bio: {
-    fontSize: 14,
-    marginTop: 4,
-  },
-  buttonContainer: {
+  profileStats: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 16,
-  },
-  followButton: {
-    // marginTop: 16,
-    backgroundColor: "#1DA1F2",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-    //marginRight: 8,
-    marginLeft: "auto",
-  },
-  messageButton: {
-    backgroundColor: "#ccc",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-    marginLeft: "auto",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-  },
-
-  statsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 16,
+    justifyContent: "space-around",
+    marginVertical: 20,
   },
   stat: {
     alignItems: "center",
   },
-  statNumber: {
+  statValue: {
     fontSize: 16,
     fontWeight: "bold",
   },
   statLabel: {
-    fontSize: 14,
     color: "gray",
+    fontSize: 14,
   },
-  tabContainer: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    justifyContent: 'space-around',
+  followButton: {
+    alignSelf: "center",
+    backgroundColor: "#06D001",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
   },
-  tab: {
-    flex: 1,
-    padding: 12,
-    alignItems: 'center',
+  followingButton: {
+    backgroundColor: "#ccc",
   },
-  tabText: {
+  followButtonText: {
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
-    color: 'gray',
-  },
-  activeTab: {
-    borderBottomWidth: 2,
-    borderBottomColor: '#000',
-  },
-  activeTabText: {
-    color: '#000',
-  },
-
-  grid: {
-    padding: 1,
-  },
-  image: {
-    width: "50%",
-    height: 200,
-    margin: 1,
-  },
-  logsContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logsText: {
-    fontSize: 18,
-    color: 'gray',
   },
 });
 

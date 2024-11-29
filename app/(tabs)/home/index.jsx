@@ -13,6 +13,7 @@ import {
 import { icons, images } from "../../../constants";
 import Icon from "react-native-vector-icons/Ionicons";
 import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const profiles = [
@@ -89,12 +90,10 @@ export default function HomePage() {
             <View key={index} style={styles.post}>
               <View style={styles.postHeader}>
                 <TouchableOpacity
-                  onPress={() =>
-                    router.push({
-                      pathname: `/profile/user_profile`,
-                      params: { poster_id: post.poster_id },
-                    })
-                  }
+                  onPress={() => {
+                    console.log(post.poster_id);
+                    router.push(`/profile/${post.poster_id}`);
+                  }}
                 >
                   <Image
                     source={{
@@ -106,7 +105,11 @@ export default function HomePage() {
                   />
                 </TouchableOpacity>
                 <View style={styles.headerTextContainer}>
-                  <Text style={styles.postUsername}>{post.username}</Text>
+                  <TouchableOpacity
+                    onPress={() => router.push(`/profile/${post.poster_id}`)}
+                  >
+                    <Text style={styles.postUsername}>{post.username}</Text>
+                  </TouchableOpacity>
                   <Text style={styles.postLocation}>
                     {post.location || "Unknown Location"}
                   </Text>
@@ -229,4 +232,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
