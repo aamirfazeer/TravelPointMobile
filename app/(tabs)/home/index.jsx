@@ -13,6 +13,7 @@ import {
 import { icons, images } from "../../../constants";
 import Icon from "react-native-vector-icons/Ionicons";
 import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const profiles = [
@@ -83,7 +84,7 @@ export default function HomePage() {
       {/* Feed Section */}
       <View style={styles.feed}>
         {loading ? (
-          <ActivityIndicator size="large" color="#007BFF" />
+          <ActivityIndicator size="200" color="#007BFF" />
         ) : posts.length > 0 ? (
           posts.map((post, index) => (
             <View key={index} style={styles.post}>
