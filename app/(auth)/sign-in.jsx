@@ -12,7 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { router } from 'expo-router'
 import { images } from '../../constants';
-import { login } from '../services/auth'
+import { login } from '../services/auth.jsx'
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");

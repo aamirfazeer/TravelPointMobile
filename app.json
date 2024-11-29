@@ -1,16 +1,27 @@
 {
   "expo": {
     "name": "TravelPoint",
-    "scheme": "TravelPoint",
+    "scheme": ["travelpoint"],
     "slug": "travelpoint",
     "version": "1.0.0",
     "orientation": "portrait",
+    "newArchEnabled": true,
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/travelpoint_image.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+    "plugins":[[
+      "expo-build-properties",{
+        "android": {
+          "newArchEnabled":true
+      },
+      "ios": {
+        "newArchEnabled": true
+      }
+    }
+    ]]
     },
     "ios": {
       "supportsTablet": true
