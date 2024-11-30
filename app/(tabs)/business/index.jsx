@@ -2,9 +2,21 @@ import React, { useState } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { images } from "../../../constants";
-import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { router } from "expo-router"
 
 const Tab = createMaterialTopTabNavigator();
+
+const getUserId = async () => {
+  try {
+    const id = await AsyncStorage.getItem("userId");
+    return id !== null ? parseInt(id) : null;
+  } catch (error) {
+    console.error("Error fetching user ID:", error);
+    return null;
+  }
+};
 
 function CustomTabBar({ state, descriptors, navigation }) {
   return (
@@ -53,6 +65,41 @@ function CustomTabBar({ state, descriptors, navigation }) {
   );
 }
 
+const checkVehicleStatus = async (userId) => {
+  try {
+    const response = await axios.get(
+      `http://10.0.2.2:8000/vehicles/status/${userId}`
+    );
+    return response.data.status;
+  } catch (error) {
+    console.error("Error fetching vehicle status:", error);
+    return null;
+  }
+};
+
+const handleVehicleRentals = async () => {
+  const userId = await getUserId();
+  if (!userId) {
+    console.error("User ID not found");
+    return;
+  }
+
+  const status = await checkVehicleStatus(userId);
+
+  if (status === null) {
+    Alert.alert("Error", "Could not fetch vehicle status. Try again later.");
+    return;
+  }
+
+  if (status === 1) {
+    router.push("/business/reqProgressing");
+  } else if (status === 2) {
+    router.push("/business/vehicleServiceProvider");
+  } else {
+    router.push("/business/vehicleForm");
+  }
+};
+
 const BusinessPage = () => {
   return (
     <View style={styles.scontainer}>
@@ -97,7 +144,7 @@ const ProvideServiceScreen = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.spbutton}
-        onPress={() => router.push("/business/vehicleForm")}
+        onPress={handleVehicleRentals}
       >
         <Text style={styles.spbuttonText}>Rent Out Vehicles</Text>
       </TouchableOpacity>

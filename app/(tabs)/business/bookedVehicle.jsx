@@ -48,14 +48,6 @@ const BookedVehicle = () => (
 export default function Vehicle() {
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity>
-          <FontAwesome name="bars" style={styles.icon} />
-        </TouchableOpacity>
-        {/* <TouchableOpacity>
-          <FontAwesome name="bell" style={styles.icon} />
-        </TouchableOpacity> */}
-      </View>
       <BookedVehicle />
     </View>
   );

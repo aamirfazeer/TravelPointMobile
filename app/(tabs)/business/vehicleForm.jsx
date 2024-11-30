@@ -65,7 +65,7 @@ const vehicleForm = () => {
       setPhoto(result.assets[0]);
     }
   };
-  7;
+  
 
   const handleSubmit = async () => {
     const formData = new FormData();

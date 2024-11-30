@@ -88,7 +88,7 @@ export default function ProfilePosts() {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.feed}>
         {loading ? (
-          <ActivityIndicator size="large" color="#007BFF" />
+          <ActivityIndicator size="200" color="#007BFF" />
         ) : posts.length > 0 ? (
           <>
             {/* Render focused post first */}
