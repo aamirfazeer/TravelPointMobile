@@ -50,24 +50,28 @@ const ProfileScreen = () => {
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [postCount, setPostCount] = useState(0);
+  const [userId, setUserId] = useState(null);
   const router = useRouter();
-  const local = useLocalSearchParams();
-  const poster_id = local.poster_id;
+  const { poster_id } = useLocalSearchParams();
 
-  const getUserId = async () => {
-    try {
-      const id = await AsyncStorage.getItem("userId");
-      return id !== null ? parseInt(id) : null;
-    } catch (error) {
-      console.error("Error fetching user ID:", error);
-      return null;
-    }
-  };
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const id = await AsyncStorage.getItem("userId");
+        if (id) {
+          setUserId(parseInt(id));
+        }
+      } catch (error) {
+        console.error("Error fetching user ID:", error);
+      }
+    };
 
-  const user_id = getUserId();
+    fetchUserId();
+  }, []);
   
   useEffect(() => {
-
+    // if (!poster_id || !userId) return;
     const fetchProfileData = async () => {
       if (poster_id) {
         try {
@@ -102,6 +106,7 @@ const ProfileScreen = () => {
           const response = await axios.get(
             `http://10.0.2.2:8000/profile/posts/${poster_id}`
           );
+          setPostCount(response.data.length);
           setPosts(response.data);
         } catch (error) {
           console.error("Error fetching user posts:", error);
@@ -112,7 +117,6 @@ const ProfileScreen = () => {
     };
 
     const fetchFollowData = async () => {
-      const userId = await getUserId();
       try {
         const [followersRes, followingRes] = await Promise.all([
           axios.get(`http://10.0.2.2:8000/followers/${poster_id}`),
@@ -121,8 +125,7 @@ const ProfileScreen = () => {
         setFollowersCount(followersRes.data.users.length);
         setFollowingCount(followingRes.data.users.length);
 
-        const currentUserId = userId;
-        setIsFollowing(followersRes.data.users.includes(currentUserId));
+        setIsFollowing(followersRes.data.users.includes(userId));
       } catch (error) {
         console.error("Error fetching follow data:", error);
       }
@@ -139,7 +142,7 @@ const ProfileScreen = () => {
       clearInterval(intervalId);
       clearInterval(postIntervalId);
     };
-  }, [poster_id]);
+  }, [poster_id, userId]);
 
   const renderPostItem = ({ item, index }) => {
     const imageUri =
@@ -204,14 +207,14 @@ const ProfileScreen = () => {
     try {
       if (isFollowing) {
         await axios.post("http://10.0.2.2:8000/unfollow", {
-          user_id: poster_id,
-          follower_id: user_id,
+          user_id: userId,
+          follower_id: poster_id,
         });
         setFollowersCount((prev) => prev - 1);
       } else {
         await axios.post("http://10.0.2.2:8000/follow", {
-          user_id: poster_id,
-          follower_id: user_id,
+          user_id: userId,
+          follower_id: poster_id,
         });
         setFollowersCount((prev) => prev + 1);
       }
@@ -259,7 +262,7 @@ const ProfileScreen = () => {
 
       <View style={styles.profileStats}>
         <View style={styles.stat}>
-          <Text style={styles.statValue}>232</Text>
+          <Text style={styles.statValue}>{postCount}</Text>
           <Text style={styles.statLabel}>Posts</Text>
         </View>
         <View style={styles.stat}>
