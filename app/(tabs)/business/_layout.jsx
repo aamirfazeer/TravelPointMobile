@@ -25,18 +25,12 @@ const Stacklayout = () => {
       <Stack.Screen name="ownEquipment" options={{ headerShown: false }} />
       <Stack.Screen name="addEquipment" options={{ headerShown: false }} />
       <Stack.Screen name="reqProgressing" options={{ headerShown: false }} />
-<<<<<<< HEAD
       <Stack.Screen name="vehicleServiceProvider" options={{ headerShown: false }} />
       <Stack.Screen name="guideServiceProvider" options={{ headerShown: false }} />
-=======
-      <Stack.Screen
-        name="vehicleServiceProvider"
-        options={{ headerShown: false }}
-      />
       <Stack.Screen name="bookingUser" options={{ headerShown: false }} />
       <Stack.Screen name="bookingEquipment" options={{ headerShown: false }} />
       <Stack.Screen name="bookingPayment" options={{ headerShown: false }} />
->>>>>>> 49b8cbb64a75e68984618330362ffe159674e300
+
     </Stack>
   );
 };
