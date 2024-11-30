@@ -1,6 +1,33 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
+export const register = async (email, code) => {
+  try {
+    const response = await axios.post("http://10.0.2.2:8000/verify-otp", {
+      email,
+      otp: code.toString(),
+    });
+
+    const {
+      access_token: token,
+      token_type: type,
+      user_id: userId,
+    } = response.data;
+
+    const statusCode = response.status;
+
+    console.log(response.status);
+
+    await AsyncStorage.setItem("userId", userId.toString());
+    await AsyncStorage.setItem("token", token);
+
+    return response.status;
+  } catch (error) {
+    console.error("Error during login:", error);
+    throw error;
+  }
+};
+
 export const login = async (userDetails) => {
   const config = {
     headers: {

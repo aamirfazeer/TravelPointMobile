@@ -37,6 +37,10 @@ export default function preference() {
     });
   };
 
+  handleRouter = () => {
+    router.push('/home');
+  };
+
   return (
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.container}>
@@ -57,7 +61,7 @@ export default function preference() {
           </TouchableOpacity>
         ))}
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => router.push('/home')}>
+      <TouchableOpacity style={styles.button} onPress={handleRouter}>
         <Text style={styles.buttonText}>Meet your Home Feed</Text>
       </TouchableOpacity>
     </ScrollView>
