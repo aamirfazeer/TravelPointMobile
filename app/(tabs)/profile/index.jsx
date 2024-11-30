@@ -52,6 +52,9 @@ const ProfileScreen = () => {
   const [bio, setBio] = useState("");
   const [posts, setPosts] = useState([]); // State for posts
   const [loadingPosts, setLoadingPosts] = useState(false);
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
+  const [postCount, setPostCount] = useState(0);
 
   const getUserId = async () => {
     try {
@@ -62,6 +65,9 @@ const ProfileScreen = () => {
       return null;
     }
   };
+
+  // const user_id = getUserId();
+  // console.log("user_id", user_id);
 
   useEffect(() => {
     // Function to fetch profile data
@@ -97,12 +103,12 @@ const ProfileScreen = () => {
 
     const fetchUserPosts = async () => {
       const userId = await getUserId();
-
       if (userId) {
         setLoadingPosts(true);
         axios
           .get(`http://10.0.2.2:8000/profile/posts/${userId}`)
           .then((response) => {
+            setPostCount(response.data.length);
             setPosts(response.data); // Set posts data
           })
           .catch((error) => {
@@ -112,9 +118,24 @@ const ProfileScreen = () => {
       }
     };
 
+    const fetchFollowData = async () => {
+      const userId = await getUserId();
+      try {
+        const [followersRes, followingRes] = await Promise.all([
+          axios.get(`http://10.0.2.2:8000/followers/${userId}`),
+          axios.get(`http://10.0.2.2:8000/following/${userId}`),
+        ]);
+        setFollowersCount(followersRes.data.users.length);
+        setFollowingCount(followingRes.data.users.length);
+      } catch (error) {
+        console.error("Error fetching follow data:", error);
+      }
+    };
+
     // Initial fetch
     fetchProfileData();
     fetchUserPosts();
+    fetchFollowData();
 
     // Set interval to fetch profilePic every 30 seconds
     const intervalId = setInterval(fetchProfileData, 30000); // Fetch every 30 seconds
@@ -216,16 +237,16 @@ const ProfileScreen = () => {
 
       <View style={styles.profileStats}>
         <View style={styles.stat}>
-          <Text style={styles.statValue}>232</Text>
+          <Text style={styles.statValue}>{postCount}</Text>
           <Text style={styles.statLabel}>Posts</Text>
         </View>
         <View style={styles.stat}>
-          <Text style={styles.statValue}>112.5k</Text>
+          <Text style={styles.statValue}>{followersCount}</Text>
           <Text style={styles.statLabel}>Followers</Text>
         </View>
         <View style={styles.stat}>
-          <Text style={styles.statValue}>112.5k</Text>
-          <Text style={styles.statLabel}>Followers</Text>
+          <Text style={styles.statValue}>{followingCount}</Text>
+          <Text style={styles.statLabel}>Following</Text>
         </View>
       </View>
 

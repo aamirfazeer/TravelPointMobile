@@ -154,14 +154,6 @@ const EditProfile = () => {
         ) : (
           <Text style={styles.inputText}>{value}</Text>
         )}
-        <TouchableOpacity
-          onPress={() => setEditableField(fieldName)}
-          style={styles.editButton}
-        >
-          <Text>
-            <Feather name="edit-2" size={14} color="black" />
-          </Text>
-        </TouchableOpacity>
       </TouchableOpacity>
     );
   };
@@ -187,36 +179,39 @@ const EditProfile = () => {
             </TouchableOpacity>
           </TouchableOpacity>
           <Text style={styles.label}>Username</Text>
-          {renderEditableTextInput(username, setUsername, "username")}
-          <Text style={styles.label}>Email Address</Text>
-          {renderEditableTextInput(email, setEmail, "email")}
-          <Text style={styles.label}>Contact Info</Text>
-          {renderEditableTextInput(contactInfo, setContactInfo, "contactInfo")}
-          <Text style={styles.label}>Bio</Text>
-          <TouchableOpacity
+          <TextInput
             style={styles.inputContainer}
-            onPress={() => setEditableField(bio)}
-          >
-            {editableField === bio ? (
-              <TextInput
-                style={styles.textArea}
-                value={bio}
-                onChangeText={setBio}
-                onBlur={() => setEditableField(null)}
-                autoFocus
-              />
-            ) : (
-              <Text style={styles.inputText}>{bio}</Text>
-            )}
-            <TouchableOpacity
-              onPress={() => setEditableField(bio)}
-              style={styles.editButton}
-            >
-              <Text>
-                <Feather name="edit-2" size={14} color="black" />
-              </Text>
-            </TouchableOpacity>
-          </TouchableOpacity>
+            value={username}
+            onChangeText={setUsername}
+          />
+
+          <Text style={styles.label}>Email Address</Text>
+          <TextInput
+            style={styles.inputContainer}
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
+
+          <Text style={styles.label}>Contact Info</Text>
+          <TextInput
+            style={styles.inputContainer}
+            value={contactInfo.toString()}
+            onChangeText={(text) => {
+              // Ensure only numeric input
+              const numericValue = text.replace(/[^0-9]/g, "");
+              setContactInfo(numericValue);
+            }}
+            keyboardType="numeric"
+          />
+
+          <Text style={styles.label}>Bio</Text>
+          <TextInput
+            style={styles.textArea}
+            value={bio}
+            onChangeText={setBio}
+            multiline
+          />
           <Text style={styles.label}>Date of Birth</Text>
           <TouchableOpacity
             style={styles.dateInput}
@@ -303,15 +298,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   textArea: {
-    height: 150,
-    padding: 15,
-    borderRadius: 10,
+    height: 80,
+    padding: 10,
+    width: "100%",
+    borderRadius: 20,
     borderWidth: 2,
     borderColor: "#ddd",
     backgroundColor: "#fff",
     textAlignVertical: "top",
-    marginBottom: 25,
-    marginHorizontal: 17,
+    marginVertical: 5,
   },
   input: {
     flex: 1,

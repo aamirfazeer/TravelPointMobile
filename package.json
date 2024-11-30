@@ -18,9 +18,7 @@
     "@react-navigation/material-top-tabs": "^6.6.14",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/stack": "^6.4.1",
-
     "axios": "^1.7.7",
-
     "caniuse-lite": "^1.0.30001642",
     "expo": "~51.0.17",
     "expo-camera": "^15.0.16",
@@ -42,7 +40,9 @@
     "react-native-elements": "^3.4.3",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "~2.16.1",
+    "react-native-get-random-values": "^1.11.0",
     "react-native-global-font": "^1.0.3",
+    "react-native-google-places-autocomplete": "^2.5.7",
     "react-native-image-picker": "^7.1.2",
     "react-native-maps": "^1.20.1",
     "react-native-pager-view": "^6.3.0",
@@ -52,7 +52,8 @@
     "react-native-screens": "3.31.1",
     "react-native-tab-view": "^3.5.2",
     "react-native-vector-icons": "^10.1.0",
-    "tailwind-rn": "^4.2.0"
+    "tailwind-rn": "^4.2.0",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

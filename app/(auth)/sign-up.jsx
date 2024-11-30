@@ -13,6 +13,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import axios from "axios";
+// import { register } from "../services/auth.jsx";
 
 const SignUpScreen = () => {
   const [first_name, setFirstName] = useState("");
@@ -92,13 +93,16 @@ const SignUpScreen = () => {
     };
 
       try {
+        // const response = await register(userDetails);
         const response = await axios.post(
           "http://10.0.2.2:8000/register", userDetails, config
         );
 
         if (response.status === 200) {
-          Alert.alert("Success", "Account created successfully");
-          router.push("/preference");
+          router.push({
+            pathname: "/email",
+            params: { email },
+          });
         } else {
           Alert.alert("Error", response.data.message || "Something went wrong");
         }
