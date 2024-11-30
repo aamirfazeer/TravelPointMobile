@@ -65,6 +65,33 @@ function CustomTabBar({ state, descriptors, navigation }) {
   );
 }
 
+const handleTourGuide = async () => {
+  const userId = await getUserId();
+  if (!userId) {
+    console.error("User ID not found");
+    return;
+  }
+
+  try {
+    const response = await axios.get(
+      `http://10.0.2.2:8000/guides/status/${userId}`
+    );
+    const { status } = response.data;
+
+    if (status === 1) {
+      router.push("/business/reqProgressing");
+    } else if (status === 2) {
+      router.push("/business/guideServiceProvider");
+    } else {
+      router.push("/business/guideForm");
+    }
+  } catch (error) {
+    console.error("Error checking guide status:", error);
+    Alert.alert("Error", "Unable to fetch guide status. Please try again later.");
+  }
+};
+
+
 const checkVehicleStatus = async (userId) => {
   try {
     const response = await axios.get(
@@ -99,6 +126,33 @@ const handleVehicleRentals = async () => {
     router.push("/business/vehicleForm");
   }
 };
+
+const handleEquipmentRentals = async () => {
+  const userId = await getUserId();
+  if (!userId) {
+    console.error("User ID not found");
+    return;
+  }
+
+  try {
+    const response = await axios.get(
+      `http://10.0.2.2:8000/equipment/status/${userId}`
+    );
+    const { status } = response.data;
+
+    if (status === 1) {
+      router.push("/business/reqProgressing");
+    } else if (status === 2) {
+      router.push("/business/equipmentServiceProvider");
+    } else {
+      router.push("/business/equipmentForm");
+    }
+  } catch (error) {
+    console.error("Error fetching equipment status:", error);
+    Alert.alert("Error", "Unable to fetch equipment status. Please try again later.");
+  }
+};
+
 
 const BusinessPage = () => {
   return (
@@ -138,9 +192,9 @@ const ProvideServiceScreen = () => {
       <Text style={styles.sptitle}>Provide a Service</Text>
       <TouchableOpacity
         style={styles.spbutton}
-        onPress={() => router.push("/business/guideForm")}
+        onPress={handleTourGuide}
       >
-        <Text style={styles.spbuttonText}>Be a Tour Guide</Text>
+        <Text style={styles.spbuttonText}>Tour Guide</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.spbutton}
@@ -150,15 +204,9 @@ const ProvideServiceScreen = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.spbutton}
-        onPress={() => router.push("/business/equipmentForm")}
+        onPress={handleEquipmentRentals}
       >
         <Text style={styles.spbuttonText}>Rent Out Equipment</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.spbutton}
-        onPress={() => router.push("/business/authorityForm")}
-      >
-        <Text style={styles.spbuttonText}>Other</Text>
       </TouchableOpacity>
     </View>
   );
