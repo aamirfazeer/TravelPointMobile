@@ -1,50 +1,38 @@
-import React, { useState, useEffect } from "react";
 import {
-  View,
   Text,
+  View,
   Image,
+  TouchableOpacity,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
-  Share,
-  Alert,
   ActivityIndicator,
 } from "react-native";
-import { icons, images } from "../../../constants";
-import Icon from "react-native-vector-icons/Ionicons";
+import React, { useState, useEffect } from "react";
+import { FontAwesome } from "@expo/vector-icons";
 import { router } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import Icon from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 
-const profiles = [
-  { name: "Lewis", img: images.p1 },
-  { name: "Mile", img: images.p2 },
-  { name: "Osa", img: images.p3 },
-  { name: "Sonn", img: images.p4 },
-  { name: "Mush", img: images.p5 },
-  { name: "kush", img: images.person6 },
-];
-
-export default function HomePage() {
-  const [posts, setPosts] = useState([]);
+const GuideList = () => {
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [liked, setLiked] = useState([]);
 
-  // Fetch posts from the API
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await axios.get("http://10.0.2.2:8000/get_all_posts");
-        setPosts(response.data);
-      } catch (error) {
-        console.error("Error fetching posts:", error.message);
-        Alert.alert("Error", "Failed to fetch posts.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Fetch guide list from API
+  const fetchGuideList = async () => {
+    try {
+      const response = await axios.get("http://10.0.2.2:8000/guides_all");
+      setUsers(response.data); // Assuming the API returns an array of guides
+      setLiked(new Array(response.data.length).fill(false)); // Initialize liked state
+    } catch (error) {
+      console.error("Error fetching guides:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchPosts();
+  useEffect(() => {
+    fetchGuideList();
   }, []);
 
   const handleLike = (index) => {
@@ -55,180 +43,116 @@ export default function HomePage() {
     });
   };
 
-  const handleShare = async (title, description) => {
-    try {
-      await Share.share({
-        message: `${title}\n\n${description}`,
-      });
-    } catch (error) {
-      Alert.alert("Error", error.message);
-    }
-  };
-
-  const handleComment = () => {
-    router.push("/home/comments");
-  };
+  if (loading) {
+    return (
+      <View
+        style={[
+          styles.container,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <ActivityIndicator size="large" color="#06D001" />
+      </View>
+    );
+  }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* Horizontal Profiles Scroll */}
-      <ScrollView horizontal contentContainerStyle={styles.profiles}>
-        {profiles.map((profile, index) => (
-          <View key={index} style={styles.profile}>
-            <Image source={profile.img} style={styles.profileImage} />
-            <Text style={styles.profileName}>{profile.name}</Text>
-          </View>
-        ))}
-      </ScrollView>
-
-      {/* Feed Section */}
-      <View style={styles.feed}>
-        {loading ? (
-          <ActivityIndicator size="200" color="#007BFF" />
-        ) : posts.length > 0 ? (
-          posts.map((post, index) => (
-            <View key={index} style={styles.post}>
-              <View style={styles.postHeader}>
-                <TouchableOpacity
-                  onPress={() => {
-                    console.log(post.poster_id);
-                    router.push(`/profile/${post.poster_id}`);
-                  }}
-                >
-                  <Image
-                    source={{
-                      uri: post.profile_pic
-                        ? `data:image/jpeg;base64,${post.profile_pic}`
-                        : "https://via.placeholder.com/40", // Fallback URL for missing profile pictures
-                    }}
-                    style={styles.postProfileImage}
-                  />
-                </TouchableOpacity>
-                <View style={styles.headerTextContainer}>
-                  <TouchableOpacity
-                    onPress={() => router.push(`/profile/${post.poster_id}`)}
-                  >
-                    <Text style={styles.postUsername}>{post.username}</Text>
-                  </TouchableOpacity>
-                  <Text style={styles.postLocation}>
-                    {post.location || "Unknown Location"}
-                  </Text>
-                </View>
-              </View>
-
-              {/* Post Image */}
-              {post.images[0] && (
-                <Image
-                  source={{ uri: `data:image/jpeg;base64,${post.images[0]}` }}
-                  style={styles.postImage}
-                />
-              )}
-
-              <Text style={styles.postDescription}>
-                {post.caption || "No caption provided."}
-              </Text>
-
-              {/* Actions */}
-              <View style={styles.actions}>
-                <TouchableOpacity onPress={() => handleLike(index)}>
-                  <Icon
-                    name={liked[index] ? "heart" : "heart-outline"}
-                    size={24}
-                    color={liked[index] ? "red" : "black"}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => handleShare(post.caption, post.description)}
-                >
-                  <Icon name="share-social-outline" size={24} color="black" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleComment}>
-                  <Icon name="chatbubble-outline" size={24} color="black" />
-                </TouchableOpacity>
-              </View>
+    <ScrollView style={styles.container}>
+      {users.map((user, index) => (
+        <View key={user.id} style={styles.userCard}>
+          <Image
+            source={{ uri: user.profile_pic }}
+            style={styles.profilePicture}
+          />
+          <View style={styles.userInfo}>
+            <View style={styles.ratingContainer}>
+              <FontAwesome name="star" size={14} color="orange" />
+              <Text style={styles.ratingText}>{0}</Text>
             </View>
-          ))
-        ) : (
-          <Text style={{ textAlign: "center", marginTop: 20 }}>
-            No posts available.
-          </Text>
-        )}
-      </View>
+            <Text style={styles.userName}>
+              {user.first_name} {user.last_name}
+            </Text>
+            <Text style={styles.salaryText}>Rs. {user.price} / day</Text>
+          </View>
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={router.push({
+              pathname: "/business/guideDetails",
+              params: {
+                id: user.id,
+                user: user.first_name + " " + user.last_name,
+                price: user.price,
+                profile_pic: user.profile_pic,
+                about: user.about,
+                rating: 0,
+                location: user.location,
+              },
+            })}
+          >
+            <FontAwesome name="arrow-right" size={16} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleLike(index)}>
+            <Icon
+              name={liked[index] ? "heart" : "heart-outline"}
+              size={24}
+              color={liked[index] ? "red" : "black"}
+            />
+          </TouchableOpacity>
+        </View>
+      ))}
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    backgroundColor: "white",
+  },
+  userCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 12,
     backgroundColor: "#fff",
-    padding: 15,
+    borderWidth: 2,
+    borderColor: "#06D001",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    marginHorizontal: 25,
+    marginTop: 6,
+    marginBottom: 16,
   },
-  profiles: {
-    flexDirection: "row",
+  profilePicture: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
   },
-  profile: {
-    alignItems: "center",
-    marginRight: 10,
+  userInfo: {
+    flex: 1,
+    marginLeft: 12,
   },
-  profileImage: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    marginBottom: 5,
-  },
-  profileName: {
-    fontSize: 14,
-  },
-  feed: {
-    marginTop: 20,
-  },
-  post: {
-    marginBottom: 20,
-    padding: 20,
-    backgroundColor: "#f9f9f9",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ddd",
-  },
-  postHeader: {
+  ratingContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10,
   },
-  postProfileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
+  ratingText: {
+    marginLeft: 4,
+    fontSize: 12,
+    color: "#4b5563",
   },
-  headerTextContainer: {
-    flexDirection: "column",
-  },
-  postTitle: {
+  userName: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "600",
   },
-  postLocation: {
+  salaryText: {
     fontSize: 14,
-    color: "#666",
+    color: "#6b7280",
   },
-  postImage: {
-    width: "100%",
-    height: 200,
-    borderRadius: 10,
-    marginVertical: 8,
-  },
-  postDescription: {
-    fontSize: 14,
-    marginBottom: 10,
-  },
-  actions: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
-  postUsername: {
-    fontSize: 16,
-    fontWeight: "bold",
+  iconButton: {
+    padding: 8,
   },
 });
+
+export default GuideList;

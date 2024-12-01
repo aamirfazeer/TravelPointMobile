@@ -44,10 +44,33 @@ const BorrowerDetailsForm = () => {
     fetchProfileData();
   }, []);
 
-  const handleNext = () => {
-    console.log("Proceeding to the next step...");
-    router.push("./bookingEquipment");
+  const handleNext = async () => {
+    try {
+      const userType = await AsyncStorage.getItem("userType");
+
+      if (userType) {
+        switch (userType) {
+          case "2":
+            router.push("./bookingGuide");
+            break;
+          case "3":
+            router.push("./bookingEquipment");
+            break;
+          case "4":
+            router.push("./bookingVehicle");
+            break;
+          default:
+            Alert.alert("Error", "Invalid user type");
+            break;
+        }
+      } else {
+        Alert.alert("Error", "User type not found");
+      }
+    } catch (error) {
+      console.error("Error navigating to the next step:", error);
+    }
   };
+
 
   return (
     <View style={styles.safecontainer}>
