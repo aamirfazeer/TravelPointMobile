@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
 import { images } from '../../../constants';
 import { router } from "expo-router";
 
@@ -26,7 +25,15 @@ const BookingItem = ({ item }) => (
 
 const BookedEquipment = () => (
   <View style={styles.container}>
-    <Text style={styles.title}>Booking Requests</Text>
+    <View style={styles.header}>
+      <Text style={styles.title}>My Bookings</Text>
+      <TouchableOpacity
+        style={styles.profileButton}
+        onPress={() => router.push('/business/editGuidProfile')}
+      >
+        <Text style={styles.profileButtonText}>My Profile</Text>
+      </TouchableOpacity>
+    </View>
     <View style={styles.listContainer}>
       <FlatList
         data={data}
@@ -57,31 +64,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  icon: {
-    fontSize: 24,
-    color: '#000',
-  },
-  headerButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 30, // Adjusted gap
-  },
-  headerButton: {
-    backgroundColor: '#00FF00',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-    marginRight: 10, // Adjusted margin
-  },
-  headerButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+  },
+  profileButton: {
+    backgroundColor: '#00cc44',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+  },
+  profileButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
   listContainer: {
     flex: 1,
