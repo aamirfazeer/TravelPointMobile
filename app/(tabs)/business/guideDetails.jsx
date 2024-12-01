@@ -1,10 +1,27 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from "react-native";
-import { icons, images } from "../../../constants";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
+import { router, useLocalSearchParams } from "expo-router";
 import Icons from "react-native-vector-icons/Ionicons";
 
-
 const ProfilePage = () => {
+  const { id, user, price, profile_pic, about, rating, location } =
+    useLocalSearchParams() || {};
+
+  if (!id || !user || !price || !location) {
+    return (
+      <View style={styles.container}>
+        <Text>Error: Missing details for this guide.</Text>
+      </View>
+    );
+  }
+
   return (
     <ScrollView
       style={styles.container}
@@ -12,20 +29,27 @@ const ProfilePage = () => {
     >
       <View style={styles.profileContainer}>
         <View style={styles.imageContainer}>
-          <Image source={images.person1} style={styles.image} />
+          <Image
+            source={
+              profile_pic
+                ? { uri: `data:image/jpeg;base64,${profile_pic}` }
+                : "https://via.placeholder.com/40"
+            }
+            style={styles.image}
+          />
         </View>
         <View style={styles.header}>
-          <Text style={styles.name}>Aamir Arshad</Text>
-          <Image source={icons.heart} style={styles.iconHeart} />
+          <Text style={styles.name}>{user}</Text>
+          <Icons name="heart" size={24} color="red" />
         </View>
         <View style={styles.infoRow}>
           <View style={styles.infoItem}>
-            <Icons name="star" size={20} color={"blue"} />
-            <Text style={styles.infoText}>4.8 (73 reviews)</Text>
+            <Icons name="star" size={20} color="blue" />
+            <Text style={styles.infoText}>{rating ?? 0}</Text>
           </View>
           <View style={styles.infoItem}>
-            <Icons name="location-sharp" size={20} color={"green"} />
-            <Text style={styles.infoText}>Angoda</Text>
+            <Icons name="location-sharp" size={20} color="green" />
+            <Text style={styles.infoText}>{location}</Text>
           </View>
         </View>
       </View>
@@ -35,13 +59,17 @@ const ProfilePage = () => {
       <View style={styles.aboutSection}>
         <Text style={styles.aboutTitle}>About</Text>
         <Text style={styles.aboutText} numberOfLines={7} ellipsizeMode="tail">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-          feugiat libero diam, ut fermentum justo commodo non. Interdum et
-          malesuada fames ac ante ipsum primis in faucibus. Phasellus pretium
-          elit ac nulla hendrerit, in fermentum mi cursus. Lorem Ipsum is simply
-          dummy text of the printing and typesetting industry.
+          {about || "No information provided."}
         </Text>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+            router.push({
+              pathname: "/business/bookingUser",
+              params: { id, user, price, location },
+            })
+          }
+        >
           <Text style={styles.buttonText}>Book Now</Text>
         </TouchableOpacity>
       </View>
@@ -53,93 +81,88 @@ export default ProfilePage;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "white",
   },
   contentContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    marginHorizontal: 15,
+    paddingHorizontal: 30,
+    paddingBottom: 24,
   },
   profileContainer: {
-    flex: 1,
+    alignItems: "center",
+    marginBottom: 20,
   },
   imageContainer: {
     alignItems: "center",
+    marginBottom: 20,
   },
   image: {
+    width: 250,
     height: 250,
-    width: 247,
-    borderRadius: 100,
-    marginBottom: 50,
-    marginTop: 30,
-    alignSelf: "center",
+    borderRadius: 125,
+    borderWidth: 2,
+    borderColor: "#06D001",
   },
   header: {
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 4,
+    width: "100%",
+    marginTop: 8,
   },
   name: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 1,
-  },
-  iconHeart: {
-    width: 32,
-    height: 32,
-    alignItems: "center",
+    color: "#333",
   },
   infoRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 2,
-    gap: 140,
+    width: "100%",
+    marginVertical: 16,
   },
   infoItem: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 2,
-  },
-  icon: {
-    width: 24,
-    height: 24,
-  },
-  iconLocation: {
-    width: 20,
-    height: 24,
   },
   infoText: {
-    marginLeft: 4,
-    textAlign: "right",
+    marginLeft: 8,
+    fontSize: 16,
+    color: "#555",
   },
   line: {
-    height: 1.5,
-    width: "88%",
-    backgroundColor: "black",
-    marginVertical: 10,
+    width: "90%",
+    height: 1,
+    backgroundColor: "#ddd",
+    alignSelf: "center",
+    marginVertical: 16,
   },
   aboutSection: {
-    padding: 20,
+    padding: 0,
   },
   aboutTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 16,
     textAlign: "center",
+    marginBottom: 12,
   },
   aboutText: {
-    marginBottom: 35,
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 20,
   },
   button: {
     backgroundColor: "#06D001",
-    paddingVertical: 12,
+    paddingVertical: 14,
     paddingHorizontal: 24,
-    borderRadius: 9999,
+    borderRadius: 24,
+    alignItems: "center",
     alignSelf: "center",
   },
   buttonText: {
-    color: "white",
+    fontSize: 16,
     fontWeight: "bold",
+    color: "white",
   },
 });
+

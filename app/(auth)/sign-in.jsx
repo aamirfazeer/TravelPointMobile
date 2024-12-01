@@ -56,7 +56,6 @@ const LoginScreen = () => {
     };
 
     try {
-
       const response = await login(userDetails); // Calls login function
       Alert.alert("Success", "Logged in successfully");
       router.push("/home");

@@ -28,7 +28,7 @@ const Stacklayout = () => {
       <Stack.Screen name="bookingUser" options={{ headerShown: false }} />
       <Stack.Screen name="bookingEquipment" options={{ headerShown: false }} />
       <Stack.Screen name="bookingPayment" options={{ headerShown: false }} />
-
+      <Stack.Screen name="bookingGuide" options={{ headerShown: false }} />
     </Stack>
   );
 };
