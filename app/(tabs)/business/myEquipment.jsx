@@ -14,7 +14,7 @@ const items = [
   { id: '6', title: 'Flashlight', rating: 4.0, reviews: 24, price: 2000, image: 'https://via.placeholder.com/50' },
 ];
 
-const ownEquipment = () => {
+const myEquipment = () => {
   return (
     <View style={styles.container}>
       <FlatList
@@ -90,4 +90,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ownEquipment;
+export default myEquipment;

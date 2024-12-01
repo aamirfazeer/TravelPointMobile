@@ -1,97 +1,57 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  Image,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { images } from '../../../constants';
 
-// Sample data
-const bookingRequests = [
-  {
-    id: '1',
-    customerName: 'Mr. Manoj Kumar',
-    vehicleModel: 'Honda Civic',
-    vehicleNumber: 'CAF 2334',
-    status: 'View Info',
-    image: 'https://via.placeholder.com/50',
-  },
-  {
-    id: '2',
-    customerName: 'Mr. Suresh Raina',
-    vehicleModel: 'Honda GL',
-    vehicleNumber: 'CAO 4434',
-    status: 'View Info',
-    image: 'https://via.placeholder.com/50',
-  },
-  {
-    id: '3',
-    customerName: 'Mr. Elliot',
-    vehicleModel: 'Honda Civic',
-    vehicleNumber: 'CAJ 4334',
-    status: 'View Info',
-    image: 'https://via.placeholder.com/50',
-  },
-  {
-    id: '4',
-    customerName: 'Mr. Sonia',
-    vehicleModel: 'Toyota Axio',
-    vehicleNumber: 'CAD 2334',
-    status: 'Confirmed',
-    image: 'https://via.placeholder.com/50',
-  },
+const data = [
+  { id: '1', name: 'Mr. Manoj Kumar', car: 'Honda Civic - CAF 2334', status: 'View Info', image: images.p1 },
+  { id: '2', name: 'Mr. Suresh Raina', car: 'Toyota GL - CAO 4434', status: 'View Info', image: images.p2 },
+  { id: '3', name: 'Mr. Elliot', car: 'Honda Civic - CAJ 4334', status: 'View Info', image: images.p3 },
+  { id: '4', name: 'Mr. Sonia', car: 'Toyota Axio - CAD 2334', status: 'Confirmed', image: images.p4 },
 ];
 
-const vehicleServiceProvider = () => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Add a Vehicle</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => router.push('/manage-vehicles')}
-        >
-          <Text style={styles.buttonText}>Manage Vehicles</Text>
-        </TouchableOpacity>
-      </View>
+const BookingItem = ({ item }) => (
+  <View style={styles.bookingItem}>
+    <Image source={item.image} style={styles.avatar} />
+    <View style={styles.info}>
+      <Text style={styles.name}>{item.name}</Text>
+      <Text style={styles.car}>{item.car}</Text>
+    </View>
+    <TouchableOpacity style={[styles.button, item.status === 'Confirmed' ? styles.confirmedButton : styles.viewInfoButton]}>
+      <Text style={styles.buttonText}>{item.status}</Text>
+    </TouchableOpacity>
+  </View>
+);
 
-      <Text style={styles.title}>Booking Requests</Text>
-
+const BookedVehicle = () => (
+  <View style={styles.container}>
+    <View style={styles.headerButtons}>
+      <TouchableOpacity style={styles.headerButton} onPress={() => router.push("/business/addVehicle")}>
+        <Text style={styles.headerButtonText}>Add a vehicle</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.headerButton} onPress={() => router.push("/business/myVehicle")}>
+        <Text style={styles.headerButtonText}>Manage Vehicles</Text>
+      </TouchableOpacity>
+    </View>
+    <Text style={styles.title}>Booking Requests</Text>
+    <View style={styles.listContainer}>
       <FlatList
-        data={bookingRequests}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Image source={{ uri: item.image }} style={styles.image} />
-            <View style={styles.info}>
-              <Text style={styles.name}>{item.customerName}</Text>
-              <Text style={styles.vehicle}>
-                {item.vehicleModel} - {item.vehicleNumber}
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={[
-                styles.statusButton,
-                item.status === 'Confirmed'
-                  ? styles.confirmed
-                  : styles.viewInfo,
-              ]}
-            >
-              <Text style={styles.statusText}>
-                {item.status === 'Confirmed' ? 'Confirmed' : 'View Info'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
+        data={data}
+        renderItem={({ item }) => <BookingItem item={item} />}
+        keyExtractor={item => item.id}
       />
     </View>
+  </View>
+);
+
+export default function Vehicle() {
+  return (
+    <View style={styles.container}>
+      <BookedVehicle />
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -102,69 +62,76 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 20,
   },
-  button: {
-    backgroundColor: '#00b300',
-    padding: 10,
-    borderRadius: 10,
-    marginTop: 40,
+  icon: {
+    fontSize: 24,
+    color: '#000',
   },
-  buttonText: {
+  headerButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  headerButton: {
+    backgroundColor: '#00cc44',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+  },
+  headerButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+    fontSize: 16,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    marginTop: 15,
-    textAlign: 'center',
+    alignItems: 'center'
   },
-  card: {
+  listContainer: {
+    flex: 1,
+  },
+  bookingItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#f5f5f5',
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 20,
     marginBottom: 10,
   },
-  image: {
+  avatar: {
     width: 50,
     height: 50,
     borderRadius: 25,
+    marginRight: 10,
   },
   info: {
     flex: 1,
-    marginLeft: 15,
   },
   name: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: 'bold',
   },
-  vehicle: {
-    fontSize: 13,
-    color: '#666',
+  car: {
+    fontSize: 14,
+    color: '#888',
   },
-  statusButton: {
-    padding: 10,
-    borderRadius: 10,
+  button: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 20,
   },
-  viewInfo: {
-    backgroundColor: '#007bff',
-    width: 120,
-    fontWeight: 'bold',
+  viewInfoButton: {
+    backgroundColor: '#00f',
   },
-  confirmed: {
-    backgroundColor: '#28a745',
-    width: 120,
-    fontWeight: 'bold',
+  confirmedButton: {
+    backgroundColor: '#00cc44',
   },
-  statusText: {
+  buttonText: {
     color: '#fff',
     fontWeight: 'bold',
-    textAlign: 'center',
   },
 });
-
-export default vehicleServiceProvider;
