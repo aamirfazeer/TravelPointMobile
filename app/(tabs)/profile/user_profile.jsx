@@ -75,8 +75,9 @@ const ProfileScreen = () => {
     const fetchProfileData = async () => {
       if (poster_id) {
         try {
-          const response = await axios.get({ pathname: "http://10.0.2.2:8000/profile/user_profile", params: { poster_id }
-        });
+          const response = await axios.get(
+            `http://10.0.2.2:8000/profile/${poster_id}`
+          );
           const { firstname, lastname, username, profilePic, bio } =
             response.data;
 
@@ -154,8 +155,8 @@ const ProfileScreen = () => {
         style={styles.postContainer}
         onPress={() =>
           router.push({
-            pathname: "/profile/profile_posts",
-            params: { index },
+            pathname: "/profile/user_posts",
+            params: { "index": index, "poster_id": poster_id },
           })
         }
       >

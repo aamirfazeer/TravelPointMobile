@@ -19,34 +19,29 @@ export default function ProfilePosts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [liked, setLiked] = useState([]);
-  const [userId, setUserId] = useState(null);
   const [selectedPostIndex, setSelectedPostIndex] = useState(null);
 
-  const { index } = useLocalSearchParams();
+  const {index, poster_id} = useLocalSearchParams();
 
-  useEffect(() => {
-    const fetchUserId = async () => {
-      try {
-        const id = await AsyncStorage.getItem("userId");
-        if (id) {
-          setUserId(parseInt(id));
-        }
-      } catch (error) {
-        console.error("Error fetching user ID:", error);
-      }
-    };
+  console.log("Index:", index);
 
-    fetchUserId();
-  }, []);
+  const getUserId = async () => {
+    try {
+      const id = await AsyncStorage.getItem("userId");
+      return id !== null ? parseInt(id) : null;
+    } catch (error) {
+      console.error("Error fetching user ID:", error);
+      return null;
+    }
+  };
 
   // Fetch posts from the API
   useEffect(() => {
-    console.log("User ID:", userId);
     const fetchPosts = async () => {
-      if (userId) {
+      if (poster_id) {
         setLoading(true);
         axios
-          .get(`http://10.0.2.2:8000/profile/posts/${userId}`)
+          .get(`http://10.0.2.2:8000/profile/posts/${poster_id}`)
           .then((response) => {
             setPosts(response.data); // Set posts data
             // Set the initial post to focus if index is passed as a parameter
@@ -62,7 +57,7 @@ export default function ProfilePosts() {
     };
 
     fetchPosts();
-  }, [index, userId]);
+  }, [index, poster_id]);
 
   const handleLike = (index) => {
     setLiked((prev) => {
