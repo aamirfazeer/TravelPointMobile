@@ -1,124 +1,96 @@
-import React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  Image,
-  StyleSheet,
-} from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { images } from '../../../constants';
 import { router } from "expo-router";
 
-const bookingRequests = [
-  {
-    id: "1",
-    customerName: "Mr. Manoj Kumar",
-    guideName: "John Doe",
-    tourDate: "2024-12-05",
-    status: "View Info",
-    image: "https://via.placeholder.com/50",
-  },
-  {
-    id: "2",
-    customerName: "Ms. Susan Brown",
-    guideName: "Emily Smith",
-    tourDate: "2024-12-10",
-    status: "Confirmed",
-    image: "https://via.placeholder.com/50",
-  },
+const data = [
+  { id: '1', name: 'Mr. Manoj Kumar', dateRange: '2024.06.02 - 2024.06.08', status: 'View Info', image: images.p1 },
+  { id: '2', name: 'Mr. Suresh Raina', dateRange: '2024.08.10 - 2024.08.13', status: 'View Info', image: images.p2 },
+  { id: '3', name: 'Mr. Elliot', dateRange: '2024.07.28 - 2024.07.29', status: 'View Info', image: images.p3 },
+  { id: '4', name: 'Mr. Sonia', dateRange: '2024.05.01 - 2024.05.03', status: 'Confirmed', image: images.p4 },
 ];
 
-const guideServiceProvider = () => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Add Guide Info</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => router.push("/manage-guides")}
-        >
-          <Text style={styles.buttonText}>Manage Guides</Text>
-        </TouchableOpacity>
-      </View>
+const BookingItem = ({ item }) => (
+  <View style={styles.bookingItem}>
+    <Image source={item.image} style={styles.avatar} />
+    <View style={styles.info}>
+      <Text style={styles.name}>{item.name}</Text>
+      <Text style={styles.dateRange}>{item.dateRange}</Text>
+    </View>
+    <TouchableOpacity style={[styles.button, item.status === 'Confirmed' ? styles.confirmedButton : styles.viewInfoButton]}>
+      <Text style={styles.buttonText}>{item.status}</Text>
+    </TouchableOpacity>
+  </View>
+);
 
-      <Text style={styles.title}>Booking Requests</Text>
-
+const BookedEquipment = () => (
+  <View style={styles.container}>
+    <View style={styles.header}>
+      <Text style={styles.title}>My Bookings</Text>
+      <TouchableOpacity
+        style={styles.profileButton}
+        onPress={() => router.push('/business/editGuidProfile')}
+      >
+        <Text style={styles.profileButtonText}>My Profile</Text>
+      </TouchableOpacity>
+    </View>
+    <View style={styles.listContainer}>
       <FlatList
-        data={bookingRequests}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Image source={{ uri: item.image }} style={styles.image} />
-            <View style={styles.info}>
-              <Text style={styles.name}>{item.customerName}</Text>
-              <Text style={styles.details}>
-                Guide: {item.guideName}
-                {"\n"}Date: {item.tourDate}
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={[
-                styles.statusButton,
-                item.status === "Confirmed"
-                  ? styles.confirmed
-                  : styles.viewInfo,
-              ]}
-            >
-              <Text style={styles.statusText}>
-                {item.status === "Confirmed" ? "Confirmed" : "View Info"}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
+        data={data}
+        renderItem={({ item }) => <BookingItem item={item} />}
+        keyExtractor={item => item.id}
       />
     </View>
-  );
-};
+  </View>
+);
 
-export default guideServiceProvider;
+export default function Equipment() {
+  return (
+    <View style={styles.container}>
+      <BookedEquipment />
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     padding: 20,
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 20,
-  },
-  button: {
-    backgroundColor: "#00cc44",
-    padding: 10,
-    borderRadius: 10,
-  },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 15,
-    color: "#006400",
+    fontWeight: 'bold',
   },
-  card: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 15,
-    backgroundColor: "#f9f9f9",
+  profileButton: {
+    backgroundColor: '#00cc44',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+  },
+  profileButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  listContainer: {
+    flex: 1,
+  },
+  bookingItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
     padding: 10,
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    elevation: 3,
+    marginBottom: 10,
   },
-  image: {
+  avatar: {
     width: 50,
     height: 50,
     borderRadius: 25,
@@ -126,27 +98,29 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 1,
+    justifyContent: 'space-between',
   },
   name: {
-    fontWeight: "bold",
     fontSize: 16,
+    fontWeight: 'bold',
   },
-  details: {
-    color: "#555",
+  dateRange: {
     fontSize: 14,
+    color: '#888',
   },
-  statusButton: {
-    padding: 10,
-    borderRadius: 10,
+  button: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 20,
   },
-  confirmed: {
-    backgroundColor: "#00cc44",
+  viewInfoButton: {
+    backgroundColor: '#00f',
   },
-  viewInfo: {
-    backgroundColor: "#ffa500",
+  confirmedButton: {
+    backgroundColor: '#0f0',
   },
-  statusText: {
-    color: "#fff",
-    fontWeight: "bold",
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });

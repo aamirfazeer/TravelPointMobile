@@ -15,11 +15,12 @@ const equipmentHome = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button}
+        onPress={() => router.push("./addEquipment")}>
           <Text style={styles.buttonText}>Add a Equipment</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}
-          onPress={() => router.push("/business/ownEquipment")}>
+          onPress={() => router.push("/business/myEquipment")}>
           <Text style={styles.buttonText}>Manage Equipment</Text>
         </TouchableOpacity>
       </View>
