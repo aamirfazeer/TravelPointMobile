@@ -29,7 +29,7 @@ const VehicleItem = ({ name, price, rating, reviews, image }) => (
         <Icon name="arrow-forward" size={24} color="#000" />
       </TouchableOpacity>
       <TouchableOpacity style={styles.actionButton} onPress={() => router.push("/business/editVehicle")}>
-        <Icon name="edit" size={22} color="#000" marginTop ={15} /> 
+        <Icon name="edit" size={22} color="#000" marginTop={15} />
       </TouchableOpacity>
     </View>
   </View>
@@ -38,7 +38,12 @@ const VehicleItem = ({ name, price, rating, reviews, image }) => (
 const VehicleList = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>My Vehicle</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>My Vehicle</Text>
+        <TouchableOpacity style={styles.addVehicleButton} onPress={() => router.push("/business/addVehicle")}>
+          <Text style={styles.addVehicleText}>Add Vehicle</Text>
+        </TouchableOpacity>
+      </View>
       {vehicles.map((vehicle, index) => (
         <VehicleItem
           key={index}
@@ -59,11 +64,28 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#fff',
   },
+  header: {
+    flexDirection: 'row',  // Aligns title and button horizontally
+    justifyContent: 'space-between',  // Ensures space between the buttons
+    alignItems: 'center',
+    marginBottom: 10,  // Reduced space between title and button
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 16,
-    textAlign: 'center',
+    marginBottom: 5,  // Reduced margin to make the gap smaller
+    marginRight: 15,
+  },
+  addVehicleButton: {
+    backgroundColor: '#00cc44',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    marginRight : 12,  // Adds a little space between buttons
+  },
+  addVehicleText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
   vehicleItem: {
     flexDirection: 'row',
