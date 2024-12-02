@@ -6,13 +6,12 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
-  ScrollView,
-  Pressable,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import MapView, { Marker } from "react-native-maps";
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const placeholderImage = require("../../../assets/images/placeholder.png");
 
@@ -46,16 +45,33 @@ const ProfileScreen = () => {
   const [lastname, setLastname] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
-  const [posts, setPosts] = useState([]); // State for posts
+  const [posts, setPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(false);
-
-  const router = useRouter(); // Access dynamic route parameters
-
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [postCount, setPostCount] = useState(0);
+  const [userId, setUserId] = useState(null);
+  const router = useRouter();
+  const { poster_id } = useLocalSearchParams();
 
   useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const id = await AsyncStorage.getItem("userId");
+        if (id) {
+          setUserId(parseInt(id));
+        }
+      } catch (error) {
+        console.error("Error fetching user ID:", error);
+      }
+    };
 
-    console.log("Poster ID:", poster_id);
-
+    fetchUserId();
+  }, []);
+  
+  useEffect(() => {
+    // if (!poster_id || !userId) return;
     const fetchProfileData = async () => {
       if (poster_id) {
         try {
@@ -90,6 +106,7 @@ const ProfileScreen = () => {
           const response = await axios.get(
             `http://10.0.2.2:8000/profile/posts/${poster_id}`
           );
+          setPostCount(response.data.length);
           setPosts(response.data);
         } catch (error) {
           console.error("Error fetching user posts:", error);
@@ -99,8 +116,24 @@ const ProfileScreen = () => {
       }
     };
 
+    const fetchFollowData = async () => {
+      try {
+        const [followersRes, followingRes] = await Promise.all([
+          axios.get(`http://10.0.2.2:8000/followers/${poster_id}`),
+          axios.get(`http://10.0.2.2:8000/following/${poster_id}`),
+        ]);
+        setFollowersCount(followersRes.data.users.length);
+        setFollowingCount(followingRes.data.users.length);
+
+        setIsFollowing(followersRes.data.users.includes(userId));
+      } catch (error) {
+        console.error("Error fetching follow data:", error);
+      }
+    };
+
     fetchProfileData();
     fetchUserPosts();
+    fetchFollowData();
 
     const intervalId = setInterval(fetchProfileData, 30000);
     const postIntervalId = setInterval(fetchUserPosts, 30000);
@@ -109,7 +142,7 @@ const ProfileScreen = () => {
       clearInterval(intervalId);
       clearInterval(postIntervalId);
     };
-  }, [poster_id]);
+  }, [poster_id, userId]);
 
   const renderPostItem = ({ item, index }) => {
     const imageUri =
@@ -122,8 +155,8 @@ const ProfileScreen = () => {
         style={styles.postContainer}
         onPress={() =>
           router.push({
-            pathname: "/profile/profile_posts",
-            params: { index },
+            pathname: "/profile/user_posts",
+            params: { "index": index, "poster_id": poster_id },
           })
         }
       >
@@ -170,6 +203,28 @@ const ProfileScreen = () => {
     </View>
   );
 
+  const handleFollowToggle = async () => {
+    try {
+      if (isFollowing) {
+        await axios.post("http://10.0.2.2:8000/unfollow", {
+          user_id: userId,
+          follower_id: poster_id,
+        });
+        setFollowersCount((prev) => prev - 1);
+      } else {
+        await axios.post("http://10.0.2.2:8000/follow", {
+          user_id: userId,
+          follower_id: poster_id,
+        });
+        setFollowersCount((prev) => prev + 1);
+      }
+      setIsFollowing(!isFollowing);
+    } catch (error) {
+      console.error("Error toggling follow status:", error);
+      Alert.alert("Error", "Unable to update follow status.");
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>
@@ -188,10 +243,15 @@ const ProfileScreen = () => {
 
         <View style={styles.profileActions}>
           <TouchableOpacity
-            style={styles.followButton}
-            onPress={() => router.push("/profile/settings")}
+            style={[
+              styles.followButton,
+              isFollowing ? styles.followingButton : null,
+            ]}
+            onPress={handleFollowToggle}
           >
-            <Text style={styles.followButtonText}>Manage</Text>
+            <Text style={styles.followButtonText}>
+              {isFollowing ? "Following" : "Follow"}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -202,16 +262,16 @@ const ProfileScreen = () => {
 
       <View style={styles.profileStats}>
         <View style={styles.stat}>
-          <Text style={styles.statValue}>232</Text>
+          <Text style={styles.statValue}>{postCount}</Text>
           <Text style={styles.statLabel}>Posts</Text>
         </View>
         <View style={styles.stat}>
-          <Text style={styles.statValue}>112.5k</Text>
+          <Text style={styles.statValue}>{followersCount}</Text>
           <Text style={styles.statLabel}>Followers</Text>
         </View>
         <View style={styles.stat}>
-          <Text style={styles.statValue}>112.5k</Text>
-          <Text style={styles.statLabel}>Followers</Text>
+          <Text style={styles.statValue}>{followingCount}</Text>
+          <Text style={styles.statLabel}>Following</Text>
         </View>
       </View>
 

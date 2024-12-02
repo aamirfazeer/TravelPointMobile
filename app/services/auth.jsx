@@ -12,6 +12,8 @@ export const register = async (email, code) => {
       access_token: token,
       token_type: type,
       user_id: userId,
+      user_type: userType,
+
     } = response.data;
 
     const statusCode = response.status;
@@ -19,6 +21,7 @@ export const register = async (email, code) => {
     console.log(response.status);
 
     await AsyncStorage.setItem("userId", userId.toString());
+    await AsyncStorage.setItem("userType", userType.toString());
     await AsyncStorage.setItem("token", token);
 
     return response.status;
@@ -45,10 +48,12 @@ export const login = async (userDetails) => {
       access_token: token,
       token_type: type,
       user_id: userId,
+      user_type: userType,
     } = response.data; // Assuming response contains userId and JWT token
 
     // Store userId and token in AsyncStorage
     await AsyncStorage.setItem('userId', userId.toString());
+    await AsyncStorage.setItem('userType', userType.toString());
     await AsyncStorage.setItem('token', token);
 
     return response.data;

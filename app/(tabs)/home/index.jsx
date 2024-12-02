@@ -90,10 +90,12 @@ export default function HomePage() {
             <View key={index} style={styles.post}>
               <View style={styles.postHeader}>
                 <TouchableOpacity
-                  onPress={() => {
-                    console.log(post.poster_id);
-                    router.push(`/profile/${post.poster_id}`);
-                  }}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/profile/user_profile",
+                      params: { poster_id: post.poster_id },
+                    })
+                  }
                 >
                   <Image
                     source={{
@@ -106,7 +108,12 @@ export default function HomePage() {
                 </TouchableOpacity>
                 <View style={styles.headerTextContainer}>
                   <TouchableOpacity
-                    onPress={() => router.push(`/profile/${post.poster_id}`)}
+                    onPress={() =>
+                      router.push({
+                        pathname: "/profile/user_profile",
+                        params: { id: post.poster_id },
+                      })
+                    }
                   >
                     <Text style={styles.postUsername}>{post.username}</Text>
                   </TouchableOpacity>
