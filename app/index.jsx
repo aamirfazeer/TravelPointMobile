@@ -18,7 +18,7 @@ const App = () => {
         </Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => router.push("./(tabs)/business/editGuidProfile")}
+          onPress={() => router.push("./(tabs)/business/findGuide")}
         >
           <Text style={styles.buttonText}>Let's Travel</Text>
         </TouchableOpacity>
