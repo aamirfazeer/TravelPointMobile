@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { images } from '../../../constants';
 
@@ -26,15 +25,13 @@ const BookingItem = ({ item }) => (
 
 const BookedVehicle = () => (
   <View style={styles.container}>
-    <View style={styles.headerButtons}>
-      <TouchableOpacity style={styles.headerButton} onPress={() => router.push("/business/addVehicle")}>
-        <Text style={styles.headerButtonText}>Add a vehicle</Text>
-      </TouchableOpacity>
+    <View style={styles.header}>
+      <Text style={styles.title}>Booking Requests</Text>
       <TouchableOpacity style={styles.headerButton} onPress={() => router.push("/business/myVehicle")}>
-        <Text style={styles.headerButtonText}>Manage Vehicles</Text>
+        <Text style={styles.headerButtonText}>My Vehicles</Text>
       </TouchableOpacity>
     </View>
-    <Text style={styles.title}>Booking Requests</Text>
+
     <View style={styles.listContainer}>
       <FlatList
         data={data}
@@ -65,31 +62,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  icon: {
+  title: {
     fontSize: 24,
-    color: '#000',
-  },
-  headerButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
+    fontWeight: 'bold',
+    flex: 1, // This ensures the title takes up the available space
   },
   headerButton: {
     backgroundColor: '#00cc44',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,
+    marginLeft: 8,
   },
   headerButtonText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    alignItems: 'center'
+    fontSize: 14,
   },
   listContainer: {
     flex: 1,

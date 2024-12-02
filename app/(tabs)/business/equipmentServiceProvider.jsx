@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, TouchableOpacity, FlatList, Image, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 
-
 // Sample data
 const bookingRequests = [
   { id: '1', name: 'Mr. Manoj Kumar', equipment: 'Backpack', status: 'View Info', image: 'https://via.placeholder.com/50' },
@@ -15,18 +14,14 @@ const equipmentHome = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.button}
-        onPress={() => router.push("./addEquipment")}>
-          <Text style={styles.buttonText}>Add a Equipment</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}
-          onPress={() => router.push("/business/myEquipment")}>
-          <Text style={styles.buttonText}>Manage Equipment</Text>
+
+        <Text style={styles.title}>Booking Requests</Text>
+
+        <TouchableOpacity style={styles.button} onPress={() => router.push("/business/myEquipment")}>
+          <Text style={styles.buttonText}>My Equipment</Text>
         </TouchableOpacity>
       </View>
-      
-      <Text style={styles.title}>Booking Requests</Text>
-      
+
       <FlatList
         data={bookingRequests}
         keyExtractor={(item) => item.id}
@@ -55,14 +50,14 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between', // Align items on both ends
     marginBottom: 20,
+    marginTop: 15,
   },
   button: {
     backgroundColor: '#00b300',
     padding: 10,
     borderRadius: 10,
-    marginTop: 40
   },
   buttonText: {
     color: '#fff',
@@ -71,9 +66,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
-    marginTop: 15,
     textAlign: 'center',
+
   },
   card: {
     flexDirection: 'row',
@@ -106,18 +100,18 @@ const styles = StyleSheet.create({
   },
   viewInfo: {
     backgroundColor: '#007bff',
-    width:120,
-    fontWeight: 'bold'
+    width: 120,
+    fontWeight: 'bold',
   },
   confirmed: {
     backgroundColor: '#28a745',
-    width:120,
-    fontWeight: 'bold'
+    width: 120,
+    fontWeight: 'bold',
   },
   statusText: {
     color: '#fff',
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
   },
 });
 

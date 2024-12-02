@@ -6,10 +6,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Switch,
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EditGuideProfile = () => {
@@ -21,6 +21,7 @@ const EditGuideProfile = () => {
   });
   const [description, setDescription] = useState("");
   const [userId, setUserId] = useState("");
+  const [availability, setAvailability] = useState(false); // Added state for availability
 
   const getUserId = async () => {
     try {
@@ -51,16 +52,26 @@ const EditGuideProfile = () => {
         .filter((key) => preference[key])
         .join(","),
       description,
+      availability, // Add availability to form data
     };
 
     try {
-      const response = await axios.post(
-        "http://10.0.2.2:8000/guide/update",
-        formData
-      );
-      console.log("Guide profile updated successfully", response.data);
+      const response = await fetch("http://10.0.2.2:8000/guide/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log("Guide profile updated successfully", data);
+      } else {
+        console.error("Error updating guide profile:", data);
+      }
     } catch (error) {
-      console.error("Error updating guide profile:", error.response || error.message);
+      console.error("Error updating guide profile:", error.message);
     }
   };
 
@@ -108,6 +119,19 @@ const EditGuideProfile = () => {
               onPress={() => setPreference({ ...preference, groups: !preference.groups })}
             />
           </View>
+        </View>
+
+        <Text style={styles.label}>Availability</Text>
+        <View style={styles.switchContainer}>
+          <Text style={styles.switchLabel}>
+            {availability ? "Available" : "Unavailable"}
+          </Text>
+          <Switch
+            value={availability}
+            onValueChange={setAvailability}
+            trackColor={{ false: "#767577", true: "#767577" }}
+            thumbColor={availability ? "#00cc44" : "#f4f3f4"}
+          />
         </View>
 
         <Text style={styles.label}>Description</Text>
@@ -158,6 +182,15 @@ const styles = StyleSheet.create({
   checkboxRow: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  switchContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  switchLabel: {
+    fontSize: 16,
   },
   textArea: {
     borderWidth: 1,
