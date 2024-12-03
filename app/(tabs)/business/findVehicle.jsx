@@ -1,124 +1,97 @@
+import { router } from "expo-router";
 import React, { useState } from "react";
-import { router, Link } from "expo-router";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
-  Platform,
-  Modal,
-  Image,
   StyleSheet,
 } from "react-native";
 import DropdownComponent from "../../../components/Dropdown";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { icons } from "../../../constants";
 
 const findVehicle = () => {
   const vehicles = [
-    { label: "Vehicles 1", value: "v1" },
-    { label: "Vehicles 2", value: "v2" },
-    { label: "Vehicles 3", value: "v3" },
+    { label: "Vehicle 1", value: "v1" },
+    { label: "Vehicle 2", value: "v2" },
+    { label: "Vehicle 3", value: "v3" },
   ];
 
   const location = [
-    { label: "location 1", value: "l1" },
-    { label: "location 2", value: "l2" },
-    { label: "location 3", value: "l3" },
+    { label: "Location 1", value: "l1" },
+    { label: "Location 2", value: "l2" },
+    { label: "Location 3", value: "l3" },
   ];
 
-  const [date, setDate] = useState(new Date());
-  const [show, setShow] = useState(false);
-  const [mode, setMode] = useState("date");
+  const [vehicle, setVehicle] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const onChange = (event, selectedDate) => {
-    setDate(selectedDate);
-    setShow(false);
-  };
-
-  const showDatepicker = (modeToShow) => {
-    setShow(true);
-    setMode(modeToShow);
-  };
-
-  const handleSubmit = () => {
-    console.log({
-      date,
-    });
+  const handleSearch = async () => {
+    try {
+      // Add logic to search vehicles based on the selected parameters
+      // For example, make an API request here:
+      // const response = await axios.get("https://your-api-endpoint/vehicles", {
+      //   params: {
+      //     vehicle,
+      //     location: selectedLocation,
+      //     minPrice,
+      //     maxPrice,
+      //   },
+      // });
+      // console.log("Search Results:", response.data);
+      router.push("/business/vehicleList");
+    } catch (error) {
+      console.error("Error fetching vehicles:", error);
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title} numberOfLines={2}>
-        Find your Vehicle!
-      </Text>
+      <Text style={styles.title}>Find your Vehicle!</Text>
       <View style={styles.card}>
         <View style={styles.inputContainer}>
-          <DropdownComponent data={vehicles} placeholder={"Vehicle"} />
-          <View style={styles.datePickerContainer}>
+          <DropdownComponent
+            data={vehicles}
+            placeholder={"Vehicle Type"}
+            onSelect={(value) => setVehicle(value)}
+          />
+          <DropdownComponent
+            data={location}
+            placeholder={"Location"}
+            onSelect={(value) => setSelectedLocation(value)}
+          />
+
+          <Text style={styles.label}>Price Range</Text>
+          <View style={styles.priceRangeContainer}>
             <TextInput
-              onPress={showDatepicker}
-              style={styles.textInput}
-              placeholder="Date"
-              editable={false}
-              value={date ? date.toLocaleDateString() : "Date"}
+              style={[styles.textInput, styles.priceInput]}
+              placeholder="Min Price"
+              keyboardType="numeric"
+              value={minPrice}
+              onChangeText={(text) => setMinPrice(text)}
             />
-            <TouchableOpacity
-              onPress={showDatepicker}
-              style={styles.datePickerButton}
-            >
-              <Image source={icons.calendar} style={styles.calendarIcon} />
-            </TouchableOpacity>
+            <Text style={styles.separator}>-</Text>
+            <TextInput
+              style={[styles.textInput, styles.priceInput]}
+              placeholder="Max Price"
+              keyboardType="numeric"
+              value={maxPrice}
+              onChangeText={(text) => setMaxPrice(text)}
+            />
           </View>
-          <DropdownComponent data={location} placeholder={"Location"} />
         </View>
+        {errorMessage ? (
+          <Text style={styles.errorText}>{errorMessage}</Text>
+        ) : null}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.goButton}
-            onPress={() => {
-              router.push("/business/vehicleList");
-              handleSubmit();
-            }}
-          >
+          <TouchableOpacity style={styles.goButton} onPress={handleSearch}>
             <Text style={styles.goButtonText}>Go</Text>
           </TouchableOpacity>
         </View>
       </View>
-
-      {show && Platform.OS === "ios" && (
-        <Modal transparent={true} animationType="slide">
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode="date"
-                is24Hour={true}
-                display="default"
-                onChange={onChange}
-                style={styles.dateTimePicker}
-              />
-              <TouchableOpacity
-                onPress={() => setShow(false)}
-                style={styles.doneButton}
-              >
-                <Text style={styles.doneButtonText}>Done</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-      )}
-
-      {show && Platform.OS === "android" && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode="date"
-          is24Hour={true}
-          display="default"
-          onChange={onChange}
-        />
-      )}
     </View>
   );
 };
@@ -131,7 +104,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   title: {
-    width: 300,
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
@@ -149,26 +121,35 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     gap: 8,
   },
-  datePickerContainer: {
+  label: {
+    fontSize: 16,
+    fontWeight: "500",
+    marginBottom: 8,
+    color: "black",
+  },
+  priceRangeContainer: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "white",
-    borderWidth: 2,
-    borderColor: "grey",
-    marginBottom: 16,
     borderRadius: 8,
+    borderWidth: 2,
+    borderColor: "gray",
+    padding: 8,
   },
   textInput: {
     flex: 1,
     padding: 8,
     color: "gray",
   },
-  datePickerButton: {
-    padding: 8,
+  priceInput: {
+    flex: 0.5,
+    textAlign: "center",
   },
-  calendarIcon: {
-    width: 35,
-    height: 35,
+  separator: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginHorizontal: 8,
+    color: "black",
   },
   buttonContainer: {
     alignItems: "center",
@@ -190,29 +171,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContent: {
-    backgroundColor: "white",
-    padding: 16,
-    borderRadius: 8,
-  },
-  dateTimePicker: {
-    width: "100%",
-  },
-  doneButton: {
-    marginTop: 16,
-    padding: 8,
-    backgroundColor: "#3B82F6",
-    borderRadius: 8,
-  },
-  doneButtonText: {
-    color: "white",
+  errorText: {
+    color: "red",
     textAlign: "center",
+    marginBottom: 8,
   },
 });
 
