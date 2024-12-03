@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { images } from "../../../constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { router } from "expo-router"
+import TravelerBookings from './travelerBooking';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -77,7 +78,6 @@ const handleTourGuide = async () => {
       `http://10.0.2.2:8000/guides/status/${userId}`
     );
     const { status } = response.data;
-
     if (status === 1) {
       router.push("/business/reqProgressing");
     } else if (status === 2) {
@@ -221,8 +221,13 @@ const BusinessTab = () => {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="Service Provider"
+        name="service Provider"
         component={ProvideServiceScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="My Booking"
+        component={TravelerBookings} 
         options={{ headerShown: false }}
       />
     </Tab.Navigator>
@@ -234,19 +239,21 @@ export default BusinessTab;
 const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: "row",
-    justifyContent: "center",
-    padding: 10,
+    justifyContent: "space-around",  // Distribute tabs evenly
+    paddingVertical: 10,
     backgroundColor: "#fff",
-    gap: 0,
+    marginHorizontal: 5,
   },
   tabButton: {
-    width: 150,
+    flex: 1,  // Allow tab buttons to expand and fill available space
     marginHorizontal: 5,
-    paddingVertical: 5,
+    paddingVertical: 10,  // Adjust the padding to ensure the text fits well
     paddingHorizontal: 20,
     borderWidth: 1,
     borderColor: "#000",
     borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
   selectedTab: {
     backgroundColor: "#00cc44",
@@ -254,7 +261,7 @@ const styles = StyleSheet.create({
   },
   tabText: {
     textAlign: "center",
-    fontSize: 14.4,
+    fontSize: 14,
     color: "#000",
   },
   selectedTabText: {
@@ -270,10 +277,9 @@ const styles = StyleSheet.create({
     paddingTop: 35,
   },
   sptitle: {
-    fontSize: 18,
+    fontSize: 30,
     color: "#006400",
     marginBottom: 10,
-    fontSize: 30,
     fontWeight: "bold",
   },
   spbutton: {
@@ -282,8 +288,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 20,
     alignItems: "center",
-    paddingVertical: 15, // Adjusted height
-    margin: 18,
+    marginVertical: 15,
     borderColor: "#000",
     shadowColor: "#00cc44",
     shadowOffset: { width: 0, height: 2 },
@@ -297,20 +302,19 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
-
   scontainer: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     paddingHorizontal: 30,
-    alignItems: "center",
+    alignItems: 'center',
     paddingTop: 15,
   },
   stitle: {
     fontSize: 30,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
     marginBottom: 35,
-    color: "#006400",
+    color: '#006400',
   },
   scard: {
     width: "100%",
@@ -322,11 +326,10 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 1,
     shadowRadius: 2,
-
   },
   simage: {
     width: "100%",
-    height: 150, 
+    height: 150,
     opacity: 0.75,
   },
   scardText: {
@@ -336,8 +339,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 24, // Adjusted font size
+    fontSize: 24,
     width: "100%",
-    top: "40%", // Adjusted position
+    top: "40%",
   },
 });
