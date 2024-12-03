@@ -10,13 +10,14 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
 const BorrowerDetailsForm = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [contactInfo, setContactInfo] = useState("");
   const [email, setEmail] = useState("");
+  const { bookingType } = useLocalSearchParams()
 
   const fetchProfileData = async () => {
       const userId = await AsyncStorage.getItem("userId");
@@ -48,8 +49,8 @@ const BorrowerDetailsForm = () => {
     try {
       const userType = await AsyncStorage.getItem("userType");
 
-      if (userType) {
-        switch (userType) {
+      if (bookingType) {
+        switch (bookingType) {
           case "2":
             router.push("./bookingGuide");
             break;
