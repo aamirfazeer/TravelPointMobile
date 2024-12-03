@@ -31,21 +31,17 @@ const findGuide = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSearch = async () => {
-    // Validate price range
-    if (!minPrice || !maxPrice || isNaN(minPrice) || isNaN(maxPrice) || Number(minPrice) > Number(maxPrice)) {
-      setErrorMessage("Please enter a valid price range.");
-      return;
-    }
-
-    // Clear error message if validation passes
-    setErrorMessage("");
     try {
-      router.push({ pathname: "/business/guideList", params: {
-          language,
-          location: selectedLocation,
-          minPrice,
-          maxPrice,
-        }});
+      // const response = await axios.get("https://your-api-endpoint/tour-guides", {
+      //   params: {
+      //     language,
+      //     location: selectedLocation,
+      //     minPrice,
+      //     maxPrice,
+      //   },
+      // });
+      // console.log("Search Results:", response.data);
+      router.push("/business/guideList");
     } catch (error) {
       console.error("Error fetching guides:", error);
     }
