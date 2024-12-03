@@ -139,18 +139,12 @@ const guideForm = () => {
             </Picker>
           </View>
           <Text style={styles.label}>Location</Text>
-          <View style={styles.pickerBox}>
-            <Picker
-              selectedValue={location}
-              onValueChange={(itemValue) => setLocation(itemValue)}
-              style={styles.picker}
-            >
-              <Picker.Item label="Location" value="" />
-              <Picker.Item label="New York" value="new_york" />
-              <Picker.Item label="Los Angeles" value="los_angeles" />
-              <Picker.Item label="Chicago" value="chicago" />
-            </Picker>
-          </View>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Enter your location"
+            value={location}
+            onChangeText={setLocation}
+          />
           <Text style={styles.label}>Preference</Text>
           <View style={styles.preferenceContainer}>
             <Text style={styles.preferenceText}>Preference</Text>
@@ -220,9 +214,7 @@ const guideForm = () => {
             >
               <Text style={styles.submitText}>Submit</Text>
             </TouchableOpacity>
-            {saved && (
-              <Text style={styles.savedText}>Changes Saved!</Text>
-            )}
+            {saved && <Text style={styles.savedText}>Changes Saved!</Text>}
           </View>
         </View>
       </ScrollView>
@@ -285,6 +277,16 @@ const styles = StyleSheet.create({
   },
   textArea: {
     height: 100,
+    backgroundColor: "white",
+    borderRadius: 8,
+    padding: 8,
+    textAlignVertical: "top",
+    marginBottom: 16,
+    borderWidth: 2,
+    borderColor: "gray",
+  },
+  
+  textInput: {
     backgroundColor: "white",
     borderRadius: 8,
     padding: 8,
