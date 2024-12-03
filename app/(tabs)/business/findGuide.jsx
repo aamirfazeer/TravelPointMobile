@@ -40,16 +40,12 @@ const findGuide = () => {
     // Clear error message if validation passes
     setErrorMessage("");
     try {
-      const response = await axios.get("https://your-api-endpoint/tour-guides", {
-        params: {
+      router.push({ pathname: "/business/guideList", params: {
           language,
           location: selectedLocation,
           minPrice,
           maxPrice,
-        },
-      });
-      console.log("Search Results:", response.data);
-      router.push("/business/guideList");
+        }});
     } catch (error) {
       console.error("Error fetching guides:", error);
     }
