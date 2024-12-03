@@ -29,6 +29,9 @@ const Stacklayout = () => {
       <Stack.Screen name="bookingEquipment" options={{ headerShown: false }} />
       <Stack.Screen name="bookingPayment" options={{ headerShown: false }} />
       <Stack.Screen name="bookingGuide" options={{ headerShown: false }} />
+      <Stack.Screen name="viewGuidBookingInfo" options={{ headerShown: false }} />
+      <Stack.Screen name="viewVehicleBookingInfo" options={{ headerShown: false }} />
+      <Stack.Screen name="viewEquipmentbookinginfo" options={{ headerShown: false }} />
     </Stack>
   );
 };

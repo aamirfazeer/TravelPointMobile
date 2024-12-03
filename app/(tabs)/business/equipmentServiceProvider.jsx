@@ -32,7 +32,8 @@ const equipmentHome = () => {
               <Text style={styles.name}>{item.name}</Text>
               <Text style={styles.equipment}>{item.equipment}</Text>
             </View>
-            <TouchableOpacity style={[styles.statusButton, item.status === 'Confirmed' ? styles.confirmed : styles.viewInfo]}>
+            <TouchableOpacity style={[styles.statusButton, item.status === 'Confirmed' ? styles.confirmed : styles.viewInfo]}
+            onPress={() => router.push("/business/viewEquipmentbookinginfo")}>
               <Text style={styles.statusText}>{item.status}</Text>
             </TouchableOpacity>
           </View>

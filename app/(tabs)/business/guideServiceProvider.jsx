@@ -17,7 +17,8 @@ const BookingItem = ({ item }) => (
       <Text style={styles.name}>{item.name}</Text>
       <Text style={styles.dateRange}>{item.dateRange}</Text>
     </View>
-    <TouchableOpacity style={[styles.button, item.status === 'Confirmed' ? styles.confirmedButton : styles.viewInfoButton]}>
+    <TouchableOpacity style={[styles.button, item.status === 'Confirmed' ? styles.confirmedButton : styles.viewInfoButton]}
+    onPress={() => router.push('/business/viewGuidBookingInfo')}>
       <Text style={styles.buttonText}>{item.status}</Text>
     </TouchableOpacity>
   </View>
