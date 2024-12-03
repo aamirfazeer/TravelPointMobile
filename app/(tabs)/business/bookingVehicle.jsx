@@ -12,14 +12,11 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import axios from "axios";
 import { router } from "expo-router";
 
-const VehicleBookingForm = ({ navigation, route }) => {
-  //const { vehicleDetails } = route.params; // Pass vehicle details from the previous screen
+const VehicleBookingForm = () => {
   const [pickupDate, setPickupDate] = useState(new Date());
   const [dropOffDate, setDropOffDate] = useState(new Date());
   const [showPickupDatePicker, setShowPickupDatePicker] = useState(false);
   const [showDropOffDatePicker, setShowDropOffDatePicker] = useState(false);
-  // const [pickupLocation, setPickupLocation] = useState("");
-  // const [dropOffLocation, setDropOffLocation] = useState("");
   const [specialRequests, setSpecialRequests] = useState("");
 
   const calculateRentalDays = () => {
@@ -28,46 +25,45 @@ const VehicleBookingForm = ({ navigation, route }) => {
   };
 
   const handleSubmitBooking = async () => {
-    if (!fullName || !contactNumber || !pickupLocation) {
-      Alert.alert("Error", "Please fill all required fields!");
-      return;
-    }
+    // if (!fullName || !contactNumber || !pickupLocation) {
+    //   Alert.alert("Error", "Please fill all required fields!");
+    //   return;
+    // }
 
-    const bookingData = {
-      //vehicleId: vehicleDetails.id, // Assuming vehicle ID is passed from the previous screen
-      pickupDate: pickupDate.toISOString().split("T")[0],
-      dropOffDate: dropOffDate.toISOString().split("T")[0],
-      rentalDays: calculateRentalDays(),
-      //  pickupLocation,
-      // dropOffLocation,
-      specialRequests,
-    };
+    // const bookingData = {
+    //   //vehicleId: vehicleDetails.id, // Assuming vehicle ID is passed from the previous screen
+    //   pickupDate: pickupDate.toISOString().split("T")[0],
+    //   dropOffDate: dropOffDate.toISOString().split("T")[0],
+    //   rentalDays: calculateRentalDays(),
+    //   specialRequests,
+    // };
 
-    try {
-      const response = await axios.post(
-        "http://10.0.2.2:8000/vehicle/api/book", // Replace with your backend API endpoint
-        bookingData
-      );
+    router.push("./bookingPayment")
 
-      if (response.status === 200 || response.status === 201) {
-        Alert.alert("Success", "Vehicle booking successful!");
-        navigation.navigate("BookingConfirmation", {
-          bookingDetails: response.data,
-        });
-      } else {
-        Alert.alert("Error", "Failed to book the vehicle. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error submitting booking details:", error);
-      Alert.alert("Error", "An error occurred while booking the vehicle.");
-    }
+    // try {
+    //   const response = await axios.post(
+    //     "http://10.0.2.2:8000/vehicle/api/book", // Replace with your backend API endpoint
+    //     bookingData
+    //   );
+
+    //   if (response.status === 200 || response.status === 201) {
+    //     Alert.alert("Success", "Vehicle booking successful!");
+    //     navigation.navigate("BookingConfirmation", {
+    //       bookingDetails: response.data,
+    //     });
+    //   } else {
+    //     Alert.alert("Error", "Failed to book the vehicle. Please try again.");
+    //   }
+    // } catch (error) {
+    //   console.error("Error submitting booking details:", error);
+    //   Alert.alert("Error", "An error occurred while booking the vehicle.");
+    // }
   };
 
   return (
     <View style={styles.safecontainer}>
       <ScrollView contentContainerStyle={styles.container}>
         {/* Booking Dates */}
-        <Text style={styles.sectionTitle}>Booking Details</Text>
 
         {/* Progress Indicator */}
         <View style={styles.progressContainer}>
@@ -83,6 +79,7 @@ const VehicleBookingForm = ({ navigation, route }) => {
             <Text style={[styles.progressText, styles.inactiveText]}>3</Text>
           </View>
         </View>
+        <Text style={styles.title}>Booking Details</Text>
         <Text style={styles.label}>Pickup Date</Text>
         <TouchableOpacity
           style={styles.input}
@@ -128,22 +125,6 @@ const VehicleBookingForm = ({ navigation, route }) => {
           editable={false}
           value={calculateRentalDays.toString()}
         />
-
-        {/* <Text style={styles.label}>Pickup Location</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter pickup location"
-          value={pickupLocation}
-          onChangeText={setPickupLocation}
-        />
-
-        <Text style={styles.label}>Drop-off Location</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter drop-off location (optional)"
-          value={dropOffLocation}
-          onChangeText={setDropOffLocation}
-        /> */}
 
         <Text style={styles.label}>Special Requests</Text>
         <TextInput
@@ -193,6 +174,41 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   nextButtonText: { color: "#fff", fontSize: 16, fontWeight: "bold" },
+  progressContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 30,
+  },
+  progressBall: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#4CAF50",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inactiveProgressBall: {
+    backgroundColor: "#ccc",
+  },
+  progressText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  progressLine: {
+    width: 50,
+    height: 5,
+    backgroundColor: "#4CAF50",
+    marginHorizontal: 5,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    textAlign: "center",
+    marginVertical: 15,
+  },
 });
 
 export default VehicleBookingForm;

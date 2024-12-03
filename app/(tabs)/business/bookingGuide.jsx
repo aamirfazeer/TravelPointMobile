@@ -26,30 +26,31 @@ const TourDetailsForm = () => {
   const durations = ["2 Hours", "Half-Day (6 hrs)", "Full-Day (12 hrs)"]; // Options for tour duration
 
   const handleProceedToPayment = async () => {
-    const tourDetails = {
-      tourType,
-      numTravelers: parseInt(numTravelers, 10),
-      startDate: startDate.toISOString().split("T")[0],
-      duration,
-      description,
-    };
+    // const tourDetails = {
+    //   tourType,
+    //   numTravelers: parseInt(numTravelers, 10),
+    //   startDate: startDate.toISOString().split("T")[0],
+    //   duration,
+    //   description,
+    // };
 
-    try {
-      const response = await axios.post(
-        "http://10.0.2.2:8000/api/tour-details", // Replace with your backend endpoint
-        tourDetails
-      );
+    // try {
+    //   const response = await axios.post(
+    //     "http://10.0.2.2:8000/api/tour-details", // Replace with your backend endpoint
+    //     tourDetails
+    //   );
 
-      if (response.status === 200 || response.status === 201) {
-        Alert.alert("Success", "Tour details saved successfully!");
-        navigation.navigate("PaymentPage", { tourDetails });
-      } else {
-        Alert.alert("Error", "Failed to save tour details. Try again.");
-      }
-    } catch (error) {
-      console.error("Error submitting tour details:", error);
-      Alert.alert("Error", "An error occurred while submitting details.");
-    }
+    //   if (response.status === 200 || response.status === 201) {
+    //     Alert.alert("Success", "Tour details saved successfully!");
+    //     navigation.navigate("PaymentPage", { tourDetails });
+    //   } else {
+    //     Alert.alert("Error", "Failed to save tour details. Try again.");
+    //   }
+    // } catch (error) {
+    //   console.error("Error submitting tour details:", error);
+    //   Alert.alert("Error", "An error occurred while submitting details.");
+    // }
+    router.push("./bookingPayment");
   };
 
   return (
@@ -167,8 +168,8 @@ const TourDetailsForm = () => {
         {/* Proceed to Payment Button */}
         <TouchableOpacity
           style={styles.nextButton}
-          //onPress={handleProceedToPayment}
-          onPress={() => router.push("/business/paymentProceedingsTour")}
+          onPress={handleProceedToPayment}
+          // onPress={() => router.push("/business/paymentProceedingsTour")}
         >
           <Text style={styles.nextButtonText}>Proceed to Payment</Text>
         </TouchableOpacity>
