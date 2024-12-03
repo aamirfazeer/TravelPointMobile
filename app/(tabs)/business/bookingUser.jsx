@@ -43,6 +43,7 @@ const BorrowerDetailsForm = () => {
 
   useEffect(() => {
     fetchProfileData();
+    console.log(bookingType)
   }, []);
 
   const handleNext = async () => {
@@ -51,14 +52,14 @@ const BorrowerDetailsForm = () => {
 
       if (bookingType) {
         switch (bookingType) {
-          case "2":
+          case "1":
             router.push("./bookingGuide");
+            break;
+          case "2":
+            router.push("./bookingVehicle");
             break;
           case "3":
             router.push("./bookingEquipment");
-            break;
-          case "4":
-            router.push("./bookingVehicle");
             break;
           default:
             Alert.alert("Error", "Invalid user type");
@@ -157,6 +158,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
+    marginVertical: 15,
   },
   label: {
     fontSize: 16,
