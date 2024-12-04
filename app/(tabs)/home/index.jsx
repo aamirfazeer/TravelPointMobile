@@ -45,6 +45,9 @@ export default function HomePage() {
     };
 
     fetchPosts();
+
+    const postIntravelId = setInterval(fetchPosts,3000);
+    return ()=> clearInterval(postIntravelId);
   }, []);
 
   const handleLike = (index) => {

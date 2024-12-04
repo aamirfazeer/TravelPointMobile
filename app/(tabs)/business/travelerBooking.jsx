@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import axios from 'axios';
 
 const TravelerBookings = () => {
   const [bookings, setBookings] = useState([]); // Default to an empty array
@@ -15,23 +14,61 @@ const TravelerBookings = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch bookings from backend
-    axios
-      .get('https://your-api-url.com/traveler/bookings') // Replace with your backend endpoint
-      .then((response) => {
-        setBookings(response.data || []); // Ensure bookings is always an array
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching bookings:', error);
-        setBookings([]); // Fallback to empty array on error
-        setLoading(false);
-      });
+    // Simulate data fetching with a timeout
+    const dummyData = [
+      {
+        providerName: 'Mushahid Mohamad',
+        providerContact: '0770093478',
+        type: 'equipment',
+        bookings: [
+          {
+            startDate: '2024-12-03',
+            endDate: '2024-12-05',
+            equipmentName: 'Tent',
+            quantity: 2,
+            price: 50,
+          },
+        ],
+      },
+      {
+        providerName: 'Usama Fuward',
+        providerContact: '+948765321',
+        type: 'vehicles',
+        bookings: [
+          {
+            startDate: '2024-12-02',
+            endDate: '2024-12-07',
+            vehicleName: 'SUV',
+            seatingCapacity: 7,
+            price: 200,
+          },
+        ],
+      },
+      {
+        providerName: 'Aamir Fazeer',
+        providerContact: '0719669348',
+        type: 'guides',
+        bookings: [
+          {
+            startDate: '2024-12-04',
+            endDate: '2024-12-04',
+            bookingType: 'group',
+            isSingleDay: true,
+            hours: 5,
+          },
+        ],
+      },
+    ];
+
+    // Simulate an async operation
+    setTimeout(() => {
+      setBookings(dummyData);
+      setLoading(false);
+    }, 1000);
   }, []);
 
   const filterOptions = ['all', 'equipment', 'vehicles', 'guides'];
 
-  // Safely render provider details
   const renderProviderDetails = ({ item }) => {
     const safeBookings = item.bookings || []; // Default to empty array if undefined
 
@@ -172,8 +209,3 @@ const styles = StyleSheet.create({
 });
 
 export default TravelerBookings;
-
-
-
-
-
