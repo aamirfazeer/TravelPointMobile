@@ -171,6 +171,7 @@ const TourDetailsForm = () => {
 
           onPress={handleProceedToPayment}
           // onPress={() => router.push("/business/paymentProceedingsTour")}
+
         >
           <Text style={styles.nextButtonText}>Proceed to Payment</Text>
         </TouchableOpacity>
