@@ -10,13 +10,14 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
 const BorrowerDetailsForm = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [contactInfo, setContactInfo] = useState("");
   const [email, setEmail] = useState("");
+  const { bookingType } = useLocalSearchParams()
 
   const fetchProfileData = async () => {
       const userId = await AsyncStorage.getItem("userId");
@@ -42,22 +43,23 @@ const BorrowerDetailsForm = () => {
 
   useEffect(() => {
     fetchProfileData();
+    console.log(bookingType)
   }, []);
 
   const handleNext = async () => {
     try {
       const userType = await AsyncStorage.getItem("userType");
 
-      if (userType) {
-        switch (userType) {
-          case "2":
+      if (bookingType) {
+        switch (bookingType) {
+          case "1":
             router.push("./bookingGuide");
+            break;
+          case "2":
+            router.push("./bookingVehicle");
             break;
           case "3":
             router.push("./bookingEquipment");
-            break;
-          case "4":
-            router.push("./bookingVehicle");
             break;
           default:
             Alert.alert("Error", "Invalid user type");
@@ -156,6 +158,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
+    marginVertical: 15,
   },
   label: {
     fontSize: 16,

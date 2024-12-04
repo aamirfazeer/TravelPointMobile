@@ -18,6 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const vehicleForm = () => {
   const [type, setType] = useState("");
+  const [location, setLocation] = useState("");
   const [capacity, setCapacity] = useState("");
   const [milage, setMilage] = useState("");
   const [price, setPrice] = useState("");
@@ -71,6 +72,7 @@ const vehicleForm = () => {
     const formData = new FormData();
     formData.append("owner_id", ownerId);
     formData.append("type", type);
+    formData.append("location", location);
     formData.append("capacity", capacity);
     formData.append("milage", milage);
     formData.append("price", price);
@@ -117,19 +119,20 @@ const vehicleForm = () => {
       <ScrollView contentContainerStyle={styles.container1}>
         <Text style={styles.headerText}>Rent out vehicles</Text>
         <View style={styles.formContainer}>
-          <Text style={styles.label}>Type</Text>
-          <View style={styles.pickerBox}>
-            <Picker
-              selectedValue={type}
-              onValueChange={(itemValue) => setType(itemValue)}
-              style={styles.picker}
-            >
-              <Picker.Item label="Type" value="" />
-              <Picker.Item label="Type_1" value="t1" />
-              <Picker.Item label="Type_2" value="t2" />
-              <Picker.Item label="Type_3" value="t3" />
-            </Picker>
-          </View>
+          <Text style={styles.label}>Model Name</Text>
+          <TextInput
+            style={styles.textArea}
+            placeholder="Model"
+            value={capacity}
+            onChangeText={setType}
+          />
+          <Text style={styles.label}>Location</Text>
+          <TextInput
+            style={styles.textArea}
+            placeholder="Location"
+            value={capacity}
+            onChangeText={setLocation}
+          />
           <Text style={styles.label}>Milage</Text>
           <TextInput
             style={styles.textArea}
@@ -184,9 +187,7 @@ const vehicleForm = () => {
             >
               <Text style={styles.submitText}>Submit</Text>
             </TouchableOpacity>
-            {saved && (
-              <Text style={styles.savedText}>Changes Saved!</Text>
-            )}
+            {saved && <Text style={styles.savedText}>Changes Saved!</Text>}
           </View>
         </View>
       </ScrollView>

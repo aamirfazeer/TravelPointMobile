@@ -43,34 +43,37 @@ const PaymentPage = ({ navigation, route }) => {
     <View style={styles.safecontainer}>
       <View style={styles.container}>
         {/* Progress Indicator */}
-            <View style={styles.progressContainer}>
-           <View style={styles.progressBall}>
-             <Text style={styles.progressText}>1</Text>
-           </View>
-           <View style={styles.progressLine} />
-           <View style={styles.progressBall}>
-             <Text style={styles.progressText}>2</Text>
-           </View>
-           <View style={styles.progressLine} />
-           <View style={styles.progressBall}>
-             <Text style={styles.progressText}>3</Text>
-           </View>
-         </View>
+        <View style={styles.progressContainer}>
+          <View style={styles.progressBall}>
+            <Text style={styles.progressText}>1</Text>
+          </View>
+          <View style={styles.progressLine} />
+          <View style={styles.progressBall}>
+            <Text style={styles.progressText}>2</Text>
+          </View>
+          <View style={styles.progressLine} />
+          <View style={styles.progressBall}>
+            <Text style={styles.progressText}>3</Text>
+          </View>
+        </View>
 
-         {/* Booking Summary */}
-         <View style={styles.summarySection}>
-           <Text style={styles.summaryTitle}>Book Now</Text>
+        {/* Booking Summary */}
+        <View style={styles.summarySection}>
+          <Text style={styles.summaryTitle}>Book Now</Text>
           <Text style={styles.summaryPrice}>Rs. 4500.00</Text>
-           <TouchableOpacity>
-             <Text style={styles.cancellationPolicy}>See Cancellation Policy</Text>
-           </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.cancellationPolicy}>
+              See Cancellation Policy
+            </Text>
+          </TouchableOpacity>
         </View>
         <Text style={styles.paymentTitle}>Pay With:</Text>
         <View style={styles.radioGroup}>
           <TouchableOpacity
             style={[
               styles.radioButton,
-              selectedPaymentMethod === "Credit/Debit Card" && styles.radioButtonSelected,
+              selectedPaymentMethod === "Credit/Debit Card" &&
+                styles.radioButtonSelected,
             ]}
             onPress={() => setSelectedPaymentMethod("Credit/Debit Card")}
           >
@@ -79,15 +82,19 @@ const PaymentPage = ({ navigation, route }) => {
           <TouchableOpacity
             style={[
               styles.radioButton,
-              selectedPaymentMethod === "Google Pay" && styles.radioButtonSelected,
+              selectedPaymentMethod === "Cash Pay" &&
+                styles.radioButtonSelected,
             ]}
-            onPress={() => setSelectedPaymentMethod("Google Pay")}
+            onPress={() => setSelectedPaymentMethod("Cash Pay")}
           >
-            <Text style={styles.radioLabel}>Google Pay</Text>
+            <Text style={styles.radioLabel}>Cash Pay</Text>
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.completeButton} onPress={handleCompleteBooking}>
+        <TouchableOpacity
+          style={styles.completeButton}
+          onPress={handleCompleteBooking}
+        >
           <Text style={styles.completeButtonText}>Complete Booking</Text>
         </TouchableOpacity>
       </View>
