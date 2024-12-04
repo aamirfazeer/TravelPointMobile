@@ -266,6 +266,7 @@ const VehicleDetails = () => {
                 location: location,
                 bookingType: 2,
               },
+
             })
           }
         >

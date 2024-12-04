@@ -41,6 +41,7 @@ const EquipmentDetailsForm = () => {
       if (response.status === 200 || response.status === 201) {
         Alert.alert("Success", "Equipment details saved successfully!");
         navigation.navigate("PaymentPage", { equipmentDetails });
+
       } else {
         Alert.alert("Error", "Failed to save equipment details. Try again.");
       }
@@ -132,7 +133,7 @@ const EquipmentDetailsForm = () => {
         <TouchableOpacity
           style={styles.nextButton}
           //onPress={handleProceedToPayment}
-          onPress={() => router.push("./bookingPayment")}
+          onPress={() => router.push("/business/bookingPayment")}
         >
           <Text style={styles.nextButtonText}>Proceed to Payment</Text>
         </TouchableOpacity>

@@ -48,7 +48,15 @@ const EquipmentDetails = () => {
           elit ac nulla hendrerit, in fermentum mi cursus. Lorem Ipsum is simply
           dummy text of the printing and typesetting industry.
         </Text>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+            router.push({
+              pathname: "/business/bookingUser",
+              params: { id, user, price, location },
+            })
+          }
+        >
           <Text style={styles.buttonText}>Book Now</Text>
         </TouchableOpacity>
       </View>
