@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Alert } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker"; // For selecting expiry date
+import { Redirect, router } from "expo-router";
 
 const PaymentPage = ({ navigation, route }) => {
   //const { equipmentDetails } = route.params;
@@ -12,31 +13,33 @@ const PaymentPage = ({ navigation, route }) => {
   const [upiId, setUpiId] = useState("");
 
   const handleCompleteBooking = async () => {
-    const paymentData = {
-      equipmentDetails,
-      paymentMethod: selectedPaymentMethod,
-      paymentDetails:
-        selectedPaymentMethod === "Credit/Debit Card"
-          ? { cardNumber, expiryDate, cvv }
-          : { upiId },
-    };
+    // const paymentData = {
+    //   equipmentDetails,
+    //   paymentMethod: selectedPaymentMethod,
+    //   paymentDetails:
+    //     selectedPaymentMethod === "Credit/Debit Card"
+    //       ? { cardNumber, expiryDate, cvv }
+    //       : { upiId },
+    // };
 
-    try {
-      const response = await axios.post(
-        "http://your-backend-url.com/api/complete-booking",
-        paymentData
-      );
+    // try {
+    //   const response = await axios.post(
+    //     "http://your-backend-url.com/api/complete-booking",
+    //     paymentData
+    //   );
 
-      if (response.status === 200 || response.status === 201) {
-        Alert.alert("Success", "Booking completed successfully!");
-        navigation.navigate("ConfirmationPage");
-      } else {
-        Alert.alert("Error", "Payment failed. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error completing booking:", error);
-      Alert.alert("Error", "An error occurred during payment.");
-    }
+    //   if (response.status === 200 || response.status === 201) {
+    //     Alert.alert("Success", "Booking completed successfully!");
+    //     navigation.navigate("ConfirmationPage");
+    //   } else {
+    //     Alert.alert("Error", "Payment failed. Please try again.");
+    //   }
+    // } catch (error) {
+    //   console.error("Error completing booking:", error);
+    //   Alert.alert("Error", "An error occurred during payment.");
+    // }
+    Alert.alert("Success", "Booking Confirmed!");
+    router.push("./business");
   };
 
   return (

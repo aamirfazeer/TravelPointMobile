@@ -45,6 +45,9 @@ export default function HomePage() {
     };
 
     fetchPosts();
+
+    const postIntervalId = setInterval(fetchPosts, 3000);
+    return () => clearInterval(postIntervalId);
   }, []);
 
   const handleLike = (index) => {
