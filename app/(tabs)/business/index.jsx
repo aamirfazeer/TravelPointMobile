@@ -133,13 +133,13 @@ const handleEquipmentRentals = async () => {
     console.error("User ID not found");
     return;
   }
-
+console.log(userId);
   try {
     const response = await axios.get(
       `http://10.0.2.2:8000/equipment/status/${userId}`
     );
     const { status } = response.data;
-
+    console.log(status);
     if (status === 1) {
       router.push("/business/reqProgressing");
     } else if (status === 2) {
