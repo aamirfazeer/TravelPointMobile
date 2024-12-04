@@ -168,7 +168,7 @@ const TourDetailsForm = () => {
         <TouchableOpacity
           style={styles.nextButton}
           //onPress={handleProceedToPayment}
-          onPress={() => router.push("/business/paymentProceedingsTour")}
+          onPress={() => router.push("/business/bookingPayment")}
         >
           <Text style={styles.nextButtonText}>Proceed to Payment</Text>
         </TouchableOpacity>

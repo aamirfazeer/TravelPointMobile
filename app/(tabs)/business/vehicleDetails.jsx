@@ -63,7 +63,15 @@ const VehicleDetails = () => {
           <Text style={styles.detailLabel}>Price:</Text>
           <Text style={styles.detailValue}>Rs. 3000</Text>
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+            router.push({
+              pathname: "/business/bookingUser",
+              params: { id, user, price, location },
+            })
+          }
+        >
           <Text style={styles.buttonText}>Book Now</Text>
         </TouchableOpacity>
       </View>

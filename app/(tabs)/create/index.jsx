@@ -12,7 +12,6 @@ import {
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -20,6 +19,7 @@ export default function AddPost() {
   const [caption, setCaption] = useState("");
   const [images, setImages] = useState([]);
   const [posterId, setPosterId] = useState("");
+  const [location, setLocation] = useState(""); // New state for location
 
   const getUserId = async () => {
     try {
@@ -53,14 +53,6 @@ export default function AddPost() {
     }
   };
 
-  const handleTagPeople = () => {
-    router.push("/tag-people");
-  };
-
-  const handleSelectLocation = () => {
-    router.push("/location-picker");
-  };
-
   const handlePost = async () => {
     if (!posterId) {
       Alert.alert("Error", "User ID not found. Please sign in again.");
@@ -72,7 +64,7 @@ export default function AddPost() {
       formData.append("poster_id", posterId);
       formData.append("caption", caption || "");
       formData.append("video_url", ""); // Can be updated to allow video uploading
-      formData.append("location", ""); // This can be updated when the location is set
+      formData.append("location", location || ""); // Pass location to the backend
 
       images.forEach((imageUri, index) => {
         const fileName = `image${index}.jpg`;
@@ -86,19 +78,14 @@ export default function AddPost() {
 
       console.log("Posting data:", formData);
 
-      axios.
-        post(
-          "http://10.0.2.2:8000/posts/create",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+      await axios.post("http://10.0.2.2:8000/posts/create", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       Alert.alert("Success", "Your post was created successfully!");
-      router.push("/posts");
+      router.push("/home");
     } catch (error) {
       console.error(
         "Error creating post:",
@@ -156,22 +143,18 @@ export default function AddPost() {
             multiline
           />
         </View>
-        <TouchableOpacity
-          style={styles.imageContainer}
-          onPress={handleTagPeople}
-        >
-          <Ionicons name="person-outline" size={24} color="black" />
-          <Text style={styles.imageText}>Tag People</Text>
-          <Ionicons name="chevron-forward" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.imageContainer}
-          onPress={handleSelectLocation}
-        >
+        
+        {/* Replace the location picker with a text input */}
+        <View style={styles.locationInput}>
           <Ionicons name="location-outline" size={24} color="black" />
-          <Text style={styles.imageText}>Location</Text>
-          <Ionicons name="chevron-forward" size={24} color="black" />
-        </TouchableOpacity>
+          <TextInput
+            style={styles.locationTextInput}
+            value={location}
+            onChangeText={setLocation}
+            placeholder="Enter Location"
+          />
+        </View>
+
         <TouchableOpacity style={styles.postButton} onPress={handlePost}>
           <Text style={styles.postButtonText}>Post</Text>
         </TouchableOpacity>
@@ -248,6 +231,24 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
     marginBottom: 25,
     marginHorizontal: 17,
+  },
+  locationInput: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: "#ddd",
+    marginBottom: 25,
+  },
+  locationTextInput: {
+    flex: 1,
+    height: 40,
+    paddingLeft: 10,
+    fontSize: 16,
+    color: "#000",
   },
   postButton: {
     width: 200,
