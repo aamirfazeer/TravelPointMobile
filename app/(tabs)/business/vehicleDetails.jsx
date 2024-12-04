@@ -260,7 +260,6 @@ const VehicleDetails = () => {
           onPress={() =>
             router.push({
               pathname: "/business/bookingUser",
-
               params: {
                 id: id,
                 price: price,
