@@ -66,7 +66,7 @@ const ProfilePage = () => {
           onPress={() =>
             router.push({
               pathname: "/business/bookingUser",
-              params: { id, user, price, location },
+              params: { id, user, price, location, "bookingType": 1 },
             })
           }
         >

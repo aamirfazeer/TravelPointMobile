@@ -16,6 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const equipmentForm = () => {
   const [type, setType] = useState("");
+  const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState(null);
   const [ownerId, setOwnerId] = useState("");
@@ -56,6 +57,7 @@ const equipmentForm = () => {
     const formData = new FormData();
     formData.append("owner_id", ownerId);
     formData.append("type", type);
+    formData.append("location", location);
     formData.append("description", description);
 
     if (photo) {
@@ -96,18 +98,21 @@ const equipmentForm = () => {
     <View style={styles.container}>
       <Text style={styles.headerText}>Rent Out Equipment</Text>
       <View style={styles.formContainer}>
-        <View style={styles.pickerBox}>
-          <Picker
-            selectedValue={type}
-            onValueChange={(itemValue) => setType(itemValue)}
-            style={styles.picker}
-          >
-            <Picker.Item label="Type" value="" />
-            <Picker.Item label="Type_1" value="t1" />
-            <Picker.Item label="Type_2" value="t2" />
-            <Picker.Item label="Type_3" value="t3" />
-          </Picker>
-        </View>
+        <Text style={styles.label}>Equipment Name</Text>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Enter your equipment"
+          value={type}
+          onChangeText={setType}
+        />
+        <Text style={styles.label}>Location</Text>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Enter your location"
+          value={location}
+          onChangeText={setLocation}
+        />
+        <Text style={styles.label}>Description</Text>
         <TextInput
           style={styles.textArea}
           placeholder="Description"
@@ -171,6 +176,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "gray",
   },
+  textInput: {
+    backgroundColor: "white",
+    borderRadius: 8,
+    padding: 8,
+    textAlignVertical: "top",
+    marginBottom: 16,
+    borderWidth: 2,
+    borderColor: "gray",
+  },
   uploadContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -218,6 +232,12 @@ const styles = StyleSheet.create({
   savedText: {
     color: "#28a745",
     marginTop: 10,
+  },
+  label: {
+    width: "100%",
+    textAlign: "left",
+    marginVertical: 5,
+    fontWeight: "bold",
   },
 });
 

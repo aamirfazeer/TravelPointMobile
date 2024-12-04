@@ -19,19 +19,38 @@ const Stacklayout = () => {
       <Stack.Screen name="addVehicle" options={{ headerShown: false }} />
       <Stack.Screen name="myVehicle" options={{ headerShown: false }} />
       <Stack.Screen name="editVehicle" options={{ headerShown: false }} />
-      <Stack.Screen name="equipmentServiceProvider" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="equipmentServiceProvider"
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="myEquipment" options={{ headerShown: false }} />
       <Stack.Screen name="addEquipment" options={{ headerShown: false }} />
       <Stack.Screen name="reqProgressing" options={{ headerShown: false }} />
-      <Stack.Screen name="vehicleServiceProvider" options={{ headerShown: false }} />
-      <Stack.Screen name="guideServiceProvider" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="vehicleServiceProvider"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="guideServiceProvider"
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="bookingUser" options={{ headerShown: false }} />
       <Stack.Screen name="bookingEquipment" options={{ headerShown: false }} />
       <Stack.Screen name="bookingPayment" options={{ headerShown: false }} />
       <Stack.Screen name="bookingGuide" options={{ headerShown: false }} />
-      <Stack.Screen name="viewGuidBookingInfo" options={{ headerShown: false }} />
-      <Stack.Screen name="viewVehicleBookingInfo" options={{ headerShown: false }} />
-      <Stack.Screen name="viewEquipmentbookinginfo" options={{ headerShown: false }} />
+      <Stack.Screen name="bookingVehicle" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="viewGuidBookingInfo"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="viewVehicleBookingInfo"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="viewEquipmentbookinginfo"
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="travelerBooking" options={{ headerShown: false }} />
     </Stack>
   );
